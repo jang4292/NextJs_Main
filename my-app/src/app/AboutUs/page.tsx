@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <div>
-      <h1>Index</h1>
+      <h1>About Us</h1>
       {/* <header className="lg:px-16 px-4 bg-white flex flex-wrap items-center py-4 shadow-md">
         <div className="flex-1 flex justify-between items-center">
           <a href="#" className="text-xl">Company</a>

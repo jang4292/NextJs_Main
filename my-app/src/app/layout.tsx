@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import NavBar from "./Components/NavBar";
+import Footer from "./Components/Footer";
 
 export const metadata: Metadata = {
   title: "YH Jang | HOME",
@@ -14,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <NavBar></NavBar>
         {children}
+        <Footer></Footer>
       </body>
     </html>
   );
