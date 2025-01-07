@@ -1,51 +1,53 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <div>
-      {/* <div className="bg-gray-100">
+      <div className="bg-gray-100">
         <div className="max-w-screen-lg px-4 sm:px-6 text-gray-800 sm:grid md:grid-cols-4 sm:grid-cols-2 mx-auto">
           <div className="p-5">
-            <h3 className="font-bold text-xl text-indigo-600">Company Name</h3>
+            <h3 className="font-bold text-xl text-indigo-600">YH JANG</h3>
           </div>
           <div className="p-5">
             <div className="text-sm uppercase text-indigo-600 font-bold">
               Resources
             </div>
-            <a className="my-3 block" href="/#">
+            <Link className="my-3 block" href="/#">
               Documentation <span className="text-teal-600 text-xs p-1"></span>
-            </a>
-            <a className="my-3 block" href="/#">
+            </Link>
+            <Link className="my-3 block" href="/#">
               Tutorials <span className="text-teal-600 text-xs p-1"></span>
-            </a>
-            <a className="my-3 block" href="/#">
+            </Link>
+            <Link className="my-3 block" href="/#">
               Support <span className="text-teal-600 text-xs p-1">New</span>
-            </a>
+            </Link>
           </div>
           <div className="p-5">
             <div className="text-sm uppercase text-indigo-600 font-bold">
               Support
             </div>
-            <a className="my-3 block" href="/#">
+            <Link className="my-3 block" href="/#">
               Help Center <span className="text-teal-600 text-xs p-1"></span>
-            </a>
-            <a className="my-3 block" href="/#">
+            </Link>
+            <Link className="my-3 block" href="/#">
               Privacy Policy <span className="text-teal-600 text-xs p-1"></span>
-            </a>
-            <a className="my-3 block" href="/#">
+            </Link>
+            <Link className="my-3 block" href="/#">
               Conditions <span className="text-teal-600 text-xs p-1"></span>
-            </a>
+            </Link>
           </div>
           <div className="p-5">
             <div className="text-sm uppercase text-indigo-600 font-bold">
               Contact us
             </div>
-            <a className="my-3 block" href="/#">
+            <Link className="my-3 block" href="/#">
               XXX XXXX, Floor 4 San Francisco, CA
               <span className="text-teal-600 text-xs p-1"></span>
-            </a>
-            <a className="my-3 block" href="/#">
-              contact@company.com
+            </Link>
+            <Link className="my-3 block" href="/#">
+              yhjang@gmail.com
               <span className="text-teal-600 text-xs p-1"></span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -56,7 +58,7 @@ export default function Footer() {
       max-w-screen-lg items-center"
         >
           <div className="md:flex-auto md:flex-row-reverse mt-2 flex-row flex">
-            <a href="/#" className="w-6 mx-1">
+            {/* <Link href="/#" className="w-6 mx-1">
               <svg
                 className="fill-current cursor-pointer text-gray-500 hover:text-indigo-600"
                 width="100%"
@@ -89,8 +91,8 @@ export default function Footer() {
                   0.771,-0.67 1.054,-1.093Z"
                 ></path>
               </svg>
-            </a>
-            <a href="/#" className="w-6 mx-1">
+            </Link> */}
+            <Link href="https://www.facebook.com/Alpha.Jang.0/" className="w-6 mx-1">
               <svg
                 className="fill-current cursor-pointer text-gray-500 hover:text-indigo-600"
                 width="100%"
@@ -112,19 +114,18 @@ export default function Footer() {
                   -2.103,2.102l0,0.97l-0.969,0l0,1.617l0.969,0l0,4.689l1.941,0l0,-4.689Z"
                 ></path>
               </svg>
-            </a>
-            <a href="/#" className="w-6 mx-1">
+            </Link>
+            <Link href="https://www.youtube.com/@yunhwanjang8974" className="w-6 mx-1">
               <svg
                 className="fill-current cursor-pointer text-gray-500 hover:text-indigo-600"
                 width="100%"
                 height="100%"
                 viewBox="0 0 24 24"
                 version="1.1"
-                // xmlns="http://www.w3.org/2000/svg"
-                // xmlns:xlink="http://www.w3.org/1999/xlink"
-                // xml:space="preserve"
-                // xmlns:serif="http://www.serif.com/"
-                // style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                xmlSpace="preserve"
+                strokeMiterlimit={2}
               >
                 <g id="Layer_1">
                   <circle id="Oval" cx="12" cy="12" r="12"></circle>
@@ -150,8 +151,8 @@ export default function Footer() {
                   ></path>
                 </g>
               </svg>
-            </a>
-            <a href="/#" className="w-6 mx-1">
+            </Link>
+            <Link href="https://www.linkedin.com/in/yunhwan-jang-7167b3119/" className="w-6 mx-1">
               <svg
                 className="fill-current cursor-pointer text-gray-500 hover:text-indigo-600"
                 width="100%"
@@ -160,13 +161,10 @@ export default function Footer() {
                 version="1.1"
                 fillRule="evenodd"
                 strokeLinejoin="round"
-                // strokeMiterlimit="2"
-                // clipRule="evenodd"
-                // xmlns="http://www.w3.org/2000/svg"
-                // xmlns:xlink="http://www.w3.org/1999/xlink"
-                // xml:space="preserve"
-                // xmlns:serif="http://www.serif.com/"
-                // style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;"
+                strokeMiterlimit={2}
+                xmlns="http://www.w3.org/2000/svg"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                xmlSpace="preserve"
               >
                 <path
                   id="Shape"
@@ -186,37 +184,11 @@ export default function Footer() {
                   0.4,1.5l0,4.5l2.9,0Z"
                 ></path>
               </svg>
-            </a>
-            <a href="/#" className="w-6 mx-1">
-              <svg
-                className="fill-current cursor-pointer text-gray-500 hover:text-indigo-600"
-                width="100%"
-                height="100%"
-                viewBox="0 0 24 24"
-                version="1.1"
-                // xmlns="http://www.w3.org/2000/svg"
-                // xmlns:xlink="http://www.w3.org/1999/xlink"
-                // xml:space="preserve"
-                // xmlns:serif="http://www.serif.com/"
-                // style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;"
-                fillRule="evenodd"
-                strokeLinejoin="round"
-              >
-                <path
-                  id="Combined-Shape"
-                  d="M12,24c6.627,0 12,-5.373 12,-12c0,-6.627 -5.373,-12 -12,-12c-6.627,0
-                  -12,5.373 -12,12c0,6.627 5.373,12 12,12Zm6.591,-15.556l-0.722,0c-0.189,0
-                  -0.681,0.208 -0.681,0.385l0,6.422c0,0.178 0.492,0.323
-                  0.681,0.323l0.722,0l0,1.426l-4.675,0l0,-1.426l0.935,0l0,-6.655l-0.163,0l-2.251,8.081l-1.742,0l-2.222,-8.081l-0.168,0l0,6.655l0.935,0l0,1.426l-3.74,0l0,-1.426l0.519,0c0.203,0
-                  0.416,-0.145 0.416,-0.323l0,-6.422c0,-0.177 -0.213,-0.385
-                  -0.416,-0.385l-0.519,0l0,-1.426l4.847,0l1.583,5.704l0.042,0l1.598,-5.704l5.021,0l0,1.426Z"
-                ></path>
-              </svg>
-            </a>
+            </Link>
           </div>
           <div className="my-5">© Copyright 2024. All Rights Reserved.</div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
