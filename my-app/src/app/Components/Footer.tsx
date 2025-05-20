@@ -3,107 +3,26 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <div>
-      <div className="bg-gray-100">
-        <div className="max-w-screen-lg px-4 sm:px-6 text-gray-800 sm:grid md:grid-cols-4 sm:grid-cols-2 mx-auto">
-          <div className="p-5">
-            <h3 className="font-bold text-xl text-indigo-600">YH JANG</h3>
-          </div>
-          <div className="p-5">
-            <div className="text-sm uppercase text-indigo-600 font-bold">
-              Resources
-            </div>
-            <Link className="my-3 block" href="/#">
-              Documentation <span className="text-teal-600 text-xs p-1"></span>
-            </Link>
-            <Link className="my-3 block" href="/#">
-              Tutorials <span className="text-teal-600 text-xs p-1"></span>
-            </Link>
-            <Link className="my-3 block" href="/#">
-              Support <span className="text-teal-600 text-xs p-1">New</span>
-            </Link>
-          </div>
-          <div className="p-5">
-            <div className="text-sm uppercase text-indigo-600 font-bold">
-              Support
-            </div>
-            <Link className="my-3 block" href="/#">
-              Help Center <span className="text-teal-600 text-xs p-1"></span>
-            </Link>
-            <Link className="my-3 block" href="/#">
-              Privacy Policy <span className="text-teal-600 text-xs p-1"></span>
-            </Link>
-            <Link className="my-3 block" href="/#">
-              Conditions <span className="text-teal-600 text-xs p-1"></span>
-            </Link>
-          </div>
-          <div className="p-5">
-            <div className="text-sm uppercase text-indigo-600 font-bold">
-              Contact us
-            </div>
-            <Link className="my-3 block" href="/#">
-              XXX XXXX, Floor 4 San Francisco, CA
-              <span className="text-teal-600 text-xs p-1"></span>
-            </Link>
-            <Link className="my-3 block" href="/#">
-              yhjang@gmail.com
-              <span className="text-teal-600 text-xs p-1"></span>
-            </Link>
-          </div>
-        </div>
-      </div>
-
       <div className="bg-gray-100 pt-2">
         <div
           className="flex pb-5 px-3 m-auto pt-5 border-t text-gray-800 text-sm flex-col
       max-w-screen-lg items-center"
         >
           <div className="md:flex-auto md:flex-row-reverse mt-2 flex-row flex">
-            {/* <Link href="/#" className="w-6 mx-1">
+            <Link
+              href="https://www.facebook.com/Alpha.Jang.0/"
+              className="w-8 mx-2"
+            >
               <svg
                 className="fill-current cursor-pointer text-gray-500 hover:text-indigo-600"
                 width="100%"
                 height="100%"
                 viewBox="0 0 24 24"
                 version="1.1"
-                // xmlns="http://www.w3.org/2000/svg"
-                // xmlns:xlink="http://www.w3.org/1999/xlink"
-                // xml:space="preserve"
-                // xmlns:serif="http://www.serif.com/"
-                // style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;"
-                fillRule="evenodd"
-                strokeLinejoin="round"
-              >
-                <path
-                  id="Twitter"
-                  d="M24,12c0,6.627 -5.373,12 -12,12c-6.627,0 -12,-5.373 -12,-12c0,-6.627
-                  5.373,-12 12,-12c6.627,0 12,5.373 12,12Zm-6.465,-3.192c-0.379,0.168
-                  -0.786,0.281 -1.213,0.333c0.436,-0.262 0.771,-0.676
-                  0.929,-1.169c-0.408,0.242 -0.86,0.418 -1.341,0.513c-0.385,-0.411
-                  -0.934,-0.667 -1.541,-0.667c-1.167,0 -2.112,0.945 -2.112,2.111c0,0.166
-                  0.018,0.327 0.054,0.482c-1.754,-0.088 -3.31,-0.929
-                  -4.352,-2.206c-0.181,0.311 -0.286,0.674 -0.286,1.061c0,0.733 0.373,1.379
-                  0.94,1.757c-0.346,-0.01 -0.672,-0.106 -0.956,-0.264c-0.001,0.009
-                  -0.001,0.018 -0.001,0.027c0,1.023 0.728,1.877 1.694,2.07c-0.177,0.049
-                  -0.364,0.075 -0.556,0.075c-0.137,0 -0.269,-0.014 -0.397,-0.038c0.268,0.838
-                  1.048,1.449 1.972,1.466c-0.723,0.566 -1.633,0.904 -2.622,0.904c-0.171,0
-                  -0.339,-0.01 -0.504,-0.03c0.934,0.599 2.044,0.949 3.237,0.949c3.883,0
-                  6.007,-3.217 6.007,-6.008c0,-0.091 -0.002,-0.183 -0.006,-0.273c0.413,-0.298
-                  0.771,-0.67 1.054,-1.093Z"
-                ></path>
-              </svg>
-            </Link> */}
-            <Link href="https://www.facebook.com/Alpha.Jang.0/" className="w-6 mx-1">
-              <svg
-                className="fill-current cursor-pointer text-gray-500 hover:text-indigo-600"
-                width="100%"
-                height="100%"
-                viewBox="0 0 24 24"
-                version="1.1"
-                // xmlns="http://www.w3.org/2000/svg"
-                // xmlns:xlink="http://www.w3.org/1999/xlink"
-                // xml:space="preserve"
-                // xmlns:serif="http://www.serif.com/"
-                // style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                xmlSpace="preserve"
+                strokeMiterlimit={2}
               >
                 <path
                   id="Facebook"
@@ -115,7 +34,10 @@ export default function Footer() {
                 ></path>
               </svg>
             </Link>
-            <Link href="https://www.youtube.com/@yunhwanjang8974" className="w-6 mx-1">
+            <Link
+              href="https://www.youtube.com/@yunhwanjang8974"
+              className="w-8 mx-2"
+            >
               <svg
                 className="fill-current cursor-pointer text-gray-500 hover:text-indigo-600"
                 width="100%"
@@ -145,14 +67,15 @@ export default function Footer() {
                      -0.204,-0.34l0,-4.631c0,-0.136 0.068,-0.273 0.204,-0.341c0.136,-0.068
                      0.272,-0.068 0.409,0l3.201,2.316c0.068,0.068 0.136,0.204
                      0.136,0.34c0.068,0.136 0,0.273 -0.136,0.341Z"
-                     fill="rgb(255, 255, 255)"
-
-                    // style="fill: rgb(255, 255, 255);"
+                    fill="rgb(255, 255, 255)"
                   ></path>
                 </g>
               </svg>
             </Link>
-            <Link href="https://www.linkedin.com/in/yunhwan-jang-7167b3119/" className="w-6 mx-1">
+            <Link
+              href="https://www.linkedin.com/in/yunhwan-jang-7167b3119/"
+              className="w-8 mx-2"
+            >
               <svg
                 className="fill-current cursor-pointer text-gray-500 hover:text-indigo-600"
                 width="100%"
@@ -186,7 +109,9 @@ export default function Footer() {
               </svg>
             </Link>
           </div>
-          <div className="my-5">© Copyright 2024. All Rights Reserved.</div>
+          <div className="flex pt-5">
+            &copy; 2025 제이. All rights reserved.
+          </div>
         </div>
       </div>
     </div>
