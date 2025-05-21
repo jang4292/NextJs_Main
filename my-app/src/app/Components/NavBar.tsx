@@ -22,7 +22,7 @@ export default function NavBar() {
             {/* Projects 드롭다운 */}
             <li className="relative group">
               <Link
-                href="/Projects"
+                href="/projects"
                 className="md:p-4 py-3 px-0 block cursor-pointer"
               >
                 Projects
@@ -32,7 +32,15 @@ export default function NavBar() {
                 <li>
                   <Link
                     className="block px-4 py-2 hover:bg-gray-100"
-                    href="/Projects/frontend"
+                    href="/tax-calculator/"
+                  >
+                    Tax Calculator
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="block px-4 py-2 hover:bg-gray-100"
+                    href="/projects/frontend"
                   >
                     프론트엔드
                   </Link>
@@ -40,7 +48,7 @@ export default function NavBar() {
                 <li>
                   <Link
                     className="block px-4 py-2 hover:bg-gray-100"
-                    href="/Projects/backend"
+                    href="/projects/backend"
                   >
                     백엔드
                   </Link>
@@ -48,7 +56,7 @@ export default function NavBar() {
               </ul>
             </li>
             <li>
-              <Link className="md:p-4 py-3 px-0 block" href="/About">
+              <Link className="md:p-4 py-3 px-0 block" href="/about">
                 About
               </Link>
             </li>
