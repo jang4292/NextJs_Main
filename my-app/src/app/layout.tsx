@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 
 export const metadata: Metadata = {
   title: "YH Jang | HOME",
@@ -13,8 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        {children}
+      <body className="h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+        <NavBar />
+        <main className="flex-grow overflow-y-auto">{children}</main>
+        <Footer />
       </body>
     </html>
   );
