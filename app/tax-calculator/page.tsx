@@ -73,7 +73,9 @@ export default function TaxPage() {
       });
       setResult(calcResult);
     } catch (err) {
-      setError("계산 중 오류가 발생했습니다.");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      console.error(err); // 실제 오류 로그 출력
+      setError("계산 중 오류가 발생했습니다. ");
     }
   };
 
