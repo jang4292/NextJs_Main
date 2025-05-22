@@ -81,7 +81,9 @@ export default function TaxPage() {
 
   return (
     <main className="max-w-xl mx-auto p-4 font-sans">
-      <h1 className="text-2xl font-bold mb-6">2025 세금 계산기</h1>
+      <h1 className="text-2xl font-bold mt-8 mb-4 text-center">
+        2025 세금 계산기
+      </h1>
 
       <form
         onSubmit={handleSubmit}
