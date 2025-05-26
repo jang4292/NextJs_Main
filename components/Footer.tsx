@@ -80,7 +80,7 @@ export default function Footer() {
           <div className="flex space-x-4">
             <Link href="https://github.com/jang4292" target="_blank">
               <Image
-                src="/icons/github.svg"
+                src="/icons/GitHub.svg"
                 alt="GitHub"
                 width={24}
                 height={24}
@@ -91,7 +91,7 @@ export default function Footer() {
               target="_blank"
             >
               <Image
-                src="/icons/youtube.svg"
+                src="/icons/YouTube.svg"
                 alt="YouTube"
                 width={24}
                 height={24}
@@ -102,7 +102,7 @@ export default function Footer() {
               target="_blank"
             >
               <Image
-                src="/icons/linkedin.svg"
+                src="/icons/LinkedIn.svg"
                 alt="LinkedIn"
                 width={24}
                 height={24}
