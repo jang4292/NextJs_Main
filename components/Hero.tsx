@@ -54,7 +54,7 @@ export default function Hero() {
         </a>
 
         <Link
-          href="/Projects"
+          href="/projects"
           className="w-full sm:w-auto text-center px-6 py-3 border border-blue-600 text-blue-600 rounded-xl hover:bg-blue-50 transition"
         >
           프로젝트 보기

@@ -1,119 +1,127 @@
+"use client";
+
+import { ExternalLink } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
   return (
-    <div>
-      <div className="bg-gray-100 pt-2">
-        <div
-          className="flex pb-5 px-3 m-auto pt-5 border-t text-gray-800 text-sm flex-col
-      max-w-screen-lg items-center"
-        >
-          <div className="md:flex-auto md:flex-row-reverse mt-2 flex-row flex">
-            <Link
-              href="https://www.facebook.com/Alpha.Jang.0/"
-              className="w-8 mx-2"
-            >
-              <svg
-                className="fill-current cursor-pointer text-gray-500 hover:text-indigo-600"
-                width="100%"
-                height="100%"
-                viewBox="0 0 24 24"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-                xmlSpace="preserve"
-                strokeMiterlimit={2}
-              >
-                <path
-                  id="Facebook"
-                  d="M24,12c0,6.627 -5.373,12 -12,12c-6.627,0 -12,-5.373 -12,-12c0,-6.627
-                  5.373,-12 12,-12c6.627,0 12,5.373
-                  12,12Zm-11.278,0l1.294,0l0.172,-1.617l-1.466,0l0.002,-0.808c0,-0.422
-                  0.04,-0.648 0.646,-0.648l0.809,0l0,-1.616l-1.295,0c-1.555,0 -2.103,0.784
-                  -2.103,2.102l0,0.97l-0.969,0l0,1.617l0.969,0l0,4.689l1.941,0l0,-4.689Z"
-                ></path>
-              </svg>
+    <footer className="hidden md:block bg-gray-100 text-gray-700 border-t">
+      <div className="max-w-6xl mx-auto px-4 py-4 grid grid-cols-[1fr_2fr] gap-6 text-sm">
+        <div>
+          <p className="font-bold text-2xl">제이의 포트폴리오</p>
+
+          {/* 
+          방문자 수 
+          실제 사용시 API 연동 또는 외부 방문자 카운터 삽입 필요
+          */}
+          <div className="mt-4 text-left space-y-2">
+            <div className="space-y-1 text-gray-600">
+              <p>
+                <span className="font-semibold"> Today : </span>
+                <span className="font-medium">0</span>
+              </p>
+              <p>
+                <span className="font-semibold">Total : </span>
+                <span className="font-medium">0</span>
+              </p>
+            </div>
+          </div>
+          <p className="mt-4 text-gray-600">
+            &copy; {new Date().getFullYear()} 제이. All rights reserved.
+          </p>
+        </div>
+
+        <div className="flex flex-col items-center space-y-4">
+          <div className="flex flex-wrap justify-center gap-2 mt-2">
+            <Image
+              src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=for-the-badge&logo=JavaScript&logoColor=white"
+              alt="JavaScript"
+              width={120}
+              height={28}
+            />
+            <Image
+              src="https://img.shields.io/badge/HTML5-E34F26.svg?style=for-the-badge&logo=HTML5&logoColor=white"
+              alt="Html5"
+              width={90}
+              height={28}
+            />
+            <Image
+              src="https://img.shields.io/badge/Cocos%20Creator-blue.svg?style=for-the-badge&logo=cocos&logoColor=white"
+              alt="CocosCreator"
+              width={120}
+              height={28}
+            />
+            <Image
+              src="https://img.shields.io/badge/Next.js-000000.svg?style=for-the-badge&logo=next.js&logoColor=white"
+              alt="Next.js"
+              width={90}
+              height={28}
+            />
+            <Image
+              src="https://img.shields.io/badge/TailwindCSS-38B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white"
+              alt="TailwindCSS"
+              width={120}
+              height={28}
+            />
+            <Image
+              src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=for-the-badge&logo=typescript&logoColor=white"
+              alt="TypeScript"
+              width={110}
+              height={28}
+            />
+            <Image
+              src="https://img.shields.io/badge/Node.js-339933.svg?style=for-the-badge&logo=node.js&logoColor=white"
+              alt="Node.js"
+              width={100}
+              height={28}
+            />
+          </div>
+          <div className="flex space-x-4">
+            <Link href="https://github.com/jang4292" target="_blank">
+              <Image
+                src="/icons/github.svg"
+                alt="GitHub"
+                width={24}
+                height={24}
+              />
             </Link>
             <Link
               href="https://www.youtube.com/@yunhwanjang8974"
-              className="w-8 mx-2"
+              target="_blank"
             >
-              <svg
-                className="fill-current cursor-pointer text-gray-500 hover:text-indigo-600"
-                width="100%"
-                height="100%"
-                viewBox="0 0 24 24"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-                xmlSpace="preserve"
-                strokeMiterlimit={2}
-              >
-                <g id="Layer_1">
-                  <circle id="Oval" cx="12" cy="12" r="12"></circle>
-                  <path
-                    id="Shape"
-                    d="M19.05,8.362c0,-0.062 0,-0.125 -0.063,-0.187l0,-0.063c-0.187,-0.562
-                     -0.687,-0.937 -1.312,-0.937l0.125,0c0,0 -2.438,-0.375 -5.75,-0.375c-3.25,0
-                     -5.75,0.375 -5.75,0.375l0.125,0c-0.625,0 -1.125,0.375
-                     -1.313,0.937l0,0.063c0,0.062 0,0.125 -0.062,0.187c-0.063,0.625 -0.25,1.938
-                     -0.25,3.438c0,1.5 0.187,2.812 0.25,3.437c0,0.063 0,0.125
-                     0.062,0.188l0,0.062c0.188,0.563 0.688,0.938 1.313,0.938l-0.125,0c0,0
-                     2.437,0.375 5.75,0.375c3.25,0 5.75,-0.375 5.75,-0.375l-0.125,0c0.625,0
-                     1.125,-0.375 1.312,-0.938l0,-0.062c0,-0.063 0,-0.125
-                     0.063,-0.188c0.062,-0.625 0.25,-1.937 0.25,-3.437c0,-1.5 -0.125,-2.813
-                     -0.25,-3.438Zm-4.634,3.927l-3.201,2.315c-0.068,0.068 -0.137,0.068
-                     -0.205,0.068c-0.068,0 -0.136,0 -0.204,-0.068c-0.136,-0.068 -0.204,-0.204
-                     -0.204,-0.34l0,-4.631c0,-0.136 0.068,-0.273 0.204,-0.341c0.136,-0.068
-                     0.272,-0.068 0.409,0l3.201,2.316c0.068,0.068 0.136,0.204
-                     0.136,0.34c0.068,0.136 0,0.273 -0.136,0.341Z"
-                    fill="rgb(255, 255, 255)"
-                  ></path>
-                </g>
-              </svg>
+              <Image
+                src="/icons/youtube.svg"
+                alt="YouTube"
+                width={24}
+                height={24}
+              />
             </Link>
             <Link
               href="https://www.linkedin.com/in/yunhwan-jang-7167b3119/"
-              className="w-8 mx-2"
+              target="_blank"
             >
-              <svg
-                className="fill-current cursor-pointer text-gray-500 hover:text-indigo-600"
-                width="100%"
-                height="100%"
-                viewBox="0 0 24 24"
-                version="1.1"
-                fillRule="evenodd"
-                strokeLinejoin="round"
-                strokeMiterlimit={2}
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-                xmlSpace="preserve"
-              >
-                <path
-                  id="Shape"
-                  d="M7.3,0.9c1.5,-0.6 3.1,-0.9 4.7,-0.9c1.6,0 3.2,0.3 4.7,0.9c1.5,0.6 2.8,1.5
-                  3.8,2.6c1,1.1 1.9,2.3 2.6,3.8c0.7,1.5 0.9,3 0.9,4.7c0,1.7 -0.3,3.2
-                  -0.9,4.7c-0.6,1.5 -1.5,2.8 -2.6,3.8c-1.1,1 -2.3,1.9 -3.8,2.6c-1.5,0.7
-                  -3.1,0.9 -4.7,0.9c-1.6,0 -3.2,-0.3 -4.7,-0.9c-1.5,-0.6 -2.8,-1.5
-                  -3.8,-2.6c-1,-1.1 -1.9,-2.3 -2.6,-3.8c-0.7,-1.5 -0.9,-3.1 -0.9,-4.7c0,-1.6
-                  0.3,-3.2 0.9,-4.7c0.6,-1.5 1.5,-2.8 2.6,-3.8c1.1,-1 2.3,-1.9
-                  3.8,-2.6Zm-0.3,7.1c0.6,0 1.1,-0.2 1.5,-0.5c0.4,-0.3 0.5,-0.8 0.5,-1.3c0,-0.5
-                  -0.2,-0.9 -0.6,-1.2c-0.4,-0.3 -0.8,-0.5 -1.4,-0.5c-0.6,0 -1.1,0.2
-                  -1.4,0.5c-0.3,0.3 -0.6,0.7 -0.6,1.2c0,0.5 0.2,0.9 0.5,1.3c0.3,0.4 0.9,0.5
-                  1.5,0.5Zm1.5,10l0,-8.5l-3,0l0,8.5l3,0Zm11,0l0,-4.5c0,-1.4 -0.3,-2.5
-                  -0.9,-3.3c-0.6,-0.8 -1.5,-1.2 -2.6,-1.2c-0.6,0 -1.1,0.2 -1.5,0.5c-0.4,0.3
-                  -0.8,0.8 -0.9,1.3l-0.1,-1.3l-3,0l0.1,2l0,6.5l3,0l0,-4.5c0,-0.6 0.1,-1.1
-                  0.4,-1.5c0.3,-0.4 0.6,-0.5 1.1,-0.5c0.5,0 0.9,0.2 1.1,0.5c0.2,0.3 0.4,0.8
-                  0.4,1.5l0,4.5l2.9,0Z"
-                ></path>
-              </svg>
+              <Image
+                src="/icons/linkedin.svg"
+                alt="LinkedIn"
+                width={24}
+                height={24}
+              />
             </Link>
-          </div>
-          <div className="flex pt-5">
-            &copy; 2025 제이. All rights reserved.
+            <Link href="https://blog.naver.com/janghyunki17" target="_blank">
+              <Image
+                src="/icons/NaverBlog.svg"
+                alt="LinkedIn"
+                width={24}
+                height={24}
+              />
+            </Link>
+            <Link href="/contact" aria-label="Contact">
+              <ExternalLink className="w-6 h-6 hover:text-blue-600 transition-colors" />
+            </Link>
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 }
