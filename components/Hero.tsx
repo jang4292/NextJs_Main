@@ -38,11 +38,11 @@ export default function Hero() {
         유지보수가 쉬운 코드를 지향합니다.
         <br />
         <br />
-        12년 이상의 풀스택 개발 경력을 바탕으로,
+        12년 이상의 다양한 개발 경력을 바탕으로,
         <br />
-        웹, 데스크탑, 모바일, VR까지
+        웹, 데스크탑, 모바일까지 다양한 플랫폼에서
         <br />
-        다양한 플랫폼에서 서비스와 게임을 개발하고 운영해왔습니다.
+        서비스를 개발하고 운영해왔습니다.
       </p>
 
       <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
