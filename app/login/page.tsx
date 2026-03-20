@@ -2,22 +2,22 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // 더미 로그인 처리
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // 실제 로그인 API 호출 자리
-    if (username === "admin" && password === "password") {
-      // 로그인 성공
-      // 실제 인증 토큰 처리, 전역 상태 업데이트 필요
-      router.push("/"); // 로그인 성공 후 홈으로 이동
+    setError("");
+    const success = login(username, password);
+    if (success) {
+      router.push("/");
     } else {
       setError("아이디 또는 비밀번호가 올바르지 않습니다.");
     }
@@ -70,6 +70,13 @@ export default function LoginPage() {
         >
           로그인
         </button>
+
+        <p className="mt-4 text-center text-sm text-gray-600">
+          계정이 없으신가요?{" "}
+          <Link href="/signup" className="text-blue-600 hover:underline font-medium">
+            회원가입
+          </Link>
+        </p>
       </form>
     </div>
   );

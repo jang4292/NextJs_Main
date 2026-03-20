@@ -1,6 +1,7 @@
 import { BottomNav } from "@/components/BottomNav";
 import Footer from "@/components/Footer";
 import { NavBar } from "@/components/NavBar";
+import { AuthProvider } from "@/context/AuthContext";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 
@@ -20,10 +21,12 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
-        <NavBar />
-        <main className="flex-grow overflow-y-auto">{children}</main>
-        <Footer />
-        <BottomNav /> {/* 모바일 하단 전용 네비게이션 */}
+        <AuthProvider>
+          <NavBar />
+          <main className="flex-grow overflow-y-auto">{children}</main>
+          <Footer />
+          <BottomNav /> {/* 모바일 하단 전용 네비게이션 */}
+        </AuthProvider>
       </body>
     </html>
   );
