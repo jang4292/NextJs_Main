@@ -39,7 +39,6 @@ export default function ContactPage() {
   `;
 
   async function sendEmail(data: SendEmailRequest): Promise<SendEmailResponse> {
-    debugger
     const res = await fetch('/api/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
