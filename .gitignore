@@ -2,6 +2,9 @@
 
 .vscode/
 *.test.ts
+*.md
+!REPORT.md
+docs/
 scripts/
 
 # dependencies
