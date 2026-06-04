@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { getSortedPosts } from "@/data/blogPosts";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "YH Jang | Blog",
   description: "개발 보고서 및 프로젝트 기록",
 };
