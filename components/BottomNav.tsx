@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FolderKanban, User, Mail } from "lucide-react";
+import { Home, Music, FolderKanban, User, Mail } from "lucide-react";
 import clsx from "clsx";
 
 const navItems = [
   { label: "Home", href: "/", icon: Home },
+  { label: "Music", href: "/music-list", icon: Music },
   { label: "Projects", href: "/projects", icon: FolderKanban },
   { label: "About", href: "/about", icon: User },
   { label: "Contact", href: "/contact", icon: Mail },
