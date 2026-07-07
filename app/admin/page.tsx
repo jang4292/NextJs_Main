@@ -1,3 +1,10 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin Dashboard",
+  description: "관리자 대시보드 메인",
+};
+
 export default function AdminHome() {
   return (
     <div>

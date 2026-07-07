@@ -4,7 +4,8 @@
 *.test.ts
 *.md
 !REPORT.md
-docs/
+!docs/
+!docs/**
 scripts/
 
 # dependencies

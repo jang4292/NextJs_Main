@@ -1,3 +1,11 @@
+import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description: "프로젝트와 외부 링크 모음 페이지",
+};
+
 export default function Home() {
   return (
     <div className="flex flex-col justify-center items-center h-full">
@@ -8,7 +16,7 @@ export default function Home() {
 
         <ul className="grid gap-4">
           <li>
-            <a
+            <Link
               href="/DJ_Play_List"
               className="block p-4 rounded-lg border hover:shadow-md transition-shadow bg-white"
               aria-label="Open DJ Play List page"
@@ -20,7 +28,7 @@ export default function Home() {
                 </div>
                 <div className="text-sm text-blue-500">→</div>
               </div>
-            </a>
+            </Link>
           </li>
 
           <li>
@@ -78,7 +86,7 @@ export default function Home() {
           </li>
 
           <li>
-            <a
+            <Link
               href="/about"
               className="block p-4 rounded-lg border hover:shadow-md transition-shadow bg-white"
               aria-label="Open About page"
@@ -90,7 +98,7 @@ export default function Home() {
                 </div>
                 <div className="text-sm text-blue-500">→</div>
               </div>
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

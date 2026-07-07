@@ -1,3 +1,10 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin Users",
+  description: "관리자 사용자 관리 페이지",
+};
+
 export default function AdminHome() {
   return (
     <div>
