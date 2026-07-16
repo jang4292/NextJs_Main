@@ -8,16 +8,24 @@
     "dev:network": "next dev -H 0.0.0.0 -p 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.3",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "gsap": "^3.13.0",
+    "jose": "^6.2.3",
     "lucide-react": "^0.511.0",
-    "next": "15.5.18",
+    "next": "15.5.20",
     "nodemailer": "^9.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -25,19 +33,28 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^9.39.0",
     "eslint-config-next": "15.5.14",
+    "eslint-config-prettier": "^10.1.8",
     "postcss": "^8",
+    "prettier": "^3.9.5",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "shadcn-ui": "^0.9.5",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.10"
   },
   "overrides": {
     "flatted": "^3.4.2",
     "minimatch": "^10.2.4",
+    "next": {
+      "postcss": "8.5.19"
+    },
     "eslint-config-next": {
       "eslint-plugin-import": {
         "minimatch": "^3.1.5"

@@ -88,32 +88,32 @@
 
 아래 표는 요청된 항목 기준으로 실제 저장소 상태를 정리한 것이다.
 
-| 항목 | 현재 상태 | 판정 | 비고 |
-|---|---|---|---|
-| `pages/index.tsx` | 없음 | 확인 결과 없음 | 현재는 `app/page.tsx` 사용 |
-| `pages/[slug].tsx` | 없음 | 확인 결과 없음 | 현재는 `app/blog/[slug]/page.tsx` 사용 |
-| `pages/api/*` | 없음 | 확인 결과 없음 | 현재는 `app/api/send-email/route.ts` 사용 |
-| `pages/_app.tsx` | 없음 | 확인 결과 없음 | 현재는 `app/layout.tsx` 사용 |
-| `pages/_document.tsx` | 없음 | 확인 결과 없음 | App Router 기준 별도 관리 없음 |
-| `pages/404.tsx` | 없음 | 확인 결과 없음 | 현재 `app/not-found.tsx`도 없음 |
-| `pages/500.tsx` | 없음 | 확인 결과 없음 | 현재 `app/error.tsx`도 없음 |
-| `getStaticProps` | 없음 | 미사용 | App Router 직접 데이터 로딩으로 대체 |
-| `getStaticPaths` | 없음 | 미사용 | `generateStaticParams` 사용 |
-| `getServerSideProps` | 없음 | 미사용 | 현재 저장소에서 SSR 전용 API 미확인 |
-| `next/head` | 없음 | 미사용 | `metadata`, `generateMetadata` 사용 |
-| `next/router` | 없음 | 미사용 | `next/navigation` 사용 |
-| `next/link` | 있음 | 정상 사용 | App Router에서도 그대로 사용 가능 |
-| `next/image` | 있음 | 정상 사용 | App Router에서도 그대로 사용 가능 |
-| `public/` | 있음 | 유지 가능 | 정적 자산 유지 |
-| `styles/` | 있음 | 유지 가능 | `globals.css` 사용 |
-| `components/` | 있음 | 유지 가능 | 공통 UI/레이아웃 컴포넌트 |
-| `lib/` | 있음 | 유지 가능 | 유틸 함수 위치 |
-| `utils/` | 있음 | 유지 가능 | 보조 함수 위치 |
-| `hooks/` | 없음 | 확인 필요 아님 | 현재 저장소 기준 없음 |
-| `services/` | 없음 | 확인 필요 아님 | 현재 저장소 기준 없음 |
-| `middleware.ts` | 없음 | 확인 필요 아님 | 현재 저장소 기준 없음 |
-| `next.config.js` 또는 `next.config.mjs` | 없음 | 해당 없음 | `next.config.ts` 사용 |
-| `next.config.ts` | 있음 | 사용 중 | `reactStrictMode`, image domain 설정 |
+| 항목                                    | 현재 상태 | 판정           | 비고                                      |
+| --------------------------------------- | --------- | -------------- | ----------------------------------------- |
+| `pages/index.tsx`                       | 없음      | 확인 결과 없음 | 현재는 `app/page.tsx` 사용                |
+| `pages/[slug].tsx`                      | 없음      | 확인 결과 없음 | 현재는 `app/blog/[slug]/page.tsx` 사용    |
+| `pages/api/*`                           | 없음      | 확인 결과 없음 | 현재는 `app/api/send-email/route.ts` 사용 |
+| `pages/_app.tsx`                        | 없음      | 확인 결과 없음 | 현재는 `app/layout.tsx` 사용              |
+| `pages/_document.tsx`                   | 없음      | 확인 결과 없음 | App Router 기준 별도 관리 없음            |
+| `pages/404.tsx`                         | 없음      | 확인 결과 없음 | 현재 `app/not-found.tsx`도 없음           |
+| `pages/500.tsx`                         | 없음      | 확인 결과 없음 | 현재 `app/error.tsx`도 없음               |
+| `getStaticProps`                        | 없음      | 미사용         | App Router 직접 데이터 로딩으로 대체      |
+| `getStaticPaths`                        | 없음      | 미사용         | `generateStaticParams` 사용               |
+| `getServerSideProps`                    | 없음      | 미사용         | 현재 저장소에서 SSR 전용 API 미확인       |
+| `next/head`                             | 없음      | 미사용         | `metadata`, `generateMetadata` 사용       |
+| `next/router`                           | 없음      | 미사용         | `next/navigation` 사용                    |
+| `next/link`                             | 있음      | 정상 사용      | App Router에서도 그대로 사용 가능         |
+| `next/image`                            | 있음      | 정상 사용      | App Router에서도 그대로 사용 가능         |
+| `public/`                               | 있음      | 유지 가능      | 정적 자산 유지                            |
+| `styles/`                               | 있음      | 유지 가능      | `globals.css` 사용                        |
+| `components/`                           | 있음      | 유지 가능      | 공통 UI/레이아웃 컴포넌트                 |
+| `lib/`                                  | 있음      | 유지 가능      | 유틸 함수 위치                            |
+| `utils/`                                | 있음      | 유지 가능      | 보조 함수 위치                            |
+| `hooks/`                                | 없음      | 확인 필요 아님 | 현재 저장소 기준 없음                     |
+| `services/`                             | 없음      | 확인 필요 아님 | 현재 저장소 기준 없음                     |
+| `middleware.ts`                         | 없음      | 확인 필요 아님 | 현재 저장소 기준 없음                     |
+| `next.config.js` 또는 `next.config.mjs` | 없음      | 해당 없음      | `next.config.ts` 사용                     |
+| `next.config.ts`                        | 있음      | 사용 중        | `reactStrictMode`, image domain 설정      |
 
 ### 결론
 
@@ -125,26 +125,27 @@
 ## 4. App Router 전환 매핑표
 
 주의:
+
 - 아래 표의 `기존 구조`는 일반적인 Pages Router 기준 매핑이다.
 - 현재 저장소에 실존하는 파일이 아닌 경우, "가정" 또는 "확인 결과 없음" 전제로 읽어야 한다.
 
-| 기존 구조 | App Router 구조 | 전환 난이도 | 리스크 | 조치 방안 |
-|---|---|---|---|---|
-| `pages/index.tsx` | `app/page.tsx` | 낮음 | 낮음 | 현재 구조 유지 |
-| `pages/about.tsx` | `app/about/page.tsx` | 낮음 | 낮음 | 현재 구조 유지 |
-| `pages/projects.tsx` | `app/projects/page.tsx` | 낮음 | 낮음 | 현재 구조 유지 |
-| `pages/blog/index.tsx` | `app/blog/page.tsx` | 낮음 | 낮음 | 현재 구조 유지 |
-| `pages/blog/[slug].tsx` | `app/blog/[slug]/page.tsx` | 중간 | metadata, 404 처리 누락 가능 | `generateStaticParams`, `generateMetadata`, `notFound()` 유지 |
-| `pages/_app.tsx` | `app/layout.tsx` | 중간 | provider 범위가 과도해질 수 있음 | server layout 유지, client provider 범위 최소화 검토 |
-| `pages/_document.tsx` | `app/layout.tsx`의 `html`, `body` | 낮음 | 낮음 | 현재 구조 유지 |
-| `pages/404.tsx` | `app/not-found.tsx` | 낮음 | 404 UX 및 SEO 저하 | 파일 추가 권장 |
-| `pages/500.tsx` | `app/error.tsx` | 낮음 | 런타임 예외 대응 부족 | 파일 추가 권장 |
-| `pages/api/*` | `app/api/*/route.ts` | 낮음 | env, runtime, validation 누락 | 현재 `send-email`은 이미 완료 |
-| `next/head` | `metadata`, `generateMetadata` | 중간 | canonical, OG 누락 | 전역 metadata 보강 |
-| `next/router` | `next/navigation` | 낮음 | client 경계 과대화 | client-only 영역만 유지 |
-| `getStaticProps` | Server Component 데이터 로딩 / `revalidate` | 중간 | 내부 API self-fetch 오남용 | 정적 데이터는 직접 import 유지 |
-| `getStaticPaths` | `generateStaticParams` | 낮음 | slug 누락 | 블로그에 이미 적용됨 |
-| `getServerSideProps` | 동적 fetch / `no-store` / `cookies` / `headers` | 중간 | 캐시 정책 오판 | 현재 저장소에서는 미사용 |
+| 기존 구조               | App Router 구조                                 | 전환 난이도 | 리스크                           | 조치 방안                                                     |
+| ----------------------- | ----------------------------------------------- | ----------- | -------------------------------- | ------------------------------------------------------------- |
+| `pages/index.tsx`       | `app/page.tsx`                                  | 낮음        | 낮음                             | 현재 구조 유지                                                |
+| `pages/about.tsx`       | `app/about/page.tsx`                            | 낮음        | 낮음                             | 현재 구조 유지                                                |
+| `pages/projects.tsx`    | `app/projects/page.tsx`                         | 낮음        | 낮음                             | 현재 구조 유지                                                |
+| `pages/blog/index.tsx`  | `app/blog/page.tsx`                             | 낮음        | 낮음                             | 현재 구조 유지                                                |
+| `pages/blog/[slug].tsx` | `app/blog/[slug]/page.tsx`                      | 중간        | metadata, 404 처리 누락 가능     | `generateStaticParams`, `generateMetadata`, `notFound()` 유지 |
+| `pages/_app.tsx`        | `app/layout.tsx`                                | 중간        | provider 범위가 과도해질 수 있음 | server layout 유지, client provider 범위 최소화 검토          |
+| `pages/_document.tsx`   | `app/layout.tsx`의 `html`, `body`               | 낮음        | 낮음                             | 현재 구조 유지                                                |
+| `pages/404.tsx`         | `app/not-found.tsx`                             | 낮음        | 404 UX 및 SEO 저하               | 파일 추가 권장                                                |
+| `pages/500.tsx`         | `app/error.tsx`                                 | 낮음        | 런타임 예외 대응 부족            | 파일 추가 권장                                                |
+| `pages/api/*`           | `app/api/*/route.ts`                            | 낮음        | env, runtime, validation 누락    | 현재 `send-email`은 이미 완료                                 |
+| `next/head`             | `metadata`, `generateMetadata`                  | 중간        | canonical, OG 누락               | 전역 metadata 보강                                            |
+| `next/router`           | `next/navigation`                               | 낮음        | client 경계 과대화               | client-only 영역만 유지                                       |
+| `getStaticProps`        | Server Component 데이터 로딩 / `revalidate`     | 중간        | 내부 API self-fetch 오남용       | 정적 데이터는 직접 import 유지                                |
+| `getStaticPaths`        | `generateStaticParams`                          | 낮음        | slug 누락                        | 블로그에 이미 적용됨                                          |
+| `getServerSideProps`    | 동적 fetch / `no-store` / `cookies` / `headers` | 중간        | 캐시 정책 오판                   | 현재 저장소에서는 미사용                                      |
 
 ---
 
@@ -247,24 +248,24 @@ public/
 App Router에서는 기본적으로 Server Component 중심 설계를 유지하는 것이 좋다.
 현재 저장소를 기준으로 분류하면 다음과 같다.
 
-| 파일/기능 | Server 가능 여부 | Client 필요 여부 | 이유 | 권장 조치 |
-|---|---|---|---|---|
-| 루트 layout | 가능 | 불필요 | 레이아웃 자체는 서버 렌더링 가능 | 현재처럼 Server 유지 |
-| `NavBar` | 불가 | 필요 | `useAuth`, `usePathname`, `useRouter` 사용 | Client 유지 |
-| `BottomNav` | 불가 | 필요 | `usePathname` 사용 | Client 유지 |
-| `Footer` | 가능 | 불필요에 가까움 | 훅, 브라우저 API, 상태 없음 | Server Component 전환 검토 |
-| `Hero` | 불가 | 필요 | GSAP, `useEffect` 사용 | Client 유지 |
-| `BlogPage` | 가능 | 불필요 | 정적 데이터 렌더링 | Server 유지 |
-| `BlogPostPage` | 가능 | 불필요 | 정적 데이터 + metadata + 404 처리 | Server 유지 |
-| `ContactPage` | 부분 가능 | 필요 | form state, submit 상태, preview | Client 유지 |
-| `LoginPage` | 불가 | 필요 | localStorage auth, form state, router push | Client 유지 |
-| `SignupPage` | 불가 | 필요 | form state, auth interaction | Client 유지 |
-| `ProfilePage` | 불가 | 필요 | `useAuth`, `useEffect`, router push | Client 유지 |
-| `MusicListPage` | 불가 | 필요 | Audio API, `useRef`, 상태 관리 | Client 유지 |
-| `DJ_Play_List` | 불가 | 필요 | Audio API, 이벤트 핸들링 | Client 유지 |
-| `TaxPage` | 불가 | 필요 | form interaction, state, 계산 결과 표시 | Client 유지 |
-| `AdminLayout` | 부분 가능 | 현재는 필요 | 모바일 drawer 상태 사용 | Server shell + client menu 분리 검토 |
-| `About`, `Projects` | 가능 | 불필요 추정 | 정적 콘텐츠 성격 | Server 유지 권장 |
+| 파일/기능           | Server 가능 여부 | Client 필요 여부 | 이유                                       | 권장 조치                            |
+| ------------------- | ---------------- | ---------------- | ------------------------------------------ | ------------------------------------ |
+| 루트 layout         | 가능             | 불필요           | 레이아웃 자체는 서버 렌더링 가능           | 현재처럼 Server 유지                 |
+| `NavBar`            | 불가             | 필요             | `useAuth`, `usePathname`, `useRouter` 사용 | Client 유지                          |
+| `BottomNav`         | 불가             | 필요             | `usePathname` 사용                         | Client 유지                          |
+| `Footer`            | 가능             | 불필요에 가까움  | 훅, 브라우저 API, 상태 없음                | Server Component 전환 검토           |
+| `Hero`              | 불가             | 필요             | GSAP, `useEffect` 사용                     | Client 유지                          |
+| `BlogPage`          | 가능             | 불필요           | 정적 데이터 렌더링                         | Server 유지                          |
+| `BlogPostPage`      | 가능             | 불필요           | 정적 데이터 + metadata + 404 처리          | Server 유지                          |
+| `ContactPage`       | 부분 가능        | 필요             | form state, submit 상태, preview           | Client 유지                          |
+| `LoginPage`         | 불가             | 필요             | localStorage auth, form state, router push | Client 유지                          |
+| `SignupPage`        | 불가             | 필요             | form state, auth interaction               | Client 유지                          |
+| `ProfilePage`       | 불가             | 필요             | `useAuth`, `useEffect`, router push        | Client 유지                          |
+| `MusicListPage`     | 불가             | 필요             | Audio API, `useRef`, 상태 관리             | Client 유지                          |
+| `DJ_Play_List`      | 불가             | 필요             | Audio API, 이벤트 핸들링                   | Client 유지                          |
+| `TaxPage`           | 불가             | 필요             | form interaction, state, 계산 결과 표시    | Client 유지                          |
+| `AdminLayout`       | 부분 가능        | 현재는 필요      | 모바일 drawer 상태 사용                    | Server shell + client menu 분리 검토 |
+| `About`, `Projects` | 가능             | 불필요 추정      | 정적 콘텐츠 성격                           | Server 유지 권장                     |
 
 ### Client Component로 강제되는 주요 영역
 
@@ -285,14 +286,14 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 
 현재 프로젝트는 Pages Router의 `getStaticProps`/`getServerSideProps` 기반이 아니라, 정적 TypeScript 데이터 import + 일부 클라이언트 fetch 구조다.
 
-| 데이터 유형 | 기존 방식 | App Router 권장 방식 | cache/revalidate 전략 | 주의사항 |
-|---|---|---|---|---|
-| 블로그 목록 | `data/blogPosts.ts` 직접 import | Server Component에서 직접 import | 빌드 타임 정적 | CMS 도입 전까지 가장 안정적 |
-| 블로그 상세 | `getPostBySlug()` + `generateStaticParams` | 현재 방식 유지 | 정적 생성, 필요 시 `revalidate` 검토 | slug 누락 시 `notFound()` 유지 |
-| 음악 목록 | `data/musicData.ts`를 Client page에서 직접 사용 | 데이터는 Server에서 읽고 player만 Client로 분리 가능 | 정적 | 데이터가 커지면 bundle 증가 주의 |
-| 세금표 | 정적 config import | 현재 방식 유지 | 정적 | 계산식은 pure function 유지 |
-| 연락 메일 전송 | Client `fetch('/api/send-email')` | 현재 유지 또는 Server Action 검토 | no-store 성격 | 서버 검증과 abuse 방어 필요 |
-| 인증 상태 | localStorage | Client-only 유지 | 캐시 없음 | 서버 인증으로 전환 전까지 Client 고정 |
+| 데이터 유형    | 기존 방식                                       | App Router 권장 방식                                 | cache/revalidate 전략                | 주의사항                              |
+| -------------- | ----------------------------------------------- | ---------------------------------------------------- | ------------------------------------ | ------------------------------------- |
+| 블로그 목록    | `data/blogPosts.ts` 직접 import                 | Server Component에서 직접 import                     | 빌드 타임 정적                       | CMS 도입 전까지 가장 안정적           |
+| 블로그 상세    | `getPostBySlug()` + `generateStaticParams`      | 현재 방식 유지                                       | 정적 생성, 필요 시 `revalidate` 검토 | slug 누락 시 `notFound()` 유지        |
+| 음악 목록      | `data/musicData.ts`를 Client page에서 직접 사용 | 데이터는 Server에서 읽고 player만 Client로 분리 가능 | 정적                                 | 데이터가 커지면 bundle 증가 주의      |
+| 세금표         | 정적 config import                              | 현재 방식 유지                                       | 정적                                 | 계산식은 pure function 유지           |
+| 연락 메일 전송 | Client `fetch('/api/send-email')`               | 현재 유지 또는 Server Action 검토                    | no-store 성격                        | 서버 검증과 abuse 방어 필요           |
+| 인증 상태      | localStorage                                    | Client-only 유지                                     | 캐시 없음                            | 서버 인증으로 전환 전까지 Client 고정 |
 
 ### 요청 항목별 판단
 
@@ -322,8 +323,8 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 
 현재 저장소에서 확인된 API는 1개다.
 
-| 기존 API | 역할 | App Router 전환 여부 | 대안 | 리스크 |
-|---|---|---|---|---|
+| 기존 API          | 역할              | App Router 전환 여부                           | 대안                                | 리스크                                     |
+| ----------------- | ----------------- | ---------------------------------------------- | ----------------------------------- | ------------------------------------------ |
 | `/api/send-email` | 연락 폼 메일 발송 | 이미 `app/api/send-email/route.ts`로 전환 완료 | Server Action 또는 외부 메일 서비스 | env 누락, 스팸, rate limit 부재, SMTP 장애 |
 
 ### 세부 판단
@@ -358,20 +359,20 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 현재 SEO는 부분 적용 상태다.
 루트 metadata와 블로그 metadata는 있으나, 운영 수준의 SEO 세트는 아직 부족하다.
 
-| SEO 항목 | 기존 방식 | App Router 권장 방식 | 우선순위 | 조치 |
-|---|---|---|---|---|
-| title | 일부 있음 | `metadata` 유지 | P1 | 주요 페이지 기본값 정리 |
-| description | 일부 있음 | `metadata` 유지 | P1 | 페이지별 설명 보강 |
-| Open Graph | 확인 결과 없음 | `openGraph` 추가 | P1 | 기본 OG 이미지 포함 |
-| Twitter Card | 확인 결과 없음 | `twitter` 추가 | P1 | OG와 함께 설정 |
-| canonical URL | 확인 결과 없음 | `metadataBase` + canonical 설정 | P1 | 블로그 상세에 특히 중요 |
-| robots | 확인 결과 없음 | `app/robots.ts` 추가 | P1 | preview/prod 정책 분리 검토 |
-| sitemap | 확인 결과 없음 | `app/sitemap.ts` 추가 | P1 | 블로그 slug 포함 |
-| favicon | 있음 | 유지 | P2 | 필요 시 아이콘 세트 확장 |
-| viewport | 명시적 설정 미확인 | 필요 시 `viewport` export | P2 | 기본값으로 충분할 가능성 높음 |
-| 페이지별 동적 metadata | 블로그 상세만 있음 | `generateMetadata` 유지 | P1 | canonical, OG 확장 |
-| 블로그/콘텐츠 상세 metadata | 부분 적용 | title/description/OG 확장 | P1 | 검색/공유 품질 향상 |
-| JSON-LD 구조화 데이터 | 확인 결과 없음 | Article schema 검토 | P2 | 블로그 비중이 커질 때 유효 |
+| SEO 항목                    | 기존 방식          | App Router 권장 방식            | 우선순위 | 조치                          |
+| --------------------------- | ------------------ | ------------------------------- | -------- | ----------------------------- |
+| title                       | 일부 있음          | `metadata` 유지                 | P1       | 주요 페이지 기본값 정리       |
+| description                 | 일부 있음          | `metadata` 유지                 | P1       | 페이지별 설명 보강            |
+| Open Graph                  | 확인 결과 없음     | `openGraph` 추가                | P1       | 기본 OG 이미지 포함           |
+| Twitter Card                | 확인 결과 없음     | `twitter` 추가                  | P1       | OG와 함께 설정                |
+| canonical URL               | 확인 결과 없음     | `metadataBase` + canonical 설정 | P1       | 블로그 상세에 특히 중요       |
+| robots                      | 확인 결과 없음     | `app/robots.ts` 추가            | P1       | preview/prod 정책 분리 검토   |
+| sitemap                     | 확인 결과 없음     | `app/sitemap.ts` 추가           | P1       | 블로그 slug 포함              |
+| favicon                     | 있음               | 유지                            | P2       | 필요 시 아이콘 세트 확장      |
+| viewport                    | 명시적 설정 미확인 | 필요 시 `viewport` export       | P2       | 기본값으로 충분할 가능성 높음 |
+| 페이지별 동적 metadata      | 블로그 상세만 있음 | `generateMetadata` 유지         | P1       | canonical, OG 확장            |
+| 블로그/콘텐츠 상세 metadata | 부분 적용          | title/description/OG 확장       | P1       | 검색/공유 품질 향상           |
+| JSON-LD 구조화 데이터       | 확인 결과 없음     | Article schema 검토             | P2       | 블로그 비중이 커질 때 유효    |
 
 ### 현재 누락된 App Router 운영 파일
 
@@ -388,6 +389,7 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 ## 10. Vercel 배포 영향
 
 가정:
+
 - Production Branch는 `main`일 가능성이 높다.
 - 실제 Vercel 프로젝트 설정은 본 저장소만으로는 확정할 수 없다.
 
@@ -440,18 +442,18 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 
 현재 Main 브랜치만 운영 중이라는 가정에서, 직접 수정은 지양해야 한다.
 
-| 전략 항목 | 권장안 | 이유 | 리스크 | 실행 방법 |
-|---|---|---|---|---|
-| Main 직접 수정 위험도 | 높음 | 운영 브랜치일 가능성이 높음 | 실수 즉시 배포 영향 | Main 직접 수정 금지 수준으로 운영 |
-| `migration/app-router` 브랜치 생성 | 장기 구조 작업에는 권장 | 안정화 작업 묶음 관리에 유리 | 브랜치 장수화 | `migration/app-router-stabilization` 권장 |
-| 기능 단위 브랜치 분리 | 권장 | 작은 단위 검증 가능 | 병합 충돌 | `feat/seo-metadata`, `feat/error-boundaries` 등으로 분리 |
-| Vercel Preview Deployment 활용 | 필수 | URL, metadata, UI, API 검증에 직접적 | 미사용 시 prod 위험 | 모든 PR에서 preview 확인 |
-| 기존 운영 URL 보호 전략 | 필수 | 공개 URL이 깨지면 SEO/사용자 영향 큼 | 404, 링크 손실 | URL 목록 동결 문서화 |
-| App Router 전환 중 Pages Router 병행 가능 여부 | 기술적으로는 가능 | Next.js는 병행 가능 | 경로 충돌 | 현재 저장소에는 불필요 |
-| 전체 전환 vs 점진 전환 판단 | 점진 전환 | 이미 App Router 상태 | 과도한 리팩터링 위험 | 작은 PR로 진행 |
-| 롤백 전략 | PR revert + Vercel rollback | 가장 빠르고 단순 | 준비 없으면 복구 지연 | 사전 롤백 절차 문서화 |
-| PR 리뷰 체크리스트 | 필요 | 누락 방지 | 검증 누락 시 운영 영향 | 템플릿화 권장 |
-| 배포 전 테스트 항목 | 필요 | 실제 영향 지점이 명확 | 미검증 배포 | route smoke + metadata + API 테스트 |
+| 전략 항목                                      | 권장안                      | 이유                                 | 리스크                 | 실행 방법                                                |
+| ---------------------------------------------- | --------------------------- | ------------------------------------ | ---------------------- | -------------------------------------------------------- |
+| Main 직접 수정 위험도                          | 높음                        | 운영 브랜치일 가능성이 높음          | 실수 즉시 배포 영향    | Main 직접 수정 금지 수준으로 운영                        |
+| `migration/app-router` 브랜치 생성             | 장기 구조 작업에는 권장     | 안정화 작업 묶음 관리에 유리         | 브랜치 장수화          | `migration/app-router-stabilization` 권장                |
+| 기능 단위 브랜치 분리                          | 권장                        | 작은 단위 검증 가능                  | 병합 충돌              | `feat/seo-metadata`, `feat/error-boundaries` 등으로 분리 |
+| Vercel Preview Deployment 활용                 | 필수                        | URL, metadata, UI, API 검증에 직접적 | 미사용 시 prod 위험    | 모든 PR에서 preview 확인                                 |
+| 기존 운영 URL 보호 전략                        | 필수                        | 공개 URL이 깨지면 SEO/사용자 영향 큼 | 404, 링크 손실         | URL 목록 동결 문서화                                     |
+| App Router 전환 중 Pages Router 병행 가능 여부 | 기술적으로는 가능           | Next.js는 병행 가능                  | 경로 충돌              | 현재 저장소에는 불필요                                   |
+| 전체 전환 vs 점진 전환 판단                    | 점진 전환                   | 이미 App Router 상태                 | 과도한 리팩터링 위험   | 작은 PR로 진행                                           |
+| 롤백 전략                                      | PR revert + Vercel rollback | 가장 빠르고 단순                     | 준비 없으면 복구 지연  | 사전 롤백 절차 문서화                                    |
+| PR 리뷰 체크리스트                             | 필요                        | 누락 방지                            | 검증 누락 시 운영 영향 | 템플릿화 권장                                            |
+| 배포 전 테스트 항목                            | 필요                        | 실제 영향 지점이 명확                | 미검증 배포            | route smoke + metadata + API 테스트                      |
 
 ### 실무 권장안
 
@@ -462,20 +464,20 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 
 ## 12. P0 / P1 / P2 우선순위
 
-| 우선순위 | 항목 | 이유 | 예상 작업 | 검증 방법 |
-|---|---|---|---|---|
-| P0 | Main 직접 수정 중단 | 운영 리스크 큼 | 브랜치/PR 정책 수립 | Preview-only 검증 |
-| P0 | 운영 URL 동결 및 redirect 정책 수립 | URL 깨지면 즉시 영향 | 라우트 목록 문서화 | 주요 경로 수동 점검 |
-| P0 | Vercel 환경 변수 검증 | 메일 API 장애 가능 | env 점검 | Preview/Prod 메일 테스트 |
-| P0 | 실제 legacy Pages 브랜치 존재 여부 확인 | 전제 오판 방지 | 브랜치/이전 배포 조사 | 브랜치 비교 |
-| P1 | `not-found`, `error`, `loading` 추가 | App Router 운영 품질 향상 | 파일 추가 | 404/에러/로딩 검증 |
-| P1 | metadata 확장 | SEO 영향 큼 | OG, Twitter, canonical, metadataBase | page source 검토 |
-| P1 | `robots.ts`, `sitemap.ts` 추가 | 검색엔진 운영 기본 | 파일 추가 | 실제 URL 확인 |
-| P1 | Client boundary 축소 | 성능/유지보수 개선 | Footer server화, admin layout 분리 | hydration 확인 |
-| P1 | `/DJ_Play_List` URL 정책 확정 | SEO/일관성 문제 | 유지 또는 redirect 포함 변경 | redirect 테스트 |
-| P2 | feature 구조 정리 | 유지보수성 향상 | `features/*` 재배치 | 코드 리뷰 |
-| P2 | 블로그 콘텐츠 관리 방식 개선 | 장기 확장성 | MDX/CMS 검토 | 콘텐츠 추가 테스트 |
-| P2 | localStorage auth 재검토 | 보안/확장성 한계 | Auth.js 또는 외부 백엔드 검토 | 인증 플로우 테스트 |
+| 우선순위 | 항목                                    | 이유                      | 예상 작업                            | 검증 방법                |
+| -------- | --------------------------------------- | ------------------------- | ------------------------------------ | ------------------------ |
+| P0       | Main 직접 수정 중단                     | 운영 리스크 큼            | 브랜치/PR 정책 수립                  | Preview-only 검증        |
+| P0       | 운영 URL 동결 및 redirect 정책 수립     | URL 깨지면 즉시 영향      | 라우트 목록 문서화                   | 주요 경로 수동 점검      |
+| P0       | Vercel 환경 변수 검증                   | 메일 API 장애 가능        | env 점검                             | Preview/Prod 메일 테스트 |
+| P0       | 실제 legacy Pages 브랜치 존재 여부 확인 | 전제 오판 방지            | 브랜치/이전 배포 조사                | 브랜치 비교              |
+| P1       | `not-found`, `error`, `loading` 추가    | App Router 운영 품질 향상 | 파일 추가                            | 404/에러/로딩 검증       |
+| P1       | metadata 확장                           | SEO 영향 큼               | OG, Twitter, canonical, metadataBase | page source 검토         |
+| P1       | `robots.ts`, `sitemap.ts` 추가          | 검색엔진 운영 기본        | 파일 추가                            | 실제 URL 확인            |
+| P1       | Client boundary 축소                    | 성능/유지보수 개선        | Footer server화, admin layout 분리   | hydration 확인           |
+| P1       | `/DJ_Play_List` URL 정책 확정           | SEO/일관성 문제           | 유지 또는 redirect 포함 변경         | redirect 테스트          |
+| P2       | feature 구조 정리                       | 유지보수성 향상           | `features/*` 재배치                  | 코드 리뷰                |
+| P2       | 블로그 콘텐츠 관리 방식 개선            | 장기 확장성               | MDX/CMS 검토                         | 콘텐츠 추가 테스트       |
+| P2       | localStorage auth 재검토                | 보안/확장성 한계          | Auth.js 또는 외부 백엔드 검토        | 인증 플로우 테스트       |
 
 ---
 
@@ -495,10 +497,12 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 ### Phase 1. App Router 기반 최소 구조 생성
 
 현재 이미 존재:
+
 - `app/layout.tsx`
 - `app/page.tsx`
 
 추가 권장:
+
 - `app/not-found.tsx`
 - `app/loading.tsx`
 - `app/error.tsx`
@@ -511,6 +515,7 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 현재 저장소 기준 대부분 이미 이전 완료 상태다.
 
 대상:
+
 - 홈
 - 소개
 - 포트폴리오
@@ -518,6 +523,7 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 - 기타 정적 페이지
 
 실행 포인트:
+
 - 가능한 Server Component 유지
 - 페이지별 metadata 보강
 - 불필요한 Client Component 축소
@@ -527,6 +533,7 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 현재 `/blog/[slug]`는 이미 App Router 방식이다.
 
 실행 포인트:
+
 - `[slug]` 상세 페이지 metadata 확장
 - `generateStaticParams` 유지
 - `loading.tsx` 필요 여부 판단
@@ -537,6 +544,7 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 현재 `pages/api`는 없고 Route Handler가 이미 사용 중이다.
 
 실행 포인트:
+
 - `/api/send-email` 검증 강화
 - env 문서화
 - 인증/쿠키/세션 처리 요구사항은 확인 필요
@@ -544,6 +552,7 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 ### Phase 5. SEO / 성능 / 배포 검증
 
 검증 대상:
+
 - metadata
 - sitemap
 - robots
@@ -555,6 +564,7 @@ App Router에서는 기본적으로 Server Component 중심 설계를 유지하�
 ### Phase 6. Pages Router 제거 여부 판단
 
 현재 저장소 기준:
+
 - Pages Router 잔존 가능 여부: 없음
 - 제거 시점: 해당 없음
 - 롤백 가능성: PR revert + Vercel rollback으로 충분

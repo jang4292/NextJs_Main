@@ -240,6 +240,6 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
 
 export function getSortedPosts(): BlogPost[] {
   return [...BLOG_POSTS].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
 }

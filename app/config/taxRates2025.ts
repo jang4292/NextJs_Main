@@ -9,7 +9,7 @@ export const TaxRates2025 = {
     { min: 46000000, max: 88000000, rate: 0.24, deduction: 5220000 },
     { min: 88000000, max: 150000000, rate: 0.35, deduction: 14900000 },
     { min: 150000000, max: 300000000, rate: 0.38, deduction: 19400000 },
-    { min: 300000000, max: 500000000, rate: 0.40, deduction: 25400000 },
+    { min: 300000000, max: 500000000, rate: 0.4, deduction: 25400000 },
     { min: 500000000, max: Infinity, rate: 0.45, deduction: 35400000 },
   ],
   // 지방소득세율: 소득세의 10%

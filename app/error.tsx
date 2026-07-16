@@ -15,7 +15,9 @@ export default function GlobalError({
 
   return (
     <div className="mx-auto flex min-h-[50vh] max-w-2xl flex-col items-center justify-center px-6 text-center">
-      <h1 className="mb-3 text-2xl font-bold text-gray-900">오류가 발생했습니다</h1>
+      <h1 className="mb-3 text-2xl font-bold text-gray-900">
+        오류가 발생했습니다
+      </h1>
       <p className="mb-6 text-sm text-gray-600">
         일시적인 문제일 수 있습니다. 다시 시도해 주세요.
       </p>
