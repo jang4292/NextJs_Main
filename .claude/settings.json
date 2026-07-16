@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(npm run *)",
+      "Bash(npx tsc *)",
+      "Bash(disown)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{redirect_url}\\\\n\" -D - http://localhost:3000/admin)",
+      "Bash(rm -f /tmp/cookies.txt)",
+      "Bash(curl -s -c /tmp/cookies.txt -X POST http://localhost:3000/api/auth/login -H \"Content-Type: application/json\" -d '{\"username\":\"admin\",\"password\":\"wrong\"}' -w \"\\\\nHTTP %{http_code}\\\\n\")",
+      "Bash(curl -s -c /tmp/cookies.txt -X POST http://localhost:3000/api/auth/login -H \"Content-Type: application/json\" -d '{\"username\":\"admin\",\"password\":\"correct-horse-battery-staple\"}' -w \"\\\\nHTTP %{http_code}\\\\n\")",
+      "Bash(curl -s -b /tmp/cookies.txt -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/admin)",
+      "Bash(curl -s -b /tmp/cookies.txt -c /tmp/cookies.txt -X POST http://localhost:3000/api/auth/logout -w \"\\\\nHTTP %{http_code}\\\\n\")",
+      "Bash(curl -s http://localhost:3000/api/debug-env)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/signup)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/profile)",
+      "Bash(curl -s -X POST http://localhost:3000/api/send-email -H \"Content-Type: application/json\" -d '{\"title\":\"hi\",\"sender\":\"not-an-email\",\"content\":\"test\"}' -w \"\\\\nHTTP %{http_code}\\\\n\")",
+      "Bash(curl -s -X POST http://localhost:3000/api/send-email -H \"Content-Type: application/json\" -d '{\"title\":\"hi\\\\r\\\\nBcc: evil@example.com\",\"sender\":\"a@b.com\",\"content\":\"<script>alert\\(1\\)</script>\"}' -w \"\\\\nHTTP %{http_code}\\\\n\")",
+      "Bash(rm -f /Users/yunhwanjang/Developer/GitHub/NextJs_Main/.env.local /tmp/cookies.txt /tmp/nextdev.log)",
+      "Bash(python3 -)",
+      "Bash(npm view *)",
+      "Bash(npx prettier *)",
+      "Bash(git check-ignore *)",
+      "Bash(echo \"started with pid $!\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(curl -sI http://localhost:3001)",
+      "Bash(kill 6762)",
+      "Bash(npx husky *)",
+      "Bash(grep -n '\"prepare\"' /Users/yunhwanjang/Developer/GitHub/NextJs_Main/package.json; rm -f /Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky/pre-commit)",
+      "Bash(chmod +x /Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky/pre-push)",
+      "Bash(npm ci *)",
+      "Bash(git config *)",
+      "Bash(bash .husky/pre-push)"
+    ],
+    "additionalDirectories": [
+      "/Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky"
+    ]
+  }
+}

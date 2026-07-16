@@ -6,26 +6,19 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="hidden md:block bg-gray-100 text-gray-700 border-t">
-      <div className="max-w-6xl mx-auto px-4 py-4 grid grid-cols-[1fr_2fr] gap-6 text-sm">
+    <footer className="hidden border-t bg-gray-100 text-gray-700 md:block">
+      <div className="mx-auto grid max-w-6xl grid-cols-[1fr_2fr] gap-6 px-4 py-4 text-sm">
         <div>
-          <p className="font-bold text-2xl">제이의 포트폴리오</p>
+          <p className="text-2xl font-bold">제이의 포트폴리오</p>
 
-          {/* 
-          방문자 수 
-          실제 사용시 API 연동 또는 외부 방문자 카운터 삽입 필요
-          */}
-          <div className="mt-4 text-left space-y-2">
-            <div className="space-y-1 text-gray-600">
-              <p>
-                <span className="font-semibold"> Today : </span>
-                <span className="font-medium">0</span>
-              </p>
-              <p>
-                <span className="font-semibold">Total : </span>
-                <span className="font-medium">0</span>
-              </p>
-            </div>
+          <div className="mt-4 text-left">
+            {/* eslint-disable-next-line @next/next/no-img-element -- external live badge, must not go through next/image optimization/caching */}
+            <img
+              src="https://visitor-badge.laobi.icu/badge?page_id=jang4292.NextJs_Main&left_text=Visitors"
+              alt="방문자 수"
+              height={20}
+              referrerPolicy="no-referrer"
+            />
           </div>
           <p className="mt-4 text-gray-600">
             &copy; {new Date().getFullYear()} 제이. All rights reserved.
@@ -33,7 +26,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col items-center space-y-4">
-          <div className="flex flex-wrap justify-center gap-2 mt-2">
+          <div className="mt-2 flex flex-wrap justify-center gap-2">
             <Image
               src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=for-the-badge&logo=JavaScript&logoColor=white"
               alt="JavaScript"
@@ -78,7 +71,11 @@ export default function Footer() {
             />
           </div>
           <div className="flex space-x-4">
-            <Link href="https://github.com/jang4292" target="_blank">
+            <Link
+              href="https://github.com/jang4292"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Image
                 src="/icons/GitHub.svg"
                 alt="GitHub"
@@ -89,6 +86,7 @@ export default function Footer() {
             <Link
               href="https://www.youtube.com/@yunhwanjang8974"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <Image
                 src="/icons/YouTube.svg"
@@ -100,6 +98,7 @@ export default function Footer() {
             <Link
               href="https://www.linkedin.com/in/yunhwan-jang-7167b3119/"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <Image
                 src="/icons/LinkedIn.svg"
@@ -108,7 +107,11 @@ export default function Footer() {
                 height={24}
               />
             </Link>
-            <Link href="https://blog.naver.com/janghyunki17" target="_blank">
+            <Link
+              href="https://blog.naver.com/janghyunki17"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Image
                 src="/icons/NaverBlog.svg"
                 alt="LinkedIn"
@@ -117,7 +120,7 @@ export default function Footer() {
               />
             </Link>
             <Link href="/contact" aria-label="Contact">
-              <ExternalLink className="w-6 h-6 hover:text-blue-600 transition-colors" />
+              <ExternalLink className="h-6 w-6 transition-colors hover:text-blue-600" />
             </Link>
           </div>
         </div>

@@ -1,7 +1,7 @@
 # NextJs_Main 저장소 분석 보고서
 
-> 작성일: 2026-03-20  
-> 저장소: [jang4292/NextJs_Main](https://github.com/jang4292/NextJs_Main)  
+> 작성일: 2026-07-16
+> 저장소: [jang4292/NextJs_Main](https://github.com/jang4292/NextJs_Main)
 > 목적: 저장소 전체 현황 조사 및 분석
 
 ---
@@ -13,7 +13,7 @@
 3. [기술 스택](#3-기술-스택)
 4. [주요 기능 분석](#4-주요-기능-분석)
 5. [컴포넌트 구조](#5-컴포넌트-구조)
-6. [세금 계산 로직](#6-세금-계산-로직)
+6. [인증 및 미들웨어](#6-인증-및-미들웨어)
 7. [API 및 서버 로직](#7-api-및-서버-로직)
 8. [설정 파일 분석](#8-설정-파일-분석)
 9. [개선 가능 영역 및 알려진 이슈](#9-개선-가능-영역-및-알려진-이슈)
@@ -25,18 +25,20 @@
 
 ## 1. 프로젝트 개요
 
-이 프로젝트는 **개발자 YH Jang(장윤환)의 개인 포트폴리오 웹사이트**입니다. 사이트 제목은 **"YH Jang | HOME"** 이며, 경력 소개, 프로젝트 링크, 이메일 연락 기능, 세금 계산기, DJ 재생 목록 플레이어 등 다양한 기능을 포함하고 있습니다.
+이 프로젝트는 **개발자 YH Jang(장윤환)의 개인 포트폴리오 웹사이트**입니다. 경력 소개, 프로젝트 링크,
+이메일 연락 기능, 세금 계산기, DJ 재생 목록 플레이어, 날짜 기반 음원 리스트, 개발 블로그, JWT 세션
+기반 관리자 대시보드 등 다양한 기능을 포함하고 있습니다.
 
-| 항목 | 내용 |
-|------|------|
-| 프레임워크 | Next.js 15.5.14 (App Router) |
-| 언어 | TypeScript 5 |
-| 런타임 | Node.js |
-| 배포 대상 | Vercel (권장) |
-| 사이트 타이틀 | YH Jang \| HOME |
-| 총 페이지 수 | 11개 |
-| 총 컴포넌트 수 | 6개 |
-| API 라우트 수 | 1개 |
+| 항목             | 내용                                                                                                                                                          |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 프레임워크       | Next.js 15.5.18 (App Router)                                                                                                                                  |
+| 언어             | TypeScript 5                                                                                                                                                  |
+| 런타임           | Node.js                                                                                                                                                       |
+| 배포 대상        | Vercel (권장)                                                                                                                                                 |
+| 사이트 타이틀    | YH Jang                                                                                                                                                       |
+| 총 페이지 수     | 12개 (`/`, `/about`, `/music-list`, `/blog`, `/blog/[slug]`, `/DJ_Play_List`, `/tax-calculator`, `/contact`, `/projects`, `/login`, `/admin`, `/admin/users`) |
+| 총 API 라우트 수 | 3개 (`/api/auth/login`, `/api/auth/logout`, `/api/send-email`)                                                                                                |
+| 테스트           | Vitest, 유닛 테스트 5개 파일                                                                                                                                  |
 
 ---
 
@@ -44,72 +46,111 @@
 
 ```
 NextJs_Main/
-├── .eslintrc.json          # ESLint 설정
-├── .gitignore              # Git 무시 파일 목록
-├── REPORT.md               # 저장소 분석 보고서 (본 파일)
-├── README.md               # Next.js 기본 시작 안내 (gitignore 처리됨)
-├── components.json         # shadcn/ui CLI 설정
-├── next.config.ts          # Next.js 설정
-├── nodemailer.d.ts         # Nodemailer 타입 정의 (커스텀)
-├── package.json            # 의존성 및 스크립트
-├── package-lock.json       # 의존성 잠금 파일
-├── postcss.config.mjs      # PostCSS 설정
-├── tailwind.config.ts      # Tailwind CSS 설정
-├── tsconfig.json           # TypeScript 컴파일러 설정
+├── .eslintrc.json           # ESLint 설정 (+ eslint-config-prettier)
+├── .prettierrc.json         # Prettier 설정 (+ prettier-plugin-tailwindcss)
+├── .prettierignore
+├── .gitignore
+├── .env.example              # 환경 변수 예시
+├── REPORT.md                 # 저장소 분석 보고서 (본 파일)
+├── README.md
+├── components.json           # shadcn/ui CLI 설정
+├── middleware.ts              # /admin/** 세션 보호
+├── next.config.ts             # Next.js 설정
+├── nodemailer.d.ts            # Nodemailer 타입 정의 (커스텀)
+├── package.json               # 의존성 및 스크립트
+├── package-lock.json
+├── postcss.config.mjs
+├── tailwind.config.ts
+├── tsconfig.json
+├── vitest.config.ts
 │
-├── app/                    # Next.js App Router 루트
-│   ├── layout.tsx          # 루트 레이아웃 (NavBar, Footer, BottomNav)
-│   ├── page.tsx            # 홈 페이지 (Hero 컴포넌트)
+├── app/                       # Next.js App Router 루트
+│   ├── layout.tsx             # 루트 레이아웃 (NavBar, Footer, BottomNav)
+│   ├── page.tsx                # 홈 페이지 (Hero 컴포넌트)
+│   ├── error.tsx, global-error.tsx, loading.tsx, not-found.tsx
 │   ├── about/
-│   │   └── page.tsx        # About 페이지 (기본 템플릿)
+│   │   └── page.tsx            # About 페이지 (경력/기술스택/연락 링크)
 │   ├── projects/
-│   │   └── page.tsx        # 프로젝트 & 링크 목록 페이지
+│   │   └── page.tsx            # 프로젝트 & 링크 목록 페이지
 │   ├── contact/
-│   │   └── page.tsx        # 이메일 연락 폼 페이지
+│   │   ├── page.tsx            # 서버 컴포넌트 (metadata)
+│   │   └── ContactClient.tsx   # 이메일 연락 폼 (client)
 │   ├── login/
-│   │   └── page.tsx        # 로그인 페이지 (더미 인증)
+│   │   ├── page.tsx            # 서버 컴포넌트 (metadata)
+│   │   └── LoginClient.tsx      # 로그인 폼 (client)
 │   ├── tax-calculator/
-│   │   └── page.tsx        # 2025년 한국 세금 계산기
+│   │   ├── page.tsx
+│   │   └── TaxCalculatorClient.tsx  # 2025년 한국 세금 계산기
 │   ├── DJ_Play_List/
-│   │   └── page.tsx        # DJ 재생 목록 오디오 플레이어
+│   │   ├── page.tsx
+│   │   └── DJPlayListClient.tsx     # DJ 재생 목록 오디오 플레이어
+│   ├── music-list/
+│   │   ├── page.tsx
+│   │   └── MusicListClient.tsx      # 날짜 기반 음원 리스트
+│   ├── blog/
+│   │   ├── page.tsx             # 블로그 목록
+│   │   └── [slug]/page.tsx       # 블로그 상세 (SSG)
 │   ├── admin/
-│   │   ├── layout.tsx      # 관리자 레이아웃 (사이드바)
-│   │   ├── page.tsx        # 관리자 대시보드 홈 (플레이스홀더)
+│   │   ├── layout.tsx            # 관리자 레이아웃 (metadata + 사이드바 래핑)
+│   │   ├── AdminLayoutClient.tsx # 사이드바 / 모바일 Sheet / 로그아웃 (client)
+│   │   ├── page.tsx              # 관리자 대시보드 홈
+│   │   ├── error.tsx, loading.tsx
 │   │   └── users/
-│   │       └── page.tsx    # 관리자 사용자 관리 (플레이스홀더)
+│   │       └── page.tsx          # 관리자 사용자 관리
 │   ├── api/
-│   │   └── send-email/
-│   │       └── route.ts    # POST 이메일 발송 API
+│   │   ├── auth/login/route.ts   # POST 로그인 (세션 발급)
+│   │   ├── auth/logout/route.ts  # POST 로그아웃 (세션 제거)
+│   │   └── send-email/route.ts   # POST 이메일 발송 API
 │   ├── config/
-│   │   └── taxRates2025.ts # 2025 한국 세율 데이터
+│   │   └── taxRates2025.ts       # 2025 한국 세율 데이터
 │   ├── lib/
-│   │   └── taxCalculator.ts # 세금 계산 비즈니스 로직
-│   └── fonts/              # Geist 폰트 파일 (WOFF)
+│   │   ├── taxCalculator.ts      # 세금 계산 비즈니스 로직
+│   │   └── taxCalculator.test.ts
+│   └── fonts/                    # Geist 폰트 파일 (WOFF)
 │
-├── components/             # React 컴포넌트
-│   ├── NavBar.tsx          # 상단 네비게이션 (데스크톱 전용)
-│   ├── BottomNav.tsx       # 하단 네비게이션 (모바일 전용)
-│   ├── Hero.tsx            # 홈 페이지 메인 히어로 섹션
-│   ├── Footer.tsx          # 하단 푸터
+├── components/                # React 컴포넌트
+│   ├── NavBar.tsx              # 상단 네비게이션 (데스크톱 전용)
+│   ├── BottomNav.tsx            # 하단 네비게이션 (모바일 전용)
+│   ├── Hero.tsx                 # 홈 페이지 메인 히어로 섹션
+│   ├── Footer.tsx                # 하단 푸터 (방문자 뱃지 포함)
 │   └── ui/
-│       ├── button.tsx      # shadcn/ui Button 컴포넌트
-│       └── sheet.tsx       # shadcn/ui Sheet 컴포넌트
+│       ├── button.tsx           # shadcn/ui Button 컴포넌트
+│       └── sheet.tsx             # shadcn/ui Sheet 컴포넌트
 │
-├── lib/
-│   └── utils.ts            # cn() 유틸리티 함수 (Tailwind 클래스 병합)
+├── lib/                        # 서버/공용 유틸리티
+│   ├── auth.ts, auth.test.ts     # JWT 세션 생성/검증 (jose)
+│   ├── credentials.ts, credentials.test.ts  # bcrypt 자격 증명 검증
+│   ├── email.ts, email.test.ts   # 문의 메일 HTML 생성 + 새니타이즈
+│   ├── audio.ts                  # 오디오 베이스 URL 해석
+│   └── utils.ts                  # cn() 유틸리티 함수
+│
+├── data/
+│   ├── musicData.ts              # 날짜별 음원 리스트 데이터
+│   └── blogPosts.ts               # 블로그 게시글 데이터
+│
+├── types/
+│   └── track.ts                  # Track / PlaylistTrack 타입
 │
 ├── utils/
-│   └── Utils.ts            # 배열 셔플 유틸리티 함수
+│   ├── Utils.ts                   # 배열 셔플 유틸리티
+│   └── Utils.test.ts
 │
-├── public/                 # 정적 자산
-│   ├── favicon.ico
-│   ├── file.svg, globe.svg, next.svg, vercel.svg, window.svg
+├── hooks/                        # (현재 비어 있음, .gitkeep)
+│
+├── public/                       # 정적 자산
 │   └── icons/
 │       ├── GitHub.svg, LinkedIn.svg, YouTube.svg
 │       ├── NaverBlog.svg, Mail.svg, Link.svg
 │
-└── styles/
-    └── globals.css         # 전역 Tailwind CSS + 색상 변수
+├── styles/
+│   └── globals.css               # 전역 Tailwind CSS + 색상 변수
+│
+└── docs/
+    ├── ARCHITECTURE.md
+    ├── REPORT_KO.md
+    ├── REPORT_EN.md
+    └── migration/
+        └── nextjs-pages-router-to-app-router-analysis.md
 ```
 
 ---
@@ -118,69 +159,82 @@ NextJs_Main/
 
 ### 3.1 프론트엔드
 
-| 카테고리 | 기술 | 버전 |
-|---------|------|------|
-| 프레임워크 | Next.js | 15.5.14 |
-| UI 라이브러리 | React | 19.0.0 |
-| 언어 | TypeScript | 5.x |
-| 스타일링 | Tailwind CSS | 3.4.1 |
-| 컴포넌트 | shadcn/ui (New York 스타일) | - |
-| UI 기반 | Radix UI (Dialog, Slot) | 최신 |
-| 애니메이션 | GSAP (GreenSock) | 3.13.0 |
-| 아이콘 | lucide-react | 0.511.0 |
-| 클래스 유틸리티 | clsx + tailwind-merge | - |
-| 컴포넌트 변형 | class-variance-authority (CVA) | - |
+| 카테고리        | 기술                           | 버전    |
+| --------------- | ------------------------------ | ------- |
+| 프레임워크      | Next.js                        | 15.5.18 |
+| UI 라이브러리   | React                          | 19.0.0  |
+| 언어            | TypeScript                     | 5.x     |
+| 스타일링        | Tailwind CSS                   | 3.4.1   |
+| 컴포넌트        | shadcn/ui (New York 스타일)    | -       |
+| UI 기반         | Radix UI (Dialog, Slot)        | 최신    |
+| 애니메이션      | GSAP (GreenSock)               | 3.13.0  |
+| 아이콘          | lucide-react                   | 0.511.0 |
+| 클래스 유틸리티 | clsx + tailwind-merge          | -       |
+| 컴포넌트 변형   | class-variance-authority (CVA) | -       |
 
-### 3.2 백엔드
+### 3.2 백엔드 / 인증
 
-| 카테고리 | 기술 | 버전 |
-|---------|------|------|
-| 런타임 | Node.js | - |
-| 이메일 발송 | Nodemailer | 7.0.13 |
-| API 라우트 | Next.js App Router | - |
+| 카테고리      | 기술               | 버전  |
+| ------------- | ------------------ | ----- |
+| 런타임        | Node.js            | -     |
+| 이메일 발송   | Nodemailer         | 9.0.1 |
+| 세션 토큰     | jose (JWT)         | 6.2.3 |
+| 비밀번호 해싱 | bcryptjs           | 3.0.3 |
+| API 라우트    | Next.js App Router | -     |
 
 ### 3.3 개발 도구
 
-| 도구 | 버전 | 역할 |
-|------|------|------|
-| ESLint | 10.0.2 | 코드 품질 검사 |
-| PostCSS | - | CSS 변환 |
-| Turbopack | 내장 | 고속 번들러 (선택 사용) |
+| 도구                        | 버전   | 역할                      |
+| --------------------------- | ------ | ------------------------- |
+| ESLint                      | 9.39.0 | 코드 품질 검사            |
+| Prettier                    | 3.9.5  | 코드 포맷팅               |
+| prettier-plugin-tailwindcss | 0.8.1  | Tailwind 클래스 자동 정렬 |
+| Vitest                      | 4.1.10 | 유닛 테스트 러너          |
+| PostCSS                     | -      | CSS 변환                  |
+| Turbopack                   | 내장   | 고속 번들러 (선택 사용)   |
 
 ### 3.4 의존성 패키지 전체 목록
 
 **프로덕션 의존성:**
+
 ```json
 {
   "@radix-ui/react-dialog": "^1.1.14",
   "@radix-ui/react-slot": "^1.2.3",
+  "bcryptjs": "^3.0.3",
   "class-variance-authority": "^0.7.1",
   "clsx": "^2.1.1",
   "gsap": "^3.13.0",
+  "jose": "^6.2.3",
   "lucide-react": "^0.511.0",
-  "next": "15.5.14",
-  "nodemailer": "^7.0.13",
+  "next": "15.5.18",
+  "nodemailer": "^9.0.1",
   "react": "^19.0.0",
   "react-dom": "^19.0.0",
-  "shadcn-ui": "^0.9.5",
   "tailwind-merge": "^3.3.0",
   "tailwindcss-animate": "^1.0.7"
 }
 ```
 
 **개발 의존성:**
+
 ```json
 {
-  "@eslint/eslintrc": "^3",
+  "@types/bcryptjs": "^2.4.6",
   "@types/node": "^20",
-  "@types/nodemailer": "^6.4.17",
   "@types/react": "^19",
   "@types/react-dom": "^19",
-  "eslint": "^9",
-  "eslint-config-next": "15.2.4",
+  "@vitest/coverage-v8": "^4.1.10",
+  "eslint": "^9.39.0",
+  "eslint-config-next": "15.5.14",
+  "eslint-config-prettier": "^10.1.8",
   "postcss": "^8",
+  "prettier": "^3.9.5",
+  "prettier-plugin-tailwindcss": "^0.8.1",
+  "shadcn-ui": "^0.9.5",
   "tailwindcss": "^3.4.1",
-  "typescript": "^5"
+  "typescript": "^5",
+  "vitest": "^4.1.10"
 }
 ```
 
@@ -190,96 +244,74 @@ NextJs_Main/
 
 ### 4.1 홈 페이지 (`/`)
 
-- **파일:** `app/page.tsx` (10줄)
+- **파일:** `app/page.tsx`
 - Hero 컴포넌트를 중앙 배치하는 단순한 레이아웃
 - 실제 콘텐츠는 `components/Hero.tsx`에서 관리
 
 **Hero 컴포넌트 주요 내용:**
-- GSAP `bounce.out` 이펙트로 제목 애니메이션 (`yoyo: true`, 무한 반복)
+
+- GSAP `bounce.out` 이펙트로 제목 애니메이션 (`yoyo: true`, 무한 반복), 마운트 후 동적 import로 지연 로드
 - 메인 헤드라인: **"프론트와 백을 자유롭게 오가는 TypeScript 엔지니어"**
 - 경력: 12년 이상, 다양한 플랫폼 경험
 - CTA 버튼: 이력서 다운로드(파란색), 프로젝트 보기(테두리)
 
----
+### 4.2 About 페이지 (`/about`)
 
-### 4.2 프로젝트 페이지 (`/projects`)
+- **파일:** `app/about/page.tsx` (서버 컴포넌트)
+- 경력 소개 문구, 기술 스택 배지(shields.io), 소셜/연락 링크로 구성
+- 별도 `layout.tsx` 없이 `page.tsx`에서 직접 `metadata` export
 
-- **파일:** `app/projects/page.tsx` (100줄)
+### 4.3 프로젝트 페이지 (`/projects`)
+
+- **파일:** `app/projects/page.tsx`
 - 그리드 레이아웃으로 프로젝트/링크 카드 표시
-- 링크 항목:
-  - **DJ Play List** (내부 링크, `/DJ_Play_List`)
-  - **GitHub** (외부 링크, 새 탭)
-  - **LinkedIn** (외부 링크, 새 탭 – 플레이스홀더 URL)
-  - **YouTube** (외부 링크, 새 탭 – 플레이스홀더 URL)
-  - **About** (내부 링크, `/about`)
-- 각 카드에 한국어 설명, hover 효과 포함
+- 링크 항목: DJ Play List(내부), GitHub, LinkedIn, YouTube, About(내부)
 
----
+### 4.4 이메일 연락 페이지 (`/contact`)
 
-### 4.3 이메일 연락 페이지 (`/contact`)
-
-- **파일:** `app/contact/page.tsx` (150줄)
+- **파일:** `app/contact/page.tsx`(서버, metadata) + `ContactClient.tsx`(client)
 - 입력 필드: 제목, 발신자 이메일, 내용
-- POST `/api/send-email` 호출
-- HTML 이메일 템플릿 생성 (파란색 테마)
-- HTML 미리보기(`dangerouslySetInnerHTML`) 지원
-- 성공/실패 결과 메시지 표시
+- POST `/api/send-email` 호출, HTML 이메일 미리보기(`dangerouslySetInnerHTML`) 지원
 
-> ⚠️ **알려진 이슈:** 42번째 줄에 `debugger` 문이 제거되지 않은 채 남아 있음
+### 4.5 세금 계산기 (`/tax-calculator`)
 
----
-
-### 4.4 세금 계산기 (`/tax-calculator`)
-
-- **파일:** `app/tax-calculator/page.tsx` (215줄)
+- **파일:** `app/tax-calculator/page.tsx`(서버) + `TaxCalculatorClient.tsx`(client)
 - 2025년 한국 세금 기준 세후 급여 계산
-- 기능:
-  - 월급/연봉 전환 체크박스
-  - 4대보험 포함 여부 선택
-  - 10,000 / 100,000 / 1,000,000원 단위 증감 버튼
-  - 한국 로케일 숫자 포맷 표시 (예: 3,000,000)
-- 결과 표시 항목:
-  - 소득세
-  - 지방소득세
-  - 국민연금
-  - 건강보험료
-  - 고용보험료
-  - 총 공제액
-  - **실수령액 (강조 표시)**
+- 월급/연봉 전환, 4대보험 포함 여부, 단위별 증감 버튼(+1만/+10만/+100만원)
+- 결과: 소득세, 지방소득세, 국민연금, 건강보험료, 고용보험료, 총 공제액, **실수령액**
 
----
+### 4.6 DJ 재생 목록 (`/DJ_Play_List`)
 
-### 4.5 DJ 재생 목록 (`/DJ_Play_List`)
+- **파일:** `app/DJ_Play_List/page.tsx`(서버) + `DJPlayListClient.tsx`(client)
+- Swing Jazz 트랙 6곡 기본 제공, AWS S3 버킷에서 스트리밍 (`lib/audio.ts`)
+- Play/Pause/Stop, 진행바 탐색, 볼륨, Repeat/Shuffle
+- URL/로컬 파일로 트랙 추가 가능, Object URL 언마운트 시 해제
 
-- **파일:** `app/DJ_Play_List/page.tsx` (183줄)
-- Swing Jazz 트랙 6곡 목록 포함 오디오 플레이어
-- 오디오 파일은 **AWS S3** 버킷에서 스트리밍
-- 기능:
-  - Play / Pause / Stop 컨트롤
-  - 진행 바 (클릭으로 탐색 가능)
-  - 현재 시간 / 총 시간 표시
-  - 트랙별 BPM, 장르 정보 표시
-  - 배열 셔플(`Utils.ts`의 `upgradeShuffleArray`) 활용
+### 4.7 음원 리스트 (`/music-list`)
 
----
+- **파일:** `app/music-list/page.tsx`(서버) + `MusicListClient.tsx`(client)
+- `data/musicData.ts`에서 날짜별 플레이리스트 로드
+- 날짜 선택 pill 버튼, 트랙 테이블, 스티키 오디오 플레이어
 
-### 4.6 관리자 대시보드 (`/admin`)
+### 4.8 블로그 (`/blog`, `/blog/[slug]`)
 
-- **파일:** `app/admin/layout.tsx` (67줄), `app/admin/page.tsx` (8줄), `app/admin/users/page.tsx` (8줄)
-- 반응형 2단 레이아웃: 좌측 사이드바 + 우측 콘텐츠
-- shadcn/ui `Sheet` 컴포넌트로 모바일 메뉴 구현
-- 사이드바 메뉴: 대시보드, 사용자 관리 (lucide-react 아이콘 사용)
-- ⚠️ 콘텐츠 영역은 플레이스홀더("1관리자 대시보드", "2관리자 대시보드")만 존재, **미완성 상태**
+- `data/blogPosts.ts` 단일 파일에서 게시글 관리
+- 목록: 날짜 역순 정렬, 태그/작성자 표시
+- 상세: `generateStaticParams` 기반 SSG, 마크다운형 본문 렌더링
 
----
+### 4.9 관리자 대시보드 (`/admin`, `/admin/users`)
 
-### 4.7 로그인 페이지 (`/login`)
+- **파일:** `app/admin/layout.tsx`, `AdminLayoutClient.tsx`, `page.tsx`, `users/page.tsx`
+- 반응형 2단 레이아웃: 좌측 사이드바 + 우측 콘텐츠, shadcn/ui `Sheet`로 모바일 메뉴
+- `/admin`: 세션 쿠키에서 사용자명을 읽어 환영 메시지 표시 + 사용자 관리 바로가기 카드
+- `/admin/users`: 환경 변수로 설정된 관리자 계정 1개를 테이블로 표시 (별도 사용자 DB 없음을 명시)
+- `middleware.ts`가 `/admin/:path*`를 세션 쿠키로 보호
 
-- **파일:** `app/login/page.tsx` (77줄)
-- 이메일/비밀번호 입력 폼
-- **더미 인증:** 클라이언트 코드에 `admin` / `password` 하드코딩
-- 로그인 성공 시 `useRouter`로 홈(`/`)으로 리다이렉트
-- ⚠️ 실제 인증 시스템 없음 (보안 위험)
+### 4.10 로그인 페이지 (`/login`)
+
+- **파일:** `app/login/page.tsx`(서버) + `LoginClient.tsx`(client)
+- 아이디/비밀번호 입력 폼, `POST /api/auth/login` 호출
+- 성공 시 `/admin`으로 이동 + `router.refresh()`
 
 ---
 
@@ -289,7 +321,7 @@ NextJs_Main/
 
 ```
 RootLayout (app/layout.tsx)
-  └── <html lang="ko">  ← 한국어 설정
+  └── <html lang="ko">
        ├── <NavBar />    ← 데스크톱 전용 상단 네비게이션
        ├── <main>
        │    └── {children}  ← 각 페이지 콘텐츠
@@ -297,132 +329,95 @@ RootLayout (app/layout.tsx)
        └── <BottomNav /> ← 모바일 전용 하단 네비게이션
 ```
 
+클라이언트 인터랙션이 필요한 라우트(`contact`, `login`, `music-list`, `DJ_Play_List`,
+`tax-calculator`)는 `page.tsx`(서버, `metadata` export) + `<Route>Client.tsx`(`"use client"`)
+2파일 구조를 사용합니다. `metadata`는 `"use client"` 파일에서 export할 수 없기 때문에, 메타데이터
+전용 `layout.tsx`를 라우트마다 추가하는 대신 이 구조로 통합했습니다. `admin/layout.tsx`만은
+예외로 유지되는데, 사이드바 UI(`AdminLayoutClient`)를 감싸는 역할까지 겸하기 때문입니다.
+
 ### 5.2 NavBar.tsx
 
 - **역할:** 데스크톱 전용 상단 네비게이션 (`hidden md:flex`)
 - Sticky 헤더 + 배경 블러 효과
-- 로고: "제이의 포트폴리오"
-- 메뉴: Home, Projects, About
+- 메뉴: Home, Music, Blog, Projects, About
 - 활성 링크: 파란색 밑줄 (현재 pathname 비교)
 
 ### 5.3 BottomNav.tsx
 
 - **역할:** 모바일 전용 하단 네비게이션 (`md:hidden`)
-- 고정 하단 바, 4개 아이템
-- 아이콘 + 레이블 구성: Home, Projects, About, Contact
-- 활성 항목: 파란색 텍스트
+- 고정 하단 바, 5개 아이템: Home, Music, Projects, About, Contact
 
 ### 5.4 Hero.tsx
 
-- **역할:** 홈 페이지 히어로 섹션
-- GSAP 애니메이션 (`bounce.out`, `yoyo: true`)
-- 헤드라인, 소개 문구, CTA 버튼 2개 포함
+- GSAP 애니메이션 (`bounce.out`, `yoyo: true`), 헤드라인 + CTA 버튼 2개
 
 ### 5.5 Footer.tsx
 
-- **역할:** 데스크톱 전용 하단 푸터 (`hidden md:flex`)
-- 좌측: 브랜딩 + 방문자 카운터(하드코딩 0) + 저작권
-- 우측: 기술 배지(shields.io) + 소셜 링크 아이콘
-  - GitHub, YouTube, LinkedIn, NaverBlog, Contact
+- **역할:** 데스크톱 전용 하단 푸터 (`hidden md:block`)
+- 좌측: 브랜딩 + 방문자 뱃지(외부 서비스) + 저작권
+- 우측: 기술 배지(shields.io) + 소셜 링크 아이콘 (GitHub, YouTube, LinkedIn, NaverBlog, Contact)
 
 ### 5.6 UI 컴포넌트 (shadcn/ui)
 
-| 컴포넌트 | 파일 | 설명 |
-|---------|------|------|
-| Button | `components/ui/button.tsx` | CVA 기반 스타일 변형(variant, size) |
-| Sheet | `components/ui/sheet.tsx` | 슬라이드 모달/패널 컴포넌트 |
+| 컴포넌트 | 파일                       | 설명                                |
+| -------- | -------------------------- | ----------------------------------- |
+| Button   | `components/ui/button.tsx` | CVA 기반 스타일 변형(variant, size) |
+| Sheet    | `components/ui/sheet.tsx`  | 슬라이드 모달/패널 컴포넌트         |
 
 ---
 
-## 6. 세금 계산 로직
+## 6. 인증 및 미들웨어
 
-### 6.1 세율 데이터 (`app/config/taxRates2025.ts`)
-
-**소득세 누진 구간 (2025년 기준):**
-
-| 연소득 범위 | 세율 | 누진공제 |
-|-----------|------|--------|
-| 0 ~ 1,200만원 | 6% | 0원 |
-| 1,200만원 ~ 4,600만원 | 15% | 108만원 |
-| 4,600만원 ~ 8,800만원 | 24% | 522만원 |
-| 8,800만원 ~ 1.5억원 | 35% | 1,490만원 |
-| 1.5억원 ~ 3억원 | 38% | 1,940만원 |
-| 3억원 ~ 5억원 | 40% | 2,540만원 |
-| 5억원 초과 | 45% | 3,540만원 |
-
-**사회보험료 (근로자 부담분):**
-
-| 보험 종류 | 요율 |
-|---------|------|
-| 국민연금 | 4.5% |
-| 건강보험 | 3.545% |
-| 고용보험 | 0.9% |
-| 지방소득세 | 소득세의 10% |
-
-### 6.2 계산 로직 (`app/lib/taxCalculator.ts`)
-
-**인터페이스:**
-
-```typescript
-interface TaxInput {
-  salary: number;       // 입력 급여
-  isMonthly: boolean;   // true = 월급, false = 연봉
-  includeInsurance: boolean; // 4대보험 포함 여부
-}
-
-interface TaxResult {
-  annualSalary: number;        // 연봉
-  incomeTax: number;           // 소득세
-  localIncomeTax: number;      // 지방소득세
-  nationalPension: number;     // 국민연금
-  healthInsurance: number;     // 건강보험
-  employmentInsurance: number; // 고용보험
-  totalDeductions: number;     // 총 공제액
-  netSalary: number;           // 실수령액
-}
-```
-
-**계산 흐름:**
-
-```
-1. 월급 입력 시 × 12 → 연봉 환산
-2. 연봉으로 누진세 구간 탐색
-3. 소득세 = 연봉 × 세율 - 누진공제액
-4. 지방소득세 = 소득세 × 10%
-5. 국민연금 = 연봉 × 4.5%
-6. 건강보험 = 연봉 × 3.545%
-7. 고용보험 = 연봉 × 0.9%
-8. 총 공제 = 소득세 + 지방소득세 + (includeInsurance ? 보험3종 : 0)
-9. 실수령액 = 연봉 - 총 공제
-10. 모든 금액 Math.floor() 처리 (정수 반환)
-```
+- **계정 저장소:** 별도 DB 없이 환경 변수 `ADMIN_USERNAME` / `ADMIN_PASSWORD_HASH`(bcrypt 해시)로 단일 관리자 계정 정의
+- **로그인:** `POST /api/auth/login` → `lib/credentials.ts`의 `verifyCredentials()`로 비밀번호 검증 →
+  성공 시 `lib/auth.ts`의 `createSessionToken()`으로 JWT 발급(HS256, 2시간 만료) → httpOnly + `SameSite=Lax`
+  쿠키(`admin_session`)로 저장
+- **로그아웃:** `POST /api/auth/logout` → 쿠키 만료 처리
+- **보호:** `middleware.ts`가 `/admin/:path*` 요청마다 `verifySessionToken()`으로 쿠키 검증, 실패 시
+  `/login`으로 리다이렉트하며 쿠키 삭제
 
 ---
 
 ## 7. API 및 서버 로직
 
-### 7.1 이메일 발송 API (`app/api/send-email/route.ts`)
+### 7.1 로그인 API (`app/api/auth/login/route.ts`)
 
-| 항목 | 내용 |
-|------|------|
-| 경로 | `POST /api/send-email` |
+| 항목      | 내용                                                       |
+| --------- | ---------------------------------------------------------- |
+| 경로      | `POST /api/auth/login`                                     |
+| 요청 본문 | `{ username: string, password: string }`                   |
+| 응답 성공 | `{ message: "로그인 성공" }` + `Set-Cookie: admin_session` |
+| 응답 실패 | `{ message: string }` (400/401)                            |
+
+### 7.2 로그아웃 API (`app/api/auth/logout/route.ts`)
+
+| 항목 | 내용                                      |
+| ---- | ----------------------------------------- |
+| 경로 | `POST /api/auth/logout`                   |
+| 동작 | `admin_session` 쿠키를 즉시 만료시켜 제거 |
+
+### 7.3 이메일 발송 API (`app/api/send-email/route.ts`)
+
+| 항목      | 내용                                                 |
+| --------- | ---------------------------------------------------- |
+| 경로      | `POST /api/send-email`                               |
 | 요청 본문 | `{ title: string, sender: string, content: string }` |
-| 응답 성공 | `{ message: "이메일이 성공적으로 전송되었습니다." }` |
-| 응답 실패 | `{ error: "이메일 전송 실패: ..." }` |
-
-**Nodemailer 설정 (환경변수 필요):**
+| 응답 성공 | `{ message: "메일이 성공적으로 발송되었습니다." }`   |
+| 응답 실패 | `{ message: string }` (400/500)                      |
 
 ```typescript
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
-  secure: process.env.SMTP_SECURE === 'true',
+  secure: process.env.SMTP_SECURE === "true",
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
 });
 ```
+
+발신자 이메일 형식 검증, 제목/본문 길이 제한(200자/5000자), 헤더 인젝션 방지 새니타이즈(`lib/email.ts`)를 거칩니다.
 
 ---
 
@@ -434,8 +429,8 @@ const transporter = nodemailer.createTransport({
 {
   reactStrictMode: true,
   images: {
-    domains: ['img.shields.io']  // 기술 배지 이미지 외부 도메인 허용
-  }
+    domains: ["img.shields.io"], // 기술 배지 이미지 외부 도메인 허용
+  },
 }
 ```
 
@@ -445,11 +440,11 @@ const transporter = nodemailer.createTransport({
 {
   compilerOptions: {
     target: "es2020",
-    strict: true,           // 엄격한 타입 검사
+    strict: true,
     module: "esnext",
     moduleResolution: "bundler",
-    paths: { "@/*": ["*"] } // 경로 별칭 (@/ → 루트)
-  }
+    paths: { "@/*": ["*"] },
+  },
 }
 ```
 
@@ -469,12 +464,16 @@ const transporter = nodemailer.createTransport({
   "tsx": true,
   "tailwind": {
     "config": "tailwind.config.ts",
-    "css": "app/globals.css"
+    "css": "styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true
   },
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils",
-    "ui": "@/components/ui"
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
   },
   "iconLibrary": "lucide"
 }
@@ -483,90 +482,98 @@ const transporter = nodemailer.createTransport({
 ### 8.5 `.eslintrc.json`
 
 ```json
-{ "extends": ["next/core-web-vitals", "next/typescript"] }
+{ "extends": ["next/core-web-vitals", "next/typescript", "prettier"] }
 ```
 
-### 8.6 `.gitignore` (주요 항목)
+### 8.6 `.prettierrc.json`
 
-| 패턴 | 이유 |
-|------|------|
-| `README.md` | 개별 파일 무시 |
-| `*.md` | 모든 마크다운 파일 무시 |
-| `!REPORT.md` | 본 보고서 예외 처리 |
-| `.env*` | 환경 변수 파일 무시 |
-| `/node_modules`, `/.next/` | 빌드/의존성 결과물 |
+```json
+{
+  "semi": true,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "printWidth": 80,
+  "tabWidth": 2,
+  "plugins": ["prettier-plugin-tailwindcss"]
+}
+```
+
+### 8.7 `vitest.config.ts`
+
+- `environment: "node"`, `include: ["**/*.test.ts"]`
+- `@/*` 경로 별칭을 `resolve.alias`로 매핑
+- coverage provider: v8 (`text`, `html` 리포터)
+
+### 8.8 `.gitignore` (주요 항목)
+
+| 패턴                               | 이유                                                                    |
+| ---------------------------------- | ----------------------------------------------------------------------- |
+| `.env*`                            | 환경 변수 파일 무시                                                     |
+| `/node_modules`, `/.next/`         | 빌드/의존성 결과물                                                      |
+| `*.md` / `!REPORT.md` / `!docs/**` | 루트의 기타 마크다운은 무시하되 본 보고서와 docs/ 아래 문서는 예외 처리 |
 
 ---
 
 ## 9. 개선 가능 영역 및 알려진 이슈
 
-### 9.1 심각도: 높음 (High) — 수정 완료
+### 9.1 이번 정비에서 해결된 항목
 
-| 파일 | 이슈 | 상태 |
-|------|------|------|
-| `app/contact/page.tsx` | `debugger` 문 미제거 | ✅ 수정 완료 |
-| `app/login/page.tsx:17` | 하드코딩된 인증 정보 | ⚠️ 개선 필요 (`admin` / `password` 클라이언트 노출) |
+| 파일                                                                    | 이슈                                         | 상태                                           |
+| ----------------------------------------------------------------------- | -------------------------------------------- | ---------------------------------------------- |
+| `components/Footer.tsx`                                                 | 방문자 카운터 Today/Total 하드코딩 0         | ✅ 해결 (외부 뱃지 연동)                       |
+| `app/about/page.tsx`                                                    | 콘텐츠 없는 스텁                             | ✅ 해결                                        |
+| `app/admin/page.tsx`, `app/admin/users/page.tsx`                        | 플레이스홀더 텍스트만 존재                   | ✅ 해결                                        |
+| `app/{DJ_Play_List,contact,login,music-list,tax-calculator}/layout.tsx` | metadata 전용 layout.tsx 보일러플레이트      | ✅ 해결 (page.tsx로 통합, layout.tsx 5개 제거) |
+| Prettier 미설정                                                         | 포맷터 없음                                  | ✅ 해결                                        |
+| REPORT.md / README.md / docs 버전 정보 stale                            | 존재하지 않는 라우트·구버전 의존성 버전 언급 | ✅ 해결 (본 갱신)                              |
 
-### 9.2 심각도: 중간 (Medium)
+### 9.2 남아있는 심각도: 중간 (Medium)
 
-| 파일 | 이슈 | 설명 |
-|------|------|------|
-| `app/contact/page.tsx:21` | 기본값 하드코딩 | `user@example.com`이 기본 발신자로 하드코딩 |
-| `app/DJ_Play_List/page.tsx` | AWS S3 URL 하드코딩 | 오디오 파일 URL이 코드에 직접 명시됨 |
+| 파일                                    | 이슈                | 설명                                         |
+| --------------------------------------- | ------------------- | -------------------------------------------- |
+| `app/DJ_Play_List/DJPlayListClient.tsx` | AWS S3 URL 하드코딩 | 기본 트랙의 오디오 URL이 특정 S3 버킷에 의존 |
+| `app/admin/users/page.tsx`              | 실제 사용자 DB 없음 | 단일 환경 변수 계정만 조회 가능, CRUD 불가   |
 
-### 9.3 심각도: 낮음 (Low)
+### 9.3 남아있는 심각도: 낮음 (Low)
 
-| 파일 | 이슈 | 설명 |
-|------|------|------|
-| `app/tax-calculator/page.tsx:76` | ESLint 비활성화 주석 | `// eslint-disable-next-line` 사용 (미사용 변수 존재) |
-| `components/Footer.tsx` | 방문자 카운터 미구현 | Today: 0, Total: 0으로 하드코딩됨 (TODO 주석 있음) |
-| `app/admin/page.tsx` | 관리자 대시보드 미완성 | 플레이스홀더 텍스트만 존재 |
-| `app/admin/users/page.tsx` | 사용자 관리 미완성 | 플레이스홀더 텍스트만 존재 |
-| `app/about/page.tsx` | About 페이지 미완성 | 기본 템플릿만 존재 |
-| `app/projects/page.tsx` | 외부 링크 플레이스홀더 | LinkedIn, YouTube URL이 실제 주소 아님 |
+| 파일                            | 이슈             | 설명                                         |
+| ------------------------------- | ---------------- | -------------------------------------------- |
+| `components/Footer.tsx`         | 외부 서비스 의존 | 방문자 카운터가 무료 외부 뱃지 서비스에 의존 |
+| `app/contact/ContactClient.tsx` | 기본값 하드코딩  | `user@example.com`이 기본 발신자로 하드코딩  |
 
-### 9.4 구현 권장 사항
+### 9.4 구현 권장 사항 (향후)
 
-1. **인증 시스템 구축**
-   - NextAuth.js 또는 Supabase Auth 도입
-   - 하드코딩된 `admin/password` 제거
-   - JWT 또는 세션 기반 인증 적용
-
-2. **Contact 디버거 제거**
-   - `app/contact/page.tsx` 42번째 줄의 `debugger;` 즉시 제거
-
-3. **About 페이지 콘텐츠 작성**
-   - 경력 타임라인, 기술 스택, 자격증 등 추가
-
-4. **방문자 카운터 API 연동**
-   - Redis, Supabase, 또는 serverless DB 활용
-   - Footer의 `0` 하드코딩 값 실제 API로 교체
-
-5. **관리자 대시보드 기능 구현**
-   - 실제 데이터 표시 및 CRUD 기능 추가
-
-6. **환경 변수 처리 강화**
-   - `NEXT_PUBLIC_` 접두사 규칙 준수
-   - 환경 변수 유효성 검사 로직 추가
+1. **실제 사용자 DB 도입**: 다중 사용자/역할 관리가 필요하면 Supabase/Postgres 등 연동
+2. **DJ Play List 오디오 소스 설정 가능화**: 트랙별 URL을 데이터 파일 또는 환경 변수로 분리
+3. **방문자 카운터 자체 구축**: 트래픽이 늘어나면 Vercel KV/Upstash Redis 기반 자체 API로 전환 검토
 
 ---
 
 ## 10. 환경 변수 가이드
 
-이메일 발송 기능을 사용하려면 `.env.local` 파일에 아래 변수를 설정해야 합니다.
+`.env.example`을 복사해 `.env.local`을 생성하세요.
 
 ```bash
-# SMTP 서버 설정 (예: Naver SMTP)
+# --- SMTP (문의 폼) ---
 SMTP_HOST=smtp.naver.com
 SMTP_PORT=465
 SMTP_SECURE=true
+SMTP_USER=your-smtp-username
+SMTP_PASS=your-smtp-app-password
+RECEIVER_EMAIL=you@example.com
 
-# 발신 계정
-SMTP_USER=your-email@naver.com
-SMTP_PASS=your-app-password
+# --- 관리자 인증 ---
+ADMIN_USERNAME=admin
+# 생성: node -e "require('bcryptjs').hash('실제비밀번호', 10).then(console.log)"
+# 주의: Next.js는 .env 파일 내 $VAR 참조를 확장하므로, bcrypt 해시의 `$` 문자는
+# 반드시 `\$`로 이스케이프해야 합니다 (그렇지 않으면 해시가 조용히 손상되어 로그인이 원인 불명으로 실패합니다).
+ADMIN_PASSWORD_HASH=\$2b\$10\$replace-with-generated-bcrypt-hash
+# 생성: openssl rand -base64 32
+SESSION_SECRET=replace-with-32-byte-random-base64-string
 
-# 수신 이메일
-RECEIVER_EMAIL=receiver@example.com
+# --- 음원 / DJ Play List 오디오 소스 (선택) ---
+# 미설정 시 기본 데모 S3 버킷 사용. 클라이언트에 노출되므로 비밀 값 금지.
+NEXT_PUBLIC_AUDIO_BASE_URL=https://audiofilestudy.s3.ap-northeast-2.amazonaws.com
 ```
 
 > ⚠️ `.env*` 파일은 `.gitignore`에 의해 저장소에 커밋되지 않습니다.
@@ -587,7 +594,7 @@ RECEIVER_EMAIL=receiver@example.com
 npm install
 
 # 2. 환경 변수 파일 생성
-cp .env.example .env.local  # 또는 직접 .env.local 생성
+cp .env.example .env.local
 # (위 환경 변수 섹션 참고)
 
 # 3. 개발 서버 실행
@@ -607,23 +614,30 @@ npm run build
 # 7. 프로덕션 서버 실행
 npm start
 
-# 8. 코드 린트
+# 8. 코드 린트 / 타입 체크 / 포맷
 npm run lint
+npm run typecheck
+npm run format:check
+
+# 9. 테스트
+npm run test
 ```
 
 ### 주요 페이지 경로
 
-| URL | 설명 |
-|-----|------|
-| `/` | 홈 (히어로 섹션) |
-| `/projects` | 프로젝트 & 링크 목록 |
-| `/about` | 소개 페이지 |
-| `/contact` | 이메일 연락 |
-| `/login` | 로그인 (더미) |
-| `/tax-calculator` | 세금 계산기 |
-| `/DJ_Play_List` | DJ 재생 목록 |
-| `/admin` | 관리자 대시보드 |
-| `/admin/users` | 관리자 사용자 관리 |
+| URL                     | 설명                  |
+| ----------------------- | --------------------- |
+| `/`                     | 홈 (히어로 섹션)      |
+| `/about`                | 소개 페이지           |
+| `/music-list`           | 날짜 기반 음원 리스트 |
+| `/blog`, `/blog/[slug]` | 블로그 목록 & 상세    |
+| `/DJ_Play_List`         | DJ 재생 목록          |
+| `/tax-calculator`       | 세금 계산기           |
+| `/contact`              | 이메일 연락           |
+| `/projects`             | 프로젝트 & 링크 목록  |
+| `/login`                | 관리자 로그인         |
+| `/admin`                | 관리자 대시보드       |
+| `/admin/users`          | 관리자 사용자 관리    |
 
 ---
 
@@ -631,41 +645,35 @@ npm run lint
 
 ### 현재 완성된 기능 ✅
 
-| 기능 | 상태 |
-|------|------|
-| 포트폴리오 기본 구조 (홈, 프로젝트, About 레이아웃) | ✅ 완성 |
-| 반응형 네비게이션 (데스크톱 NavBar + 모바일 BottomNav) | ✅ 완성 |
-| GSAP 히어로 애니메이션 | ✅ 완성 |
-| 이메일 연락 폼 + API | ✅ 완성 (환경 변수 필요) |
-| 2025년 한국 세금 계산기 | ✅ 완성 |
-| DJ 재생 목록 오디오 플레이어 | ✅ 완성 |
-| 관리자 레이아웃 (반응형) | ✅ 완성 |
-| shadcn/ui 컴포넌트 통합 | ✅ 완성 |
-| 다크 모드 지원 (CSS 변수) | ✅ 완성 |
-| TypeScript 엄격 모드 | ✅ 완성 |
-
-### 미완성/개선 필요 기능 ⚠️
-
-| 기능 | 상태 |
-|------|------|
-| About 페이지 상세 콘텐츠 | ⚠️ 플레이스홀더 |
-| 관리자 대시보드 실제 기능 | ⚠️ 플레이스홀더 |
-| 실제 인증 시스템 | ⚠️ 더미 구현 |
-| 방문자 카운터 | ⚠️ 하드코딩 0 |
-| `debugger` 문 제거 | ✅ 수정 완료 |
-| LinkedIn/YouTube 실제 URL | ⚠️ 플레이스홀더 URL |
+| 기능                                                   | 상태                     |
+| ------------------------------------------------------ | ------------------------ |
+| 포트폴리오 기본 구조 (홈, About, 프로젝트)             | ✅ 완성                  |
+| 반응형 네비게이션 (데스크톱 NavBar + 모바일 BottomNav) | ✅ 완성                  |
+| GSAP 히어로 애니메이션                                 | ✅ 완성                  |
+| 이메일 연락 폼 + API                                   | ✅ 완성 (환경 변수 필요) |
+| 2025년 한국 세금 계산기                                | ✅ 완성                  |
+| DJ 재생 목록 오디오 플레이어                           | ✅ 완성                  |
+| 날짜 기반 음원 리스트                                  | ✅ 완성                  |
+| 개발 블로그 (SSG)                                      | ✅ 완성                  |
+| JWT 세션 기반 관리자 인증 + 대시보드                   | ✅ 완성                  |
+| Footer 실시간 방문자 카운터                            | ✅ 완성 (외부 뱃지)      |
+| shadcn/ui 컴포넌트 통합                                | ✅ 완성                  |
+| 다크 모드 지원 (CSS 변수)                              | ✅ 완성                  |
+| TypeScript 엄격 모드                                   | ✅ 완성                  |
+| 유닛 테스트 (Vitest)                                   | ✅ 완성                  |
+| Prettier 코드 포맷팅                                   | ✅ 완성                  |
 
 ### 종합 평가
 
-이 프로젝트는 **최신 Next.js 15 + React 19 + TypeScript** 기반으로 구축된 현대적인 개인 포트폴리오로, 다음과 같은 강점을 가집니다:
+이 프로젝트는 **최신 Next.js 15 + React 19 + TypeScript** 기반으로 구축된 현대적인 개인 포트폴리오로,
+다음과 같은 강점을 가집니다:
 
 - **최신 기술 스택** 적극 도입 (Next.js 15, React 19, GSAP, shadcn/ui)
 - **반응형 디자인** (모바일/데스크톱 분리 네비게이션)
-- **실용적인 부가 기능** (세금 계산기, 오디오 플레이어, 이메일 연락)
-- **깔끔한 코드 구조** (App Router, 타입 안정성, 컴포넌트 분리)
+- **실용적인 부가 기능** (세금 계산기, 오디오 플레이어, 음원 리스트, 블로그, 이메일 연락)
+- **깔끔한 코드 구조** (App Router, 서버/클라이언트 컴포넌트 분리, 타입 안정성)
+- **DB 없이 동작하는 경량 인증** (JWT + httpOnly 쿠키, 미들웨어 보호)
+- **일관된 코드 포맷팅** (Prettier + Tailwind 클래스 자동 정렬)
 
-현재 포트폴리오의 핵심 기능은 완성되어 있으며, 관리자 기능, 인증, 방문자 카운터 등 일부 고급 기능은 향후 개발이 예정된 상태입니다.
-
----
-
-*본 보고서는 저장소 `copilot/investigate-repository-overview` 브랜치 기준으로 작성되었습니다.*
+향후 개선 여지는 실제 사용자 데이터베이스 도입(다중 사용자 관리)과 오디오 소스 설정 가능화 정도이며,
+핵심 기능은 모두 완성되어 있습니다.

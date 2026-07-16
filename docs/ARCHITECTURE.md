@@ -2,8 +2,10 @@
 
 ## System Overview
 
-Next.js 15 App Router application — no external database.  
-Authentication and all domain data are client-side: auth via React Context + localStorage, domain data via static TypeScript files.
+Next.js 15 App Router application — no external database. Admin authentication
+is a signed JWT session stored in an httpOnly cookie, checked by
+`middleware.ts` on every `/admin/**` request. All other domain data (music
+playlists, blog posts, tax rates) lives in static, typed TypeScript files.
 
 ---
 
@@ -16,25 +18,15 @@ Authentication and all domain data are client-side: auth via React Context + loc
 │  ┌──────────────────────────────────────────────────────────┐  │
 │  │                     React Components                     │  │
 │  │                                                          │  │
-│  │  NavBar (auth UI)   Hero (GSAP)   BottomNav   Footer     │  │
-│  │  MusicList          BlogList      BlogDetail             │  │
-│  │  LoginPage          SignupPage    ProfilePage            │  │
-│  │  TaxCalculator      ContactForm   DJPlayList             │  │
+│  │  NavBar              Hero (GSAP)      BottomNav          │  │
+│  │  Footer (visitor badge img)                              │  │
+│  │  MusicListClient      BlogList (server)  BlogDetail (server)│
+│  │  LoginClient          TaxCalculatorClient                │  │
+│  │  ContactClient        DJPlayListClient                   │  │
+│  │  AdminLayoutClient (sidebar/logout)                      │  │
 │  └────────────────────────┬─────────────────────────────────┘  │
-│                           │ useAuth()                           │
+│                           │ fetch() / cookies                    │
 │  ┌────────────────────────▼─────────────────────────────────┐  │
-│  │               AuthContext (context/AuthContext.tsx)       │  │
-│  │  user: User | null                                       │  │
-│  │  login() · logout() · register() · deleteAccount()       │  │
-│  └────────────────────────┬─────────────────────────────────┘  │
-│                           │ read / write                        │
-│  ┌────────────────────────▼─────────────────────────────────┐  │
-│  │                     localStorage                          │  │
-│  │  "app_users":   User[]  (all registered users)           │  │
-│  │  "app_session": User    (current session)                │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│                                                                 │
-│  ┌──────────────────────────────────────────────────────────┐  │
 │  │              HTML5 Audio API (audioRef)                  │  │
 │  │  Used by: /music-list and /DJ_Play_List                  │  │
 │  └──────────────────────────────────────────────────────────┘  │
@@ -65,31 +57,32 @@ Authentication and all domain data are client-side: auth via React Context + loc
 ┌─────────────────────────────────────────────────────────────────┐
 │                    Next.js App Router                           │
 │                                                                 │
-│  Static (○)                    Dynamic / SSG (●/ƒ)             │
-│  ─────────────────────         ─────────────────────────────── │
-│  / → app/page.tsx              /blog/[slug] → SSG              │
-│  /login                        /api/send-email → server fn     │
-│  /signup                                                        │
-│  /profile                                                       │
-│  /music-list                                                    │
-│  /blog                                                          │
-│  /DJ_Play_List                                                  │
-│  /tax-calculator                                                │
-│  /contact                                                       │
-│  /projects                                                      │
-│  /about                                                         │
-│  /admin, /admin/users                                           │
+│  Server components (metadata)   Client components (interaction) │
+│  ─────────────────────────────  ────────────────────────────── │
+│  app/DJ_Play_List/page.tsx   →  DJPlayListClient.tsx            │
+│  app/contact/page.tsx        →  ContactClient.tsx               │
+│  app/login/page.tsx          →  LoginClient.tsx                 │
+│  app/music-list/page.tsx     →  MusicListClient.tsx              │
+│  app/tax-calculator/page.tsx →  TaxCalculatorClient.tsx          │
+│  app/about, /projects, /blog, /blog/[slug] → server-only          │
+│  app/admin/layout.tsx        →  AdminLayoutClient.tsx (sidebar)   │
+│  app/admin, app/admin/users  →  server, reads session cookie      │
+│  /api/auth/login, /api/auth/logout, /api/send-email → route handlers│
 └─────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────┐
 │               External Services (optional / required)           │
 │                                                                 │
-│  AWS S3  ──────────────────────  audio file streaming          │
-│  (audiofilestudy bucket)         for /DJ_Play_List             │
-│                                  and /music-list               │
+│  AWS S3  ──────────────────────  audio file streaming           │
+│  (audiofilestudy bucket,          for /DJ_Play_List             │
+│   overridable via                 and /music-list               │
+│   NEXT_PUBLIC_AUDIO_BASE_URL)                                    │
 │                                                                 │
-│  SMTP Server ──────────────────  contact form email sending    │
-│  (configured via env vars)       POST /api/send-email          │
+│  SMTP Server ──────────────────  contact form email sending     │
+│  (configured via env vars)       POST /api/send-email           │
+│                                                                 │
+│  visitor-badge.laobi.icu ──────  live visitor count image       │
+│                                  rendered in Footer              │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -99,154 +92,180 @@ Authentication and all domain data are client-side: auth via React Context + loc
 
 ```
 /
-├── app/                        # Next.js App Router pages & API
-│   ├── page.tsx                # Home (Hero component)
-│   ├── layout.tsx              # Root layout — AuthProvider + NavBar + Footer + BottomNav
-│   ├── login/page.tsx          # Login form
-│   ├── signup/page.tsx         # Registration form
-│   ├── profile/page.tsx        # User profile + account deletion
-│   ├── music-list/page.tsx     # Date-based music list + audio player
+├── app/
+│   ├── page.tsx                    # Home (Hero component)
+│   ├── layout.tsx                  # Root layout — NavBar + Footer + BottomNav
+│   ├── about/page.tsx              # About (bio, tech stack, contact links)
+│   ├── music-list/
+│   │   ├── page.tsx                # Server component, exports metadata
+│   │   └── MusicListClient.tsx     # Client — date-based playlist + audio player
 │   ├── blog/
-│   │   ├── page.tsx            # Blog listing (sorted newest-first)
-│   │   └── [slug]/page.tsx     # Blog post detail (SSG)
-│   ├── DJ_Play_List/page.tsx   # Legacy standalone audio player
-│   ├── tax-calculator/page.tsx # 2025 Korean tax calculator UI
-│   ├── contact/page.tsx        # Contact form UI
-│   ├── projects/page.tsx       # External links
-│   ├── about/page.tsx          # About (stub)
+│   │   ├── page.tsx                # Blog listing (server, sorted newest-first)
+│   │   └── [slug]/page.tsx         # Blog post detail (SSG via generateStaticParams)
+│   ├── DJ_Play_List/
+│   │   ├── page.tsx                # Server component, exports metadata
+│   │   └── DJPlayListClient.tsx    # Client — audio player, URL/local file add
+│   ├── tax-calculator/
+│   │   ├── page.tsx
+│   │   └── TaxCalculatorClient.tsx # Client — form state + calculation
+│   ├── contact/
+│   │   ├── page.tsx
+│   │   └── ContactClient.tsx       # Client — form + HTML preview + fetch
+│   ├── login/
+│   │   ├── page.tsx
+│   │   └── LoginClient.tsx         # Client — POSTs to /api/auth/login
+│   ├── projects/page.tsx           # External links (server)
 │   ├── admin/
-│   │   ├── layout.tsx          # Admin sidebar layout
-│   │   ├── page.tsx            # Admin dashboard (stub)
-│   │   └── users/page.tsx      # User management (stub)
-│   ├── api/send-email/
-│   │   └── route.ts            # POST endpoint — Nodemailer SMTP
-│   ├── config/
-│   │   └── taxRates2025.ts     # 2025 Korean tax rate constants
-│   └── lib/
-│       └── taxCalculator.ts    # Tax calculation pure functions
+│   │   ├── layout.tsx              # Metadata + wraps AdminLayoutClient
+│   │   ├── AdminLayoutClient.tsx   # Client — sidebar / mobile sheet / logout
+│   │   ├── page.tsx                # Dashboard home (server, reads session cookie)
+│   │   ├── error.tsx, loading.tsx
+│   │   └── users/page.tsx          # Shows the single env-configured admin account
+│   ├── api/
+│   │   ├── auth/login/route.ts     # POST — verify credentials, set session cookie
+│   │   ├── auth/logout/route.ts    # POST — clear session cookie
+│   │   └── send-email/route.ts     # POST — Nodemailer SMTP send
+│   ├── config/taxRates2025.ts      # 2025 Korean tax rate constants
+│   └── lib/taxCalculator.ts        # Tax calculation pure functions
 │
-├── components/                 # Shared React components
-│   ├── NavBar.tsx              # Header (auth-aware, client component)
-│   ├── Hero.tsx                # GSAP animated intro (client component)
-│   ├── Footer.tsx              # Tech stack + social links (desktop only)
-│   ├── BottomNav.tsx           # Mobile fixed bottom nav
+├── components/
+│   ├── NavBar.tsx                  # Header (client, usePathname)
+│   ├── Hero.tsx                    # GSAP animated intro (client)
+│   ├── Footer.tsx                  # Tech badges + social links + visitor badge (client)
+│   ├── BottomNav.tsx               # Mobile fixed bottom nav (client)
 │   └── ui/
-│       ├── button.tsx          # shadcn/ui Button
-│       └── sheet.tsx           # shadcn/ui Sheet (mobile drawer)
-│
-├── context/
-│   └── AuthContext.tsx         # Auth state: login/logout/register/delete
-│
-├── data/
-│   ├── musicData.ts            # All playlists (single source of truth)
-│   └── blogPosts.ts            # All blog posts (single source of truth)
+│       ├── button.tsx              # shadcn/ui Button
+│       └── sheet.tsx               # shadcn/ui Sheet (mobile drawer)
 │
 ├── lib/
-│   └── utils.ts                # cn() — clsx + tailwind-merge
+│   ├── auth.ts                     # JWT session create/verify (jose), cookie options
+│   ├── credentials.ts              # bcrypt credential check against env vars
+│   ├── email.ts                    # Contact HTML builder + header sanitization
+│   ├── audio.ts                    # audioUrl() — resolves S3/CDN base URL
+│   └── utils.ts                    # cn() — clsx + tailwind-merge
 │
-├── utils/
-│   └── Utils.ts                # shuffleArray / upgradeShuffleArray
+├── data/
+│   ├── musicData.ts                # All playlists (single source of truth)
+│   └── blogPosts.ts                # All blog posts (single source of truth)
 │
-├── styles/
-│   └── globals.css             # Tailwind directives + CSS variables
+├── types/track.ts                  # Track / PlaylistTrack types
+├── utils/Utils.ts                  # shuffleArray / upgradeShuffleArray
+├── middleware.ts                   # Protects /admin/** — redirects to /login
+│
+├── styles/globals.css              # Tailwind directives + CSS variables
 │
 └── docs/
-    ├── ARCHITECTURE.md         # This file
-    ├── REPORT_KO.md            # Korean development report
-    └── REPORT_EN.md            # English development report
+    ├── ARCHITECTURE.md             # This file
+    ├── REPORT_KO.md                # Korean development report
+    └── REPORT_EN.md                # English development report
 ```
 
 ---
 
 ## Key Design Decisions
 
-### 1. AuthContext + localStorage (No Backend Auth)
+### 1. JWT Session Auth, No User Database
 
-This is a demo/portfolio site with no dedicated backend server. The trade-off:
-- ✅ Zero infrastructure required
-- ✅ Works fully client-side with static hosting (Vercel)
-- ❌ Passwords stored in plaintext (not for production)
+There is exactly one admin account, configured entirely through environment
+variables (`ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`). `POST /api/auth/login`
+verifies the password with `bcryptjs` and, on success, signs a JWT
+(`lib/auth.ts`, using `jose`) into an httpOnly, `SameSite=Lax` cookie.
+`middleware.ts` verifies that cookie on every request under `/admin/**` and
+redirects to `/login` if it is missing or invalid.
 
-The `AuthProvider` is placed at the root layout level, so every page and component can access auth state via `useAuth()`.
+- ✅ No database or third-party auth provider required
+- ✅ Session token can't be read or forged from client JS (httpOnly + signed)
+- ⚠️ Single shared admin account — not designed for multi-user access control
 
----
+### 2. Server Page + Client Component Split
 
-### 2. Centralized Static Data Files
+Routes that need client-side interactivity (forms, audio playback, browser
+APIs) follow a two-file pattern: `page.tsx` stays a server component that
+exports `metadata`, and delegates rendering to a sibling `<Route>Client.tsx`
+marked `"use client"`. This avoids a per-route `layout.tsx` whose only job
+would be exporting `metadata` for a client-only `page.tsx` (metadata exports
+are not allowed in files with `"use client"`).
+
+`app/admin/layout.tsx` is the one route layout kept as-is: it does more than
+metadata — it wraps every admin page in `AdminLayoutClient` for the shared
+sidebar/mobile-drawer chrome.
+
+### 3. Centralized Static Data Files
 
 Domain data lives in `/data/` as typed TypeScript modules:
 
-| File | Consumed by |
-|---|---|
-| `data/musicData.ts` | `app/music-list/page.tsx` |
-| `data/blogPosts.ts` | `app/blog/page.tsx`, `app/blog/[slug]/page.tsx` |
-| `app/config/taxRates2025.ts` | `app/lib/taxCalculator.ts` |
+| File                         | Consumed by                                     |
+| ---------------------------- | ----------------------------------------------- |
+| `data/musicData.ts`          | `app/music-list/MusicListClient.tsx`            |
+| `data/blogPosts.ts`          | `app/blog/page.tsx`, `app/blog/[slug]/page.tsx` |
+| `app/config/taxRates2025.ts` | `app/lib/taxCalculator.ts`                      |
 
-**Benefit**: Adding new content (a playlist date, a blog post) requires editing exactly one file.
+**Benefit**: Adding new content (a playlist date, a blog post) requires
+editing exactly one file — no migrations, no CMS.
 
----
+### 4. Static Site Generation (SSG) for Blog
 
-### 3. Static Site Generation (SSG) for Blog
+`/blog/[slug]` uses `generateStaticParams` to pre-render every post at build
+time — zero server latency for reads, and posts are crawlable by search
+engines.
 
-`/blog/[slug]` uses `generateStaticParams` to pre-render all posts at build time:
-- Zero server latency for blog reads
-- Posts are crawlable by search engines
-- Consistent with Next.js App Router conventions
+### 5. Live Visitor Counter via External Badge
 
----
+The Footer has no backend of its own (and Vercel's serverless filesystem is
+ephemeral, so a local counter file wouldn't persist across deploys/instances).
+Instead it renders a live `<img>` badge from `visitor-badge.laobi.icu`, keyed
+by a stable `page_id`, which tracks and serves the real count itself.
 
-### 4. Client vs Server Components
+### 6. Styling Strategy
 
-| Component | Type | Reason |
-|---|---|---|
-| `NavBar` | Client | Needs `useAuth`, `usePathname` |
-| `Hero` | Client | GSAP `useEffect` |
-| `Footer` | Client | Uses `ExternalLink` icon + `Image` |
-| `BottomNav` | Client | `usePathname` |
-| `DJPlayListPage` | Client | `useRef`, `useState`, Audio API |
-| `MusicListPage` | Client | Audio API + state |
-| `LoginPage` | Client | Form state + `useAuth` |
-| `SignupPage` | Client | Form state + `useAuth` |
-| `ProfilePage` | Client | `useAuth`, `useRouter` |
-| `BlogPage` | Server | Pure data rendering |
-| `BlogPostPage` | Server | SSG + data rendering |
-| `TaxPage` | Client | Form state + calculation |
-| `ContactPage` | Client | Form state + fetch |
-
----
-
-### 5. Styling Strategy
-
-- **Tailwind CSS**: All layout, spacing, and typography
-- **CSS custom properties** (`styles/globals.css`): HSL color variables for light/dark mode theming
-- **`cn()` utility** (`lib/utils.ts`): Merges clsx + tailwind-merge to safely combine conditional class names
-- **Dark mode**: `dark:` Tailwind variants, toggled via `.dark` class on `<html>`
+- **Tailwind CSS**: all layout, spacing, and typography
+- **CSS custom properties** (`styles/globals.css`): HSL color variables for
+  light/dark mode theming
+- **`cn()` utility** (`lib/utils.ts`): merges clsx + tailwind-merge
+- **Prettier + `prettier-plugin-tailwindcss`**: enforces consistent
+  formatting and canonical Tailwind class ordering
 
 ---
 
 ## Data Flow Examples
 
-### Authentication Flow
+### Admin Login Flow
 
 ```
-User submits login form
+User submits login form (LoginClient.tsx)
         │
         ▼
-login(username, password)          ← AuthContext
+POST /api/auth/login { username, password }
         │
-        ├─ Read localStorage["app_users"]
-        ├─ Find matching user
+        ├─ verifyCredentials() — bcrypt.compare against ADMIN_PASSWORD_HASH
         │
-        ├─ Found ─→ save to localStorage["app_session"]
-        │           setUser(sessionUser)
-        │           return true ─→ router.push("/")
+        ├─ Valid ─→ createSessionToken() (jose, HS256, 2h expiry)
+        │           Set-Cookie: admin_session=<jwt> (httpOnly, SameSite=Lax)
+        │           router.push("/admin")
         │
-        └─ Not found ─→ return false ─→ show error
+        └─ Invalid ─→ 401 { message } ─→ shown as form error
+```
+
+### Protected Admin Request Flow
+
+```
+Request to /admin/**
+        │
+        ▼
+middleware.ts
+        │
+        ├─ Read admin_session cookie
+        ├─ verifySessionToken() (jose.jwtVerify)
+        │
+        ├─ Valid ─→ NextResponse.next()
+        │
+        └─ Invalid/missing ─→ redirect to /login, clear cookie
 ```
 
 ### Music List Page Flow
 
 ```
-Component mounts
+Component mounts (MusicListClient.tsx)
         │
         ▼
 Import PLAYLISTS from data/musicData.ts
@@ -267,15 +286,10 @@ handleDateChange(date):
   - setSelectedDate(date)
         │
         ▼
-Re-render: filter tracks for new date
-        │
-        ▼
 User clicks track row / ▶ button
         │
         ▼
-handlePlay(track):
-  - setCurrent(track)
-  - setPlaying(true)
+handlePlay(track): setCurrent(track), setPlaying(true)
         │
         ▼
 useEffect [current, playing]:
@@ -293,12 +307,10 @@ timeupdate events → setCurrentTime → progress bar width
 next build
         │
         ▼
-generateStaticParams()
-  - returns [{ slug: "project-kickoff" }, { slug: "auth-implementation" }, ...]
+generateStaticParams() → getSortedPosts().map(post => ({ slug: post.slug }))
         │
         ▼
-For each slug:
-  getPostBySlug(slug) from data/blogPosts.ts
+For each slug: getPostBySlug(slug) from data/blogPosts.ts
         │
         ▼
 Render static HTML at /blog/<slug>

@@ -1,376 +1,223 @@
 # YH Jang Portfolio — Development Report (English)
 
-**Date**: March 2025  
-**Project**: Personal Portfolio & Utility Tools  
+**Date**: July 2026
+**Project**: Personal Portfolio & Utility Tools
 **Stack**: Next.js 15 · React 19 · TypeScript · Tailwind CSS
 
 ---
 
 ## 1. Project Overview
 
-This project is a personal portfolio website built with Next.js 15 App Router, React 19, and TypeScript.  
-It combines a personal portfolio with practical utility tools, demonstrating modern web development practices.
+This project is a personal portfolio website built with Next.js 15 App
+Router, React 19, and TypeScript. It combines a personal portfolio with
+practical utility tools: a music playlist viewer, a development blog, a
+Korean tax calculator, a DJ playlist audio player, an email contact form, and
+a JWT-session-protected admin dashboard.
 
 ---
 
-## 2. Changelog Summary
+## 2. Full Route Map
 
-| Type | File | Description |
-|---|---|---|
-| **Modified** | `app/login/page.tsx` | Replaced hardcoded dummy auth with AuthContext-based real auth |
-| **Modified** | `components/NavBar.tsx` | Added login/logout UI, Music and Blog nav links |
-| **Modified** | `app/layout.tsx` | Wrapped with `<AuthProvider>` for global auth state |
-| **Added** | `context/AuthContext.tsx` | React Context + localStorage auth state management |
-| **Added** | `app/signup/page.tsx` | User registration form |
-| **Added** | `app/profile/page.tsx` | Profile view and account deletion |
-| **Added** | `data/musicData.ts` | Centralized date-indexed playlist data |
-| **Added** | `app/music-list/page.tsx` | Date-based music list UI |
-| **Added** | `data/blogPosts.ts` | Static blog post data |
-| **Added** | `app/blog/page.tsx` | Blog listing page |
-| **Added** | `app/blog/[slug]/page.tsx` | Blog post detail page (SSG) |
-| **Unchanged** | `app/DJ_Play_List/page.tsx` | Swing Jazz audio player |
-| **Unchanged** | `app/tax-calculator/page.tsx` | 2025 Korean tax calculator |
-| **Unchanged** | `app/contact/page.tsx` | Email contact form |
-| **Unchanged** | `app/projects/page.tsx` | External links collection |
-| **Unchanged** | `app/admin/` | Admin dashboard scaffold |
-| **Unchanged** | `components/Hero.tsx` | GSAP animated hero section |
-| **Unchanged** | `components/Footer.tsx` | Tech stack badges + social links |
-| **Unchanged** | `components/BottomNav.tsx` | Mobile bottom navigation |
-| **Unchanged** | `app/api/send-email/route.ts` | Nodemailer SMTP API route |
-| **Unchanged** | `app/lib/taxCalculator.ts` | Tax calculation logic |
-| **Unchanged** | `utils/Utils.ts` | Array shuffle utilities |
+| Path               | Description                    | Composition                                             |
+| ------------------ | ------------------------------ | ------------------------------------------------------- |
+| `/`                | Home / hero                    | Server `page.tsx` + `components/Hero.tsx` (client)      |
+| `/about`           | Bio, tech stack, contact links | Server component                                        |
+| `/music-list`      | Date-based music list          | `page.tsx` (server) + `MusicListClient.tsx`             |
+| `/blog`            | Blog listing                   | Server component                                        |
+| `/blog/[slug]`     | Blog post detail (SSG)         | Server component, `generateStaticParams`                |
+| `/DJ_Play_List`    | Audio player                   | `page.tsx` (server) + `DJPlayListClient.tsx`            |
+| `/tax-calculator`  | Tax calculator                 | `page.tsx` (server) + `TaxCalculatorClient.tsx`         |
+| `/contact`         | Email contact form             | `page.tsx` (server) + `ContactClient.tsx`               |
+| `/projects`        | External links                 | Server component                                        |
+| `/login`           | Admin login                    | `page.tsx` (server) + `LoginClient.tsx`                 |
+| `/admin`           | Admin dashboard home           | Server component, reads username from session cookie    |
+| `/admin/users`     | User management                | Server component, shows the single env-configured admin |
+| `/api/auth/login`  | Login API                      | Route handler — bcrypt check + JWT session issuance     |
+| `/api/auth/logout` | Logout API                     | Route handler — clears session cookie                   |
+| `/api/send-email`  | Email send API                 | Route handler — Nodemailer SMTP                         |
+
+All `/admin/**` paths are protected by `middleware.ts`, which verifies the
+session cookie on every request.
 
 ---
 
-## 3. Modified Features
+## 3. Authentication
 
-### 3.1 Login Page (`app/login/page.tsx`)
+There is no user database — a single admin account is configured entirely
+through environment variables.
 
-**Before**: Hardcoded credential check against `"admin"` / `"password"`. No global state updated. No link to signup.
+- `ADMIN_USERNAME` and `ADMIN_PASSWORD_HASH` (a bcrypt hash) define the account
+- `POST /api/auth/login` compares the password via `verifyCredentials()`
+  (`lib/credentials.ts`)
+- On success, `createSessionToken()` (`lib/auth.ts`) signs a JWT with `jose`
+  (HS256, 2-hour expiry)
+- The session is stored in an httpOnly, `SameSite=Lax` cookie
+  (`admin_session`) — unreadable and unforgeable from client JS
+- `middleware.ts` verifies that cookie on every `/admin/:path*` request and
+  redirects to `/login` if it's missing or invalid
+- `POST /api/auth/logout` expires the cookie to log out
 
-**After**: Calls `login()` from `AuthContext`, which saves the session to `localStorage` and updates the global user state. Added a signup link at the bottom of the form.
+> Note: with no user database, there is no multi-user or role-based access
+> control. `/admin/users` shows the one registered admin account (from env
+> vars) as a read-only row.
 
-```tsx
-// Before
-if (username === "admin" && password === "password") {
-  router.push("/");
-}
+---
 
-// After
-const success = login(username, password);
-if (success) {
-  router.push("/");
-}
+## 4. Feature Details
+
+### 4.1 Home / Hero (`app/page.tsx`, `components/Hero.tsx`)
+
+- GSAP `bounce.out` easing with `yoyo: true, repeat: -1` for the title
+  animation (GSAP is dynamically imported after mount to keep it out of the
+  initial bundle)
+- "이력서 보기" (`/resume.pdf`) and "프로젝트 보기" (`/projects`) CTA buttons
+- 12+ years of experience intro copy
+
+### 4.2 About (`app/about/page.tsx`)
+
+- Bio copy reusing the same tone as the Hero section
+- Tech stack badges (shields.io): TypeScript, JavaScript, Next.js,
+  TailwindCSS, Node.js, Cocos Creator, HTML5
+- Links to GitHub, YouTube, LinkedIn, Naver Blog, and the contact page
+
+### 4.3 Music List (`data/musicData.ts`, `app/music-list/`)
+
+- All playlists are centrally managed in a single `data/musicData.ts` file
+  (date + track array)
+- Date pill buttons switch playlists; a table shows `#`, title, artist, BPM
+- A sticky audio player provides play/pause/stop, a clickable progress bar,
+  and highlights the currently playing track
+
+### 4.4 Blog (`data/blogPosts.ts`, `app/blog/`, `app/blog/[slug]/`)
+
+- Posts are stored in a single `data/blogPosts.ts` file (slug, bilingual
+  title, date, tags, markdown-ish body)
+- The listing page sorts newest-first and shows tags/author
+- The detail page uses `generateStaticParams` for SSG and renders headings,
+  lists, and paragraphs from the post body
+
+### 4.5 DJ Play List (`app/DJ_Play_List/`)
+
+- Ships with 6 default Swing Jazz tracks streamed from AWS S3 (base URL
+  resolved via `audioUrl()` in `lib/audio.ts`)
+- Play/pause/stop, seekable progress bar, volume control, repeat/shuffle
+  toggles
+- Supports adding tracks by URL or local file upload (Object URL), revoking
+  Object URLs on unmount to avoid memory leaks
+
+### 4.6 Tax Calculator (`app/tax-calculator/`, `app/lib/taxCalculator.ts`, `app/config/taxRates2025.ts`)
+
+A calculator based on the 2025 Korean tax structure.
+
+| Item                 | Basis                     |
+| -------------------- | ------------------------- |
+| Income tax           | Progressive rate (6%–45%) |
+| Local income tax     | 10% of income tax         |
+| National pension     | 4.5% of annual salary     |
+| Health insurance     | 3.545% of annual salary   |
+| Employment insurance | 0.9% of annual salary     |
+
+Supports monthly/annual toggling, optional 4-insurance inclusion, and
+increment/decrement buttons for common amounts (+10K/+100K/+1M KRW).
+
+### 4.7 Contact Form (`app/contact/`, `app/api/send-email/route.ts`)
+
+- Fields: title, sender email, content — with a live HTML email preview
+- `POST /api/send-email` sanitizes header values (`lib/email.ts`) to prevent
+  header injection, then sends via Nodemailer over SMTP
+- Requires env vars: `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`,
+  `SMTP_PASS`, `RECEIVER_EMAIL`
+
+### 4.8 Projects Page (`app/projects/page.tsx`)
+
+A collection of link cards: DJ Play List (internal), GitHub, LinkedIn,
+YouTube, About (internal).
+
+### 4.9 Admin Dashboard (`app/admin/`)
+
+- Desktop sidebar + mobile Sheet drawer (shadcn/ui `Button`, `Sheet`)
+- `/admin`: reads the username from the session cookie for a welcome
+  message, with a quick-link card to `/admin/users`
+- `/admin/users`: shows the single environment-configured admin account in a
+  table, with an explicit note that no user database exists
+- `AdminLayoutClient.tsx` handles logout (`POST /api/auth/logout` → redirect
+  to `/login`)
+
+### 4.10 Footer Visitor Counter (`components/Footer.tsx`)
+
+- Renders a live visitor count via the `visitor-badge.laobi.icu` external
+  badge image, with no backend of its own
+- Chosen because Vercel's serverless filesystem is ephemeral — a
+  self-hosted counter file would reset on every deploy/instance, so an
+  external counting service is used instead
+
+---
+
+## 5. Shared Components & Utilities
+
+| Component / Function                                              | Path                       | Description                                               |
+| ----------------------------------------------------------------- | -------------------------- | --------------------------------------------------------- |
+| `NavBar`                                                          | `components/NavBar.tsx`    | Sticky header, active link via `usePathname`              |
+| `Footer`                                                          | `components/Footer.tsx`    | Tech badges + visitor badge + social links (desktop only) |
+| `BottomNav`                                                       | `components/BottomNav.tsx` | Mobile fixed bottom nav                                   |
+| `Hero`                                                            | `components/Hero.tsx`      | GSAP bounce-animated hero section                         |
+| `createSessionToken()` / `verifySessionToken()`                   | `lib/auth.ts`              | JWT session issuance/verification, cookie options         |
+| `verifyCredentials()`                                             | `lib/credentials.ts`       | bcrypt password comparison                                |
+| `buildContactHtml()` / `isValidEmail()` / `sanitizeHeaderValue()` | `lib/email.ts`             | Contact email HTML + header sanitization                  |
+| `audioUrl()`                                                      | `lib/audio.ts`             | Resolves the audio file base URL                          |
+| `cn()`                                                            | `lib/utils.ts`             | clsx + tailwind-merge helper                              |
+| `shuffleArray`, `upgradeShuffleArray`                             | `utils/Utils.ts`           | Fisher–Yates / `crypto.getRandomValues` shuffles          |
+
+---
+
+## 6. Full Tech Stack
+
+| Category   | Technology                             | Version       |
+| ---------- | -------------------------------------- | ------------- |
+| Framework  | Next.js                                | 15.5.18       |
+| Runtime    | React                                  | 19.0.0        |
+| Language   | TypeScript                             | 5             |
+| Styling    | Tailwind CSS                           | 3.4.1         |
+| Components | shadcn/ui (Radix UI)                   | —             |
+| Animation  | GSAP                                   | 3.13.0        |
+| Icons      | Lucide React                           | 0.511.0       |
+| Email      | Nodemailer                             | 9.0.1         |
+| Auth       | jose (JWT) + bcryptjs                  | 6.2.3 / 3.0.3 |
+| Testing    | Vitest                                 | 4.1.10        |
+| Formatting | Prettier + prettier-plugin-tailwindcss | 3.9.5 / 0.8.1 |
+
+---
+
+## 7. Testing
+
+Vitest runs all `**/*.test.ts` files (see `vitest.config.ts`).
+
+| File                            | Covers                            |
+| ------------------------------- | --------------------------------- |
+| `lib/auth.test.ts`              | JWT session issuance/verification |
+| `lib/credentials.test.ts`       | Admin credential verification     |
+| `lib/email.test.ts`             | Contact email HTML + sanitization |
+| `utils/Utils.test.ts`           | Array shuffle utilities           |
+| `app/lib/taxCalculator.test.ts` | Tax calculation logic             |
+
+```bash
+npm run test            # run once
+npm run test:watch       # watch mode
+npm run test:coverage     # v8 coverage report
 ```
-
----
-
-### 3.2 NavBar (`components/NavBar.tsx`)
-
-**Before**: Three static links — Home, PROJECTS, ABOUT.
-
-**After**:
-- Added nav links: **Music** (`/music-list`), **Blog** (`/blog`)
-- Unauthenticated state: Login + Signup buttons
-- Authenticated state: Username link (→ `/profile`) + Logout button
-- Subscribes to auth state via `useAuth()` hook
-
----
-
-### 3.3 Root Layout (`app/layout.tsx`)
-
-**Before**: NavBar, main content, Footer, and BottomNav only.
-
-**After**: `<AuthProvider>` wraps the entire layout, making auth context available in all pages and components.
-
-```tsx
-// After
-<AuthProvider>
-  <NavBar />
-  <main>{children}</main>
-  <Footer />
-  <BottomNav />
-</AuthProvider>
-```
-
----
-
-## 4. New Features
-
-### 4.1 Auth System (`context/AuthContext.tsx`)
-
-Client-side authentication using React Context API and `localStorage`.
-
-**Storage keys**:
-- `localStorage["app_users"]` — array of all registered users (JSON)
-- `localStorage["app_session"]` — current logged-in user (JSON)
-
-**Provided API**:
-| Function | Description |
-|---|---|
-| `login(username, password)` | Validates credentials, saves session, returns success boolean |
-| `logout()` | Clears session and resets user state |
-| `register(username, email, password)` | Validates uniqueness, creates new user |
-| `deleteAccount()` | Removes current user from storage and clears session |
-
-**Default account**: On first load, if no `admin` user exists, one is seeded automatically (`admin` / `password`).
-
-> ⚠️ **Security note**: Passwords are stored in plaintext in localStorage. Production deployments require server-side authentication with bcrypt hashing and proper session management (JWT or cookie-based sessions).
-
----
-
-### 4.2 Signup Page (`app/signup/page.tsx`)
-
-| Item | Detail |
-|---|---|
-| Route | `/signup` |
-| Fields | Username, Email, Password, Confirm Password |
-| Validation | Min 6-char password, passwords must match, duplicate username/email check |
-| On success | Shows confirmation message, redirects to `/login` after 1.5s |
-
----
-
-### 4.3 Profile Page (`app/profile/page.tsx`)
-
-| Item | Detail |
-|---|---|
-| Route | `/profile` |
-| Displays | Username, email, registration date |
-| Access control | Redirects to `/login` if not authenticated |
-| Logout | Clears session, navigates home |
-| Account deletion | Confirmation modal requiring user to re-type their username before deleting |
-
----
-
-### 4.4 Music List (`data/musicData.ts`, `app/music-list/page.tsx`)
-
-**Data design**: All playlists live in `data/musicData.ts` as a single source of truth. Adding a new date and tracks requires only editing that file.
-
-```typescript
-type Playlist = {
-  date: string;       // YYYY-MM-DD
-  label: string;      // Korean date label
-  description: string;
-  tracks: Track[];
-};
-
-type Track = {
-  id: string;
-  number: number;    // Display number
-  title: string;
-  artist: string;
-  bpm: number;
-  genre: string;
-  src: string;       // Audio file URL (AWS S3)
-};
-```
-
-**UI features**:
-- Pill-style date selector buttons to switch playlists
-- Table view: `#`, Title, Artist, BPM columns
-- Sticky audio player: play/pause/stop, click-to-seek progress bar
-- Currently playing track row highlighted + animated "재생중" indicator
-
-**Available dates**: 2025-01-10, 2025-02-14, 2025-03-01 (3–6 tracks each)
-
----
-
-### 4.5 Blog (`data/blogPosts.ts`, `app/blog/`, `app/blog/[slug]/`)
-
-**Data design**: All posts stored in `data/blogPosts.ts`.
-
-```typescript
-type BlogPost = {
-  slug: string;       // URL path identifier
-  title: string;      // English title
-  titleKo: string;    // Korean title
-  date: string;       // YYYY-MM-DD
-  author: string;
-  tags: string[];
-  summary: string;    // English summary
-  summaryKo: string;  // Korean summary
-  content: string;    // Markdown-style body text
-};
-```
-
-**Listing page** (`/blog`): Posts sorted newest-first; shows bilingual title, Korean summary, date, author, tags.
-
-**Detail page** (`/blog/[slug]`):
-- Statically generated at build time via `generateStaticParams`
-- Markdown-style rendering (headings, lists, paragraphs)
-- "← Back to blog" navigation link
-
-**Seed posts**: 5 posts covering project kickoff, auth implementation, music list, blog system, and tax calculator.
-
----
-
-## 5. Existing Features (Unchanged)
-
-### 5.1 Home / Hero (`app/page.tsx`, `components/Hero.tsx`)
-
-- GSAP animation: `bounce.out` ease + `yoyo: true, repeat: -1` on the headline
-- CTAs: "이력서 보기" (`/resume.pdf`) and "프로젝트 보기" (`/projects`)
-
----
-
-### 5.2 DJ Play List (`app/DJ_Play_List/page.tsx`)
-
-Standalone audio player that streams Swing Jazz tracks from AWS S3.
-
-| Feature | Detail |
-|---|---|
-| Controls | Play / Pause / Stop buttons |
-| Progress bar | Clickable seek |
-| Time display | Current position / total duration |
-| Track list | Title, artist, BPM, genre per row |
-
-**Track list**:
-| # | Title | Artist | BPM |
-|---|---|---|---|
-| 1 | Non Stop Flight | Artie Shaw | 200 |
-| 2 | Little Brown Jug | Hot Sugar Band | 195 |
-| 3 | Georgianna | Naomi & Her Handsome Devils | 198 |
-| 4 | Sugar Foot Stomp | Benny Goodman | 195 |
-| 5 | It Don't Mean a Thing | Hop's Trio | 200 |
-| 6 | Jumpin at The Woodside | Count Basie | 240 |
-
-> 📌 `/DJ_Play_List` continues to exist as a standalone player. The new `/music-list` page manages date-indexed data separately.
-
----
-
-### 5.3 Tax Calculator (`app/tax-calculator/page.tsx`, `app/lib/taxCalculator.ts`, `app/config/taxRates2025.ts`)
-
-A 2025 Korean income tax calculator.
-
-**Calculated items**:
-| Item | Basis |
-|---|---|
-| Income Tax | Progressive rate (6%–45%) |
-| Local Income Tax | 10% of income tax |
-| National Pension | 4.5% of annual salary |
-| Health Insurance | 3.545% of annual salary |
-| Employment Insurance | 0.9% of annual salary |
-
-**Income tax brackets** (from `taxRates2025.ts`):
-
-| Taxable Income | Rate | Deduction |
-|---|---|---|
-| Up to ₩12M | 6% | ₩0 |
-| ₩12M – ₩46M | 15% | ₩1.08M |
-| ₩46M – ₩88M | 24% | ₩5.22M |
-| ₩88M – ₩150M | 35% | ₩14.9M |
-| ₩150M – ₩300M | 38% | ₩19.4M |
-| ₩300M – ₩500M | 40% | ₩25.4M |
-| Over ₩500M | **45%** | ₩35.4M |
-
-**UI features**: +/- buttons for ₩10K/₩100K/₩1M increments, monthly/annual toggle, social insurance toggle.
-
----
-
-### 5.4 Contact Form (`app/contact/page.tsx`, `app/api/send-email/route.ts`)
-
-Email submission via SMTP.
-
-**Frontend** (`contact/page.tsx`):
-- Fields: Title, Sender email, Message body
-- Real-time HTML email preview section
-- Send status feedback
-
-**Backend API** (`POST /api/send-email`):
-- Sends email using Nodemailer with configurable SMTP
-- Required env vars: `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `RECEIVER_EMAIL`
-
----
-
-### 5.5 Projects Page (`app/projects/page.tsx`)
-
-Card-style link list to:
-- DJ Play List (internal)
-- GitHub (`github.com/jang4292`)
-- LinkedIn
-- YouTube
-- About (internal)
-
----
-
-### 5.6 Admin Dashboard (`app/admin/`)
-
-| Route | Description |
-|---|---|
-| `/admin` | Dashboard home |
-| `/admin/users` | User management (stub) |
-
-Desktop sidebar + mobile Sheet drawer using shadcn/ui `Button` and `Sheet` components.
-
----
-
-### 5.7 Shared Components
-
-| Component | File | Description |
-|---|---|---|
-| `NavBar` | `components/NavBar.tsx` | Sticky header with auth-aware links |
-| `Footer` | `components/Footer.tsx` | Tech stack badges + social icons (desktop only) |
-| `BottomNav` | `components/BottomNav.tsx` | Fixed mobile nav (Home, Projects, About, Contact) |
-| `Hero` | `components/Hero.tsx` | GSAP bounce-animated intro section |
-
----
-
-### 5.8 Utilities
-
-| File | Function | Description |
-|---|---|---|
-| `utils/Utils.ts` | `shuffleArray<T>()` | Fisher-Yates shuffle using `Math.random` |
-| `utils/Utils.ts` | `upgradeShuffleArray<T>()` | Cryptographically secure shuffle using `crypto.getRandomValues` |
-| `lib/utils.ts` | `cn(...inputs)` | Combines clsx + tailwind-merge for conditional Tailwind classes |
-
----
-
-## 6. Full Technology Stack
-
-| Category | Technology | Version |
-|---|---|---|
-| Framework | Next.js | 15.5.14 |
-| Runtime | React | 19.0.0 |
-| Language | TypeScript | 5 |
-| Styling | Tailwind CSS | 3.4.1 |
-| UI Components | shadcn/ui (Radix UI) | — |
-| Animation | GSAP | 3.13.0 |
-| Icons | Lucide React | 0.511.0 |
-| Email | Nodemailer | 7.0.13 |
-| State Management | React Context API | — |
-| Client Storage | localStorage | — |
-
----
-
-## 7. Full Route Map
-
-| Route | Description | Status |
-|---|---|---|
-| `/` | Home / Hero | ✅ Live |
-| `/login` | Login | ✅ Modified |
-| `/signup` | Registration | ✅ New |
-| `/profile` | Profile & account deletion | ✅ New |
-| `/music-list` | Date-based music list | ✅ New |
-| `/blog` | Blog listing | ✅ New |
-| `/blog/[slug]` | Blog post detail | ✅ New |
-| `/DJ_Play_List` | Audio player | ✅ Unchanged |
-| `/tax-calculator` | Tax calculator | ✅ Unchanged |
-| `/contact` | Contact form | ✅ Unchanged |
-| `/projects` | External links | ✅ Unchanged |
-| `/about` | About (empty) | ⚠️ Stub |
-| `/admin` | Admin dashboard | ⚠️ Scaffold |
-| `/admin/users` | User management | ⚠️ Scaffold |
-| `/api/send-email` | Email send API | ✅ Unchanged |
 
 ---
 
 ## 8. Known Limitations & Future Work
 
-1. **Auth security**: Passwords stored in plaintext in localStorage (demo only). Production requires server-side auth with bcrypt.
-2. **No database**: All data is static files. A real service requires a database (e.g. PostgreSQL, MongoDB).
-3. **No tests**: No testing infrastructure configured (Jest/Vitest).
-4. **About page**: Empty — implementation pending.
-5. **Admin dashboard**: Scaffold only, no real functionality.
-6. **Visitor counter**: Footer Today/Total counters are hardcoded at 0. Need a real counter API.
-7. **Email**: Contact form requires SMTP env vars to function.
-8. **Stray `debugger` in contact.tsx**: Line 42 contains a `debugger` statement; should be removed before production deployment.
+1. **Single admin account** — with no user database, there is no multi-user
+   or role-based access control.
+2. **Static content** — music and blog data live in static files checked into
+   the repo; a real CMS/database would be needed for non-developer content
+   editing.
+3. **Email** — the contact form fails to send if SMTP env vars aren't set.
+4. **DJ Play List audio** — default tracks depend on a specific AWS S3
+   bucket; only the base URL is configurable, via
+   `NEXT_PUBLIC_AUDIO_BASE_URL`.
+5. **Visitor counter** — depends on the availability of a free third-party
+   badge service.

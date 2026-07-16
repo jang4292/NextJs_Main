@@ -1,83 +1,11 @@
-"use client";
+import { Metadata } from "next";
+import LoginClient from "./LoginClient";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
+export const metadata: Metadata = {
+  title: "Login",
+  description: "계정 로그인 페이지",
+};
 
 export default function LoginPage() {
-  const router = useRouter();
-  const { login } = useAuth();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    const success = login(username, password);
-    if (success) {
-      router.push("/");
-    } else {
-      setError("아이디 또는 비밀번호가 올바르지 않습니다.");
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-md w-full bg-white p-8 rounded-md shadow-md"
-        aria-label="로그인 폼"
-      >
-        <h2 className="text-2xl font-bold mb-6 text-center">로그인</h2>
-
-        {error && (
-          <p className="mb-4 text-red-600 text-center" role="alert">
-            {error}
-          </p>
-        )}
-
-        <label htmlFor="username" className="block mb-2 font-medium">
-          아이디
-        </label>
-        <input
-          id="username"
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-          className="w-full mb-4 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-          autoComplete="username"
-        />
-
-        <label htmlFor="password" className="block mb-2 font-medium">
-          비밀번호
-        </label>
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full mb-6 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-          autoComplete="current-password"
-        />
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
-        >
-          로그인
-        </button>
-
-        <p className="mt-4 text-center text-sm text-gray-600">
-          계정이 없으신가요?{" "}
-          <Link href="/signup" className="text-blue-600 hover:underline font-medium">
-            회원가입
-          </Link>
-        </p>
-      </form>
-    </div>
-  );
+  return <LoginClient />;
 }

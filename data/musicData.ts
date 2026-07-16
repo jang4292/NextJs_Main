@@ -1,12 +1,7 @@
-export type Track = {
-  id: string;
-  number: number;
-  title: string;
-  artist: string;
-  bpm: number;
-  genre: string;
-  src: string;
-};
+import type { PlaylistTrack } from "@/types/track";
+import { audioUrl } from "@/lib/audio";
+
+export type Track = PlaylistTrack;
 
 export type Playlist = {
   date: string; // YYYY-MM-DD
@@ -28,7 +23,7 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Artie Shaw",
         bpm: 200,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B200%5D+Artie+Shaw+-+Non+Stop+Flight.flac",
+        src: audioUrl("SwingJazz/%5B200%5D+Artie+Shaw+-+Non+Stop+Flight.flac"),
       },
       {
         id: "1-2",
@@ -37,7 +32,9 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Hot Sugar Band",
         bpm: 195,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B195%5D+Hot+Sugar+Band+-+Little+Brown+Jug.mp3",
+        src: audioUrl(
+          "SwingJazz/%5B195%5D+Hot+Sugar+Band+-+Little+Brown+Jug.mp3",
+        ),
       },
       {
         id: "1-3",
@@ -46,7 +43,9 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Naomi & Her Handsome Devils",
         bpm: 198,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B198%5D+Naomi+%26+Her+Handsome+Devils+-+Georgianna.mp3",
+        src: audioUrl(
+          "SwingJazz/%5B198%5D+Naomi+%26+Her+Handsome+Devils+-+Georgianna.mp3",
+        ),
       },
       {
         id: "1-4",
@@ -55,7 +54,9 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Benny Goodman",
         bpm: 195,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B195%5D+Benny+Goodman+-+Sugar+Foot+Stomp.mp3",
+        src: audioUrl(
+          "SwingJazz/%5B195%5D+Benny+Goodman+-+Sugar+Foot+Stomp.mp3",
+        ),
       },
       {
         id: "1-5",
@@ -64,7 +65,9 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Hop's Trio",
         bpm: 200,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B200%5D+Hop's+Trio+-+It+Don't+Mean+a+Thing.mp3",
+        src: audioUrl(
+          "SwingJazz/%5B200%5D+Hop's+Trio+-+It+Don't+Mean+a+Thing.mp3",
+        ),
       },
       {
         id: "1-6",
@@ -73,7 +76,9 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Count Basie",
         bpm: 240,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B240%5D+Count+Basie+-+Jumpin+at+The+Woodside.mp3",
+        src: audioUrl(
+          "SwingJazz/%5B240%5D+Count+Basie+-+Jumpin+at+The+Woodside.mp3",
+        ),
       },
     ],
   },
@@ -89,7 +94,9 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Hot Sugar Band",
         bpm: 195,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B195%5D+Hot+Sugar+Band+-+Little+Brown+Jug.mp3",
+        src: audioUrl(
+          "SwingJazz/%5B195%5D+Hot+Sugar+Band+-+Little+Brown+Jug.mp3",
+        ),
       },
       {
         id: "2-2",
@@ -98,7 +105,9 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Hop's Trio",
         bpm: 200,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B200%5D+Hop's+Trio+-+It+Don't+Mean+a+Thing.mp3",
+        src: audioUrl(
+          "SwingJazz/%5B200%5D+Hop's+Trio+-+It+Don't+Mean+a+Thing.mp3",
+        ),
       },
       {
         id: "2-3",
@@ -107,7 +116,9 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Naomi & Her Handsome Devils",
         bpm: 198,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B198%5D+Naomi+%26+Her+Handsome+Devils+-+Georgianna.mp3",
+        src: audioUrl(
+          "SwingJazz/%5B198%5D+Naomi+%26+Her+Handsome+Devils+-+Georgianna.mp3",
+        ),
       },
     ],
   },
@@ -123,7 +134,9 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Benny Goodman",
         bpm: 195,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B195%5D+Benny+Goodman+-+Sugar+Foot+Stomp.mp3",
+        src: audioUrl(
+          "SwingJazz/%5B195%5D+Benny+Goodman+-+Sugar+Foot+Stomp.mp3",
+        ),
       },
       {
         id: "3-2",
@@ -132,7 +145,9 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Count Basie",
         bpm: 240,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B240%5D+Count+Basie+-+Jumpin+at+The+Woodside.mp3",
+        src: audioUrl(
+          "SwingJazz/%5B240%5D+Count+Basie+-+Jumpin+at+The+Woodside.mp3",
+        ),
       },
       {
         id: "3-3",
@@ -141,7 +156,7 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Artie Shaw",
         bpm: 200,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B200%5D+Artie+Shaw+-+Non+Stop+Flight.flac",
+        src: audioUrl("SwingJazz/%5B200%5D+Artie+Shaw+-+Non+Stop+Flight.flac"),
       },
       {
         id: "3-4",
@@ -150,7 +165,9 @@ export const PLAYLISTS: Playlist[] = [
         artist: "Hot Sugar Band",
         bpm: 195,
         genre: "Swing Jazz - Balboa",
-        src: "https://audiofilestudy.s3.ap-northeast-2.amazonaws.com/SwingJazz/%5B195%5D+Hot+Sugar+Band+-+Little+Brown+Jug.mp3",
+        src: audioUrl(
+          "SwingJazz/%5B195%5D+Hot+Sugar+Band+-+Little+Brown+Jug.mp3",
+        ),
       },
     ],
   },
