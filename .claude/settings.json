@@ -25,7 +25,16 @@
       "Bash(echo \"started with pid $!\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
       "Bash(curl -sI http://localhost:3001)",
-      "Bash(kill 6762)"
+      "Bash(kill 6762)",
+      "Bash(npx husky *)",
+      "Bash(grep -n '\"prepare\"' /Users/yunhwanjang/Developer/GitHub/NextJs_Main/package.json; rm -f /Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky/pre-commit)",
+      "Bash(chmod +x /Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky/pre-push)",
+      "Bash(npm ci *)",
+      "Bash(git config *)",
+      "Bash(bash .husky/pre-push)"
+    ],
+    "additionalDirectories": [
+      "/Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky"
     ]
   }
 }
