@@ -1,6 +1,6 @@
 # YH Jang — 포트폴리오 & 유틸리티
 
-**Next.js 15 · React 19 · TypeScript · Tailwind CSS**
+**Next.js 16 · React 19 · TypeScript · Tailwind CSS**
 
 개인 포트폴리오이자 유틸리티 도구 모음 웹사이트입니다.
 음원 리스트, 개발 블로그, 세금 계산기, DJ 플레이리스트, 이메일 문의, 세션 기반 관리자 대시보드 등의 기능을 포함합니다.
@@ -26,13 +26,13 @@
 
 ## 기술 스택
 
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
-- **Language**: TypeScript 5
-- **Styling**: Tailwind CSS 3 + [shadcn/ui](https://ui.shadcn.com/)
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Language**: TypeScript 7 compiler + TypeScript 6 tooling API compatibility
+- **Styling**: Tailwind CSS 4 + [shadcn/ui](https://ui.shadcn.com/)
 - **Animation**: [GSAP](https://gsap.com/)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Email**: [Nodemailer](https://nodemailer.com/)
-- **Auth**: [jose](https://github.com/panva/jose) (JWT) + `bcryptjs`, httpOnly 쿠키 세션, `middleware.ts`로 `/admin/**` 보호
+- **Auth**: [jose](https://github.com/panva/jose) (JWT) + `bcryptjs`, httpOnly 쿠키 세션, `proxy.ts`로 `/admin/**` 보호
 - **Testing**: [Vitest](https://vitest.dev/)
 - **Formatting**: Prettier (+ `prettier-plugin-tailwindcss`)
 
@@ -89,7 +89,7 @@ SESSION_SECRET=<32바이트 랜덤 base64>  # openssl rand -base64 32
 ├── data/                     # 정적 데이터 (음원, 블로그 게시글)
 ├── types/                    # 공통 타입 정의
 ├── utils/                    # 배열 셔플 유틸리티
-├── middleware.ts             # /admin/** 세션 보호
+├── proxy.ts                  # /admin/** 세션 보호
 └── docs/                     # 문서 (아키텍처, 개발 보고서)
 ```
 
@@ -138,7 +138,7 @@ NEXT_PUBLIC_AUDIO_BASE_URL=https://audiofilestudy.s3.ap-northeast-2.amazonaws.co
 npm run test          # Vitest 실행
 npm run test:coverage  # 커버리지 리포트
 npm run lint           # ESLint
-npm run typecheck      # tsc --noEmit
+npm run typecheck      # next typegen + tsc --noEmit
 npm run format         # Prettier로 전체 포맷
 npm run format:check   # 포맷 확인만 (CI용)
 ```

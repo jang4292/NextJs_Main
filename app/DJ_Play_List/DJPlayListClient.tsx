@@ -118,6 +118,11 @@ export default function DJPlayListClient() {
   const current = tracks.find((t) => t.id === currentId) ?? null;
   const currentIndex = tracks.findIndex((t) => t.id === currentId);
 
+  function resetProgress() {
+    setCurrentTime(0);
+    setDuration(0);
+  }
+
   // ---- Revoke Object URLs on unmount to prevent memory leaks ----
   useEffect(() => {
     return () => {
@@ -168,8 +173,6 @@ export default function DJPlayListClient() {
     if (current) {
       audio.src = current.src;
       audio.load();
-      setCurrentTime(0);
-      setDuration(0);
     } else {
       audio.pause();
       audio.src = "";
@@ -208,6 +211,7 @@ export default function DJPlayListClient() {
         nextIndex = 0;
       }
     }
+    resetProgress();
     setCurrentId(tracks[nextIndex].id);
     setPlaying(true);
   }
@@ -222,6 +226,7 @@ export default function DJPlayListClient() {
     }
     let prevIndex = currentIndex - 1;
     if (prevIndex < 0) prevIndex = tracks.length - 1;
+    resetProgress();
     setCurrentId(tracks[prevIndex].id);
     setPlaying(true);
   }
@@ -230,6 +235,7 @@ export default function DJPlayListClient() {
     if (currentId === t.id) {
       setPlaying((p) => !p);
     } else {
+      resetProgress();
       setCurrentId(t.id);
       setPlaying(true);
     }
@@ -252,6 +258,7 @@ export default function DJPlayListClient() {
     });
     if (currentId === id) {
       handleStop();
+      resetProgress();
       setCurrentId(null);
     }
   }
@@ -285,9 +292,7 @@ export default function DJPlayListClient() {
     try {
       const parsed = new URL(trimmed);
       if (parsed.protocol !== "https:") {
-        setUrlError(
-          "https URL만 허용됩니다. / Only https URLs are allowed.",
-        );
+        setUrlError("https URL만 허용됩니다. / Only https URLs are allowed.");
         return;
       }
       const normalizedUrl = parsed.href;
@@ -368,7 +373,7 @@ export default function DJPlayListClient() {
             className="w-full cursor-pointer accent-blue-600"
             aria-label="Seek"
           />
-          <div className="flex select-none justify-between text-xs text-gray-500">
+          <div className="flex justify-between text-xs text-gray-500 select-none">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
@@ -388,6 +393,7 @@ export default function DJPlayListClient() {
           <button
             onClick={() => {
               if (!current && tracks.length > 0) {
+                resetProgress();
                 setCurrentId(tracks[0].id);
                 setPlaying(true);
               } else {
@@ -453,7 +459,7 @@ export default function DJPlayListClient() {
             placeholder="Audio URL (https://...)"
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
-            className="w-full rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full rounded border px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
           />
           <div className="flex gap-2">
             <input
@@ -461,14 +467,14 @@ export default function DJPlayListClient() {
               placeholder="Title (optional)"
               value={urlTitle}
               onChange={(e) => setUrlTitle(e.target.value)}
-              className="flex-1 rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="flex-1 rounded border px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
             />
             <input
               type="text"
               placeholder="Artist (optional)"
               value={urlArtist}
               onChange={(e) => setUrlArtist(e.target.value)}
-              className="flex-1 rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="flex-1 rounded border px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
             />
           </div>
           {urlError && <p className="text-xs text-red-500">{urlError}</p>}
