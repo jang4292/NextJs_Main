@@ -2,9 +2,9 @@
 
 ## System Overview
 
-Next.js 15 App Router application — no external database. Admin authentication
+Next.js 16 App Router application — no external database. Admin authentication
 is a signed JWT session stored in an httpOnly cookie, checked by
-`middleware.ts` on every `/admin/**` request. All other domain data (music
+`proxy.ts` on every `/admin/**` request. All other domain data (music
 playlists, blog posts, tax rates) lives in static, typed TypeScript files.
 
 ---
@@ -150,9 +150,9 @@ playlists, blog posts, tax rates) lives in static, typed TypeScript files.
 │
 ├── types/track.ts                  # Track / PlaylistTrack types
 ├── utils/Utils.ts                  # shuffleArray / upgradeShuffleArray
-├── middleware.ts                   # Protects /admin/** — redirects to /login
+├── proxy.ts                        # Protects /admin/** — redirects to /login
 │
-├── styles/globals.css              # Tailwind directives + CSS variables
+├── styles/globals.css              # Tailwind import + CSS variables
 │
 └── docs/
     ├── ARCHITECTURE.md             # This file
@@ -170,7 +170,7 @@ There is exactly one admin account, configured entirely through environment
 variables (`ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`). `POST /api/auth/login`
 verifies the password with `bcryptjs` and, on success, signs a JWT
 (`lib/auth.ts`, using `jose`) into an httpOnly, `SameSite=Lax` cookie.
-`middleware.ts` verifies that cookie on every request under `/admin/**` and
+`proxy.ts` verifies that cookie on every request under `/admin/**` and
 redirects to `/login` if it is missing or invalid.
 
 - ✅ No database or third-party auth provider required
@@ -252,7 +252,7 @@ POST /api/auth/login { username, password }
 Request to /admin/**
         │
         ▼
-middleware.ts
+proxy.ts
         │
         ├─ Read admin_session cookie
         ├─ verifySessionToken() (jose.jwtVerify)

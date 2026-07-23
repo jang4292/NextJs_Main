@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const isDevelopment = process.env.NODE_ENV === "development";
+const allowedDevOrigins = ["172.30.1.60"];
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -51,8 +52,15 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  ...(isDevelopment ? { allowedDevOrigins } : {}),
   images: {
-    domains: ["img.shields.io"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "img.shields.io",
+        pathname: "/**",
+      },
+    ],
   },
   async headers() {
     return [
