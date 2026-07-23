@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const isDevelopment = process.env.NODE_ENV === "development";
+const allowedDevOrigins = ["172.30.1.60"];
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -51,6 +52,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  ...(isDevelopment ? { allowedDevOrigins } : {}),
   images: {
     remotePatterns: [
       {
