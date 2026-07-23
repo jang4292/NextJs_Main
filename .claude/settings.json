@@ -31,7 +31,25 @@
       "Bash(chmod +x /Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky/pre-push)",
       "Bash(npm ci *)",
       "Bash(git config *)",
-      "Bash(bash .husky/pre-push)"
+      "Bash(bash .husky/pre-push)",
+      "Bash(npx vitest *)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(ps -p 44922 -o pid,ppid,command)",
+      "Read(//private/tmp/**)",
+      "Bash(lsof -ti:3001 -sTCP:LISTEN)",
+      "Bash(xargs -r kill)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/games/solitaire)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/projects)",
+      "Bash(npx --no-install playwright --version)",
+      "Bash(python3 -c \"import playwright; print\\('py playwright ok'\\)\")",
+      "Bash(node -e \"require.resolve\\('playwright'\\)\")",
+      "Bash(node -e \"require.resolve\\('puppeteer'\\)\")",
+      "Read(//Users/yunhwanjang/Library/Caches/ms-playwright/**)",
+      "Bash(npm init *)",
+      "Bash(mkdir -p screenshots)",
+      "Bash(node verify.js)",
+      "Bash(node inspect.js)",
+      "Bash(node verify2.js)"
     ],
     "additionalDirectories": [
       "/Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky"
