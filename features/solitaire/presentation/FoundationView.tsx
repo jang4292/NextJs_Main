@@ -1,5 +1,6 @@
 import type { Card } from "../domain/entities/Card";
 import type { Suit } from "../domain/value-objects/Suit";
+import { registerCardEl } from "./animation/cardRegistry";
 import { CardFace } from "./CardFace";
 
 const SUIT_SYMBOL: Record<Suit, string> = {
@@ -21,7 +22,10 @@ export function FoundationView({ suit, pile, onClick }: FoundationViewProps) {
   return (
     <button
       type="button"
+      ref={(el) => topCard && registerCardEl(topCard.id, el)}
       onClick={onClick}
+      data-drop-zone="foundation"
+      data-suit={suit}
       className="aspect-[63/88] w-full appearance-none rounded-[6%] border border-dashed border-neutral-400 bg-transparent p-0"
       aria-label={`${suit} foundation, ${pile.length} cards`}
     >

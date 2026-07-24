@@ -11,7 +11,7 @@ export interface MoveResult {
   moved: boolean;
 }
 
-function getMovingCards(state: GameState, source: MoveSource): Card[] | null {
+export function getMovingCards(state: GameState, source: MoveSource): Card[] | null {
   if (source.zone === "waste") {
     const top = state.waste[state.waste.length - 1];
     return top ? [top] : null;

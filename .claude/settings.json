@@ -49,10 +49,40 @@
       "Bash(mkdir -p screenshots)",
       "Bash(node verify.js)",
       "Bash(node inspect.js)",
-      "Bash(node verify2.js)"
+      "Bash(node verify2.js)",
+      "Bash(npm test *)",
+      "Read(//usr/local/bin/**)",
+      "Bash(npx --yes chromium-cli --help)",
+      "Read(//private/tmp/claude-501/bundled-skills/**)",
+      "Bash(find / -maxdepth 4 -iname '*chromium-cli*')",
+      "Bash(mkdir -p /private/tmp/claude-501/-Users-yunhwanjang-Developer-GitHub-NextJs-Main/c7e585a3-04b1-4763-b5cc-08fccfa44ca5/scratchpad/pw)",
+      "Bash(npx playwright *)",
+      "Read(//tmp/**)",
+      "Bash(SP=/private/tmp/claude-501/-Users-yunhwanjang-Developer-GitHub-NextJs-Main/c7e585a3-04b1-4763-b5cc-08fccfa44ca5/scratchpad/pw *)",
+      "Read(//Users/yunhwanjang/**)",
+      "Bash(node drive.mjs)",
+      "Bash(node drive2.mjs)",
+      "Bash(node drive3.mjs)",
+      "Bash(node drive4.mjs)",
+      "Bash(lsof -ti:3000 -sTCP:LISTEN)",
+      "Bash(chromium-cli --help)",
+      "Read(//private/tmp/claude-501/bundled-skills/2.1.218/**)",
+      "Bash(curl -s http://localhost:3000/games/solitaire -o /dev/null -w \"%{http_code}\\\\n\")",
+      "Bash(node -e \"require\\('playwright'\\)\")",
+      "Read(//Users/yunhwanjang/.cache/**)",
+      "Bash(find ~/.npm/_npx -maxdepth 4 -iname \"playwright\" -type d 2>/dev/null)",
+      "Read(//Users/yunhwanjang/.npm/_npx/**)",
+      "Bash(NODE_PATH=/Users/yunhwanjang/.npm/_npx/e41f203b7505f1fb/node_modules node repro.mjs)",
+      "Bash(ls /Users/yunhwanjang/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/)",
+      "Read(//Users/yunhwanjang/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/**)",
+      "Bash(node repro.mjs)",
+      "Bash(npx eslint *)",
+      "Bash(node verify45.mjs)",
+      "Bash(node verify_mobile.mjs)"
     ],
     "additionalDirectories": [
-      "/Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky"
+      "/Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky",
+      "/private/tmp/claude-501/-Users-yunhwanjang"
     ]
   }
 }
