@@ -38,6 +38,24 @@ export default function Home() {
 
           <li>
             <Link
+              href="/games/2048"
+              className="block rounded-lg border bg-white p-4 transition-shadow hover:shadow-md"
+              aria-label="Open 2048 game page"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold">2048</h2>
+                  <p className="text-sm text-gray-500">
+                    타일을 합쳐 2048을 만드는 퍼즐 게임
+                  </p>
+                </div>
+                <div className="text-sm text-blue-500">→</div>
+              </div>
+            </Link>
+          </li>
+
+          <li>
+            <Link
               href="/DJ_Play_List"
               className="block rounded-lg border bg-white p-4 transition-shadow hover:shadow-md"
               aria-label="Open DJ Play List page"
