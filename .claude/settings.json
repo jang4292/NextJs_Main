@@ -78,7 +78,14 @@
       "Bash(node repro.mjs)",
       "Bash(npx eslint *)",
       "Bash(node verify45.mjs)",
-      "Bash(node verify_mobile.mjs)"
+      "Bash(node verify_mobile.mjs)",
+      "Bash(curl -sf http://localhost:3000)",
+      "Bash(break)",
+      "Bash(node /private/tmp/claude-501/-Users-yunhwanjang-Developer-GitHub-NextJs-Main/1f2755de-2bcf-4fb5-a39d-373a82ee0b67/scratchpad/verify_2048.mjs)",
+      "Bash(node verify_2048.mjs)",
+      "Bash(npm ls *)",
+      "Bash(npx --version)",
+      "Bash(node verify_alignment.mjs)"
     ],
     "additionalDirectories": [
       "/Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky",

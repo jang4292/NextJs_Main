@@ -1,0 +1,119 @@
+.board {
+  --board-bg: #bbada0;
+  --cell-bg: #cdc1b4;
+  --tile-2-bg: #eee4da;
+  --tile-2-fg: #776e65;
+  --tile-4-bg: #ede0c8;
+  --tile-4-fg: #776e65;
+  --tile-8-bg: #f2b179;
+  --tile-8-fg: #f9f6f2;
+  --tile-16-bg: #f59563;
+  --tile-16-fg: #f9f6f2;
+  --tile-32-bg: #f67c5f;
+  --tile-32-fg: #f9f6f2;
+  --tile-64-bg: #f65e3b;
+  --tile-64-fg: #f9f6f2;
+  --tile-128-bg: #edcf72;
+  --tile-128-fg: #f9f6f2;
+  --tile-256-bg: #edcc61;
+  --tile-256-fg: #f9f6f2;
+  --tile-512-bg: #edc850;
+  --tile-512-fg: #f9f6f2;
+  --tile-1024-bg: #edc53f;
+  --tile-1024-fg: #f9f6f2;
+  --tile-2048-bg: #edc22e;
+  --tile-2048-fg: #f9f6f2;
+
+  background: var(--board-bg);
+}
+
+.cell {
+  background: var(--cell-bg);
+}
+
+.tile {
+  background: var(--tile-bg, var(--tile-2-bg));
+  color: var(--tile-fg, var(--tile-2-fg));
+}
+
+.tile[data-value="2"] {
+  --tile-bg: var(--tile-2-bg);
+  --tile-fg: var(--tile-2-fg);
+}
+.tile[data-value="4"] {
+  --tile-bg: var(--tile-4-bg);
+  --tile-fg: var(--tile-4-fg);
+}
+.tile[data-value="8"] {
+  --tile-bg: var(--tile-8-bg);
+  --tile-fg: var(--tile-8-fg);
+}
+.tile[data-value="16"] {
+  --tile-bg: var(--tile-16-bg);
+  --tile-fg: var(--tile-16-fg);
+}
+.tile[data-value="32"] {
+  --tile-bg: var(--tile-32-bg);
+  --tile-fg: var(--tile-32-fg);
+}
+.tile[data-value="64"] {
+  --tile-bg: var(--tile-64-bg);
+  --tile-fg: var(--tile-64-fg);
+}
+.tile[data-value="128"] {
+  --tile-bg: var(--tile-128-bg);
+  --tile-fg: var(--tile-128-fg);
+}
+.tile[data-value="256"] {
+  --tile-bg: var(--tile-256-bg);
+  --tile-fg: var(--tile-256-fg);
+}
+.tile[data-value="512"] {
+  --tile-bg: var(--tile-512-bg);
+  --tile-fg: var(--tile-512-fg);
+}
+.tile[data-value="1024"] {
+  --tile-bg: var(--tile-1024-bg);
+  --tile-fg: var(--tile-1024-fg);
+}
+.tile[data-value="2048"] {
+  --tile-bg: var(--tile-2048-bg);
+  --tile-fg: var(--tile-2048-fg);
+}
+/* Values beyond 2048 (continued play) fall back to the .tile default above. */
+
+@keyframes tileSpawn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes tileMerge {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.spawn {
+  animation: tileSpawn 150ms ease-out;
+}
+
+.merge {
+  animation: tileMerge 150ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spawn,
+  .merge {
+    animation: none;
+  }
+}
