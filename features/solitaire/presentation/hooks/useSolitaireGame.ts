@@ -2,7 +2,7 @@
 
 import { useReducer } from "react";
 import type { GameState } from "../../domain/entities/GameState";
-import type { MoveSource } from "../../domain/entities/Move";
+import type { MoveSource, MoveTarget } from "../../domain/entities/Move";
 import type { Suit } from "../../domain/value-objects/Suit";
 import { startNewGame } from "../../application/use-cases/startNewGame";
 import { drawFromStock } from "../../application/use-cases/drawFromStock";
@@ -21,7 +21,8 @@ type Action =
   | { type: "DRAW_OR_RECYCLE" }
   | { type: "CLICK_TABLEAU"; column: number; cardIndex: number }
   | { type: "CLICK_WASTE" }
-  | { type: "CLICK_FOUNDATION"; suit: Suit };
+  | { type: "CLICK_FOUNDATION"; suit: Suit }
+  | { type: "COMMIT_MOVE"; source: MoveSource; target: MoveTarget };
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
@@ -66,6 +67,11 @@ function reducer(state: State, action: Action): State {
       return result.moved ? { game: result.state, selection: null } : { ...state, selection: null };
     }
 
+    case "COMMIT_MOVE": {
+      const result = moveCard(state.game, action.source, action.target);
+      return result.moved ? { game: result.state, selection: null } : state;
+    }
+
     default:
       return state;
   }
@@ -86,5 +92,7 @@ export function useSolitaireGame() {
       dispatch({ type: "CLICK_TABLEAU", column, cardIndex }),
     clickWaste: () => dispatch({ type: "CLICK_WASTE" }),
     clickFoundation: (suit: Suit) => dispatch({ type: "CLICK_FOUNDATION", suit }),
+    commitMove: (source: MoveSource, target: MoveTarget) =>
+      dispatch({ type: "COMMIT_MOVE", source, target }),
   };
 }
