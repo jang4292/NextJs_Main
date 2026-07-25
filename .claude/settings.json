@@ -90,7 +90,17 @@
       "Bash(mkdir -p /private/tmp/claude-501/-Users-yunhwanjang-Developer-GitHub-NextJs-Main/89d5da63-de77-4691-880b-f4b53e4b9b6e/scratchpad/pw-check)",
       "Bash(node smoke.js)",
       "Bash(node mobile.js)",
-      "Bash(node longpress.js)"
+      "Bash(node longpress.js)",
+      "Bash(lsof -i :3000 -sTCP:LISTEN -t)",
+      "Bash(npx --yes playwright --version)",
+      "Bash(npx --yes playwright install chromium --with-deps)",
+      "Bash(ls ~/Library/Caches/ms-playwright 2>&1 || echo \"no cache dir\")",
+      "Bash(find ~/.npm/_npx -maxdepth 4 -iname \"playwright*\" -type d 2>/dev/null | head -20)",
+      "Bash(NODE_PATH=/Users/yunhwanjang/.npm/_npx/e41f203b7505f1fb/node_modules node freecell-check.mjs)",
+      "Bash(ln -sf /Users/yunhwanjang/.npm/_npx/e41f203b7505f1fb/node_modules node_modules)",
+      "Bash(node freecell-check.mjs)",
+      "Bash(node freecell-mobile-check.mjs)",
+      "Bash(lsof -i:3000 -sTCP:LISTEN)"
     ],
     "additionalDirectories": [
       "/Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky",
