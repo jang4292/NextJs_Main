@@ -74,6 +74,24 @@ export default function Home() {
 
           <li>
             <Link
+              href="/games/freecell"
+              className="block rounded-lg border bg-white p-4 transition-shadow hover:shadow-md"
+              aria-label="Open FreeCell game page"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold">FreeCell</h2>
+                  <p className="text-sm text-gray-500">
+                    카드 한 벌로 즐기는 프리셀
+                  </p>
+                </div>
+                <div className="text-sm text-blue-500">→</div>
+              </div>
+            </Link>
+          </li>
+
+          <li>
+            <Link
               href="/DJ_Play_List"
               className="block rounded-lg border bg-white p-4 transition-shadow hover:shadow-md"
               aria-label="Open DJ Play List page"
