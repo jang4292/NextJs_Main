@@ -92,6 +92,24 @@ export default function Home() {
 
           <li>
             <Link
+              href="/games/sudoku"
+              className="block rounded-lg border bg-white p-4 transition-shadow hover:shadow-md"
+              aria-label="Open Sudoku game page"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold">스도쿠</h2>
+                  <p className="text-sm text-gray-500">
+                    9×9 보드에서 숫자를 채우는 클래식 스도쿠 퍼즐
+                  </p>
+                </div>
+                <div className="text-sm text-blue-500">→</div>
+              </div>
+            </Link>
+          </li>
+
+          <li>
+            <Link
               href="/DJ_Play_List"
               className="block rounded-lg border bg-white p-4 transition-shadow hover:shadow-md"
               aria-label="Open DJ Play List page"
