@@ -100,7 +100,17 @@
       "Bash(ln -sf /Users/yunhwanjang/.npm/_npx/e41f203b7505f1fb/node_modules node_modules)",
       "Bash(node freecell-check.mjs)",
       "Bash(node freecell-mobile-check.mjs)",
-      "Bash(lsof -i:3000 -sTCP:LISTEN)"
+      "Bash(lsof -i:3000 -sTCP:LISTEN)",
+      "Bash(command -v chromium-cli)",
+      "Bash(node /private/tmp/claude-501/-Users-yunhwanjang-Developer-GitHub-NextJs-Main/fd8b0fd9-2b06-44e6-a56b-2f7b85930cf4/scratchpad/verify_sudoku.mjs)",
+      "Bash(npm root *)",
+      "Bash(NODE_PATH=/Users/yunhwanjang/.npm/_npx/e41f203b7505f1fb/node_modules node verify_sudoku.mjs)",
+      "Bash(mkdir -p node_modules)",
+      "Bash(ln -sf /Users/yunhwanjang/.npm/_npx/e41f203b7505f1fb/node_modules/playwright node_modules/playwright)",
+      "Bash(ln -sf /Users/yunhwanjang/.npm/_npx/e41f203b7505f1fb/node_modules/playwright-core node_modules/playwright-core)",
+      "Bash(node verify_sudoku.mjs)",
+      "Bash(node verify_sudoku_mobile2.mjs)",
+      "Bash(git status *)"
     ],
     "additionalDirectories": [
       "/Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky",

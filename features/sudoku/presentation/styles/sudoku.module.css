@@ -1,0 +1,187 @@
+.boardWrapper {
+  position: relative;
+  width: min(92vw, 480px);
+  aspect-ratio: 1 / 1;
+  margin-inline: auto;
+  user-select: none;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  width: 100%;
+  height: 100%;
+  border: 2px solid hsl(var(--foreground) / 0.45);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background-color: hsl(var(--background));
+}
+
+.cell {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Board cells shrink below the 44px touch-target minimum on very small
+     screens - that tradeoff is intentional so the board never causes
+     horizontal scrolling. The number pad and control buttons keep the
+     44px minimum instead. */
+  font-size: clamp(13px, 3.6vw, 20px);
+  font-weight: 500;
+  cursor: pointer;
+  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--border));
+  touch-action: manipulation;
+  transition:
+    background-color 120ms ease,
+    outline-color 120ms ease,
+    transform 120ms ease;
+}
+
+.cell:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.boxRightBorder {
+  border-right: 2px solid hsl(var(--foreground) / 0.45);
+}
+
+.boxBottomBorder {
+  border-bottom: 2px solid hsl(var(--foreground) / 0.45);
+}
+
+.fixed {
+  font-weight: 700;
+  background-color: hsl(var(--muted) / 0.5);
+}
+
+.peer {
+  background-color: hsl(var(--accent) / 0.6);
+}
+
+.sameValue {
+  background-color: hsl(var(--primary) / 0.16);
+}
+
+.selected {
+  background-color: hsl(var(--primary) / 0.28);
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.error {
+  background-color: hsl(var(--destructive) / 0.18);
+  color: hsl(var(--destructive));
+  border-color: hsl(var(--destructive) / 0.6);
+  animation: cellShake 260ms ease;
+}
+
+.justInput {
+  animation: popIn 150ms ease;
+}
+
+.pauseOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius);
+  background-color: hsl(var(--background) / 0.92);
+  animation: fadeIn 180ms ease;
+  text-align: center;
+}
+
+.numberPad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+}
+
+.padButton {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+.padButton:active {
+  transform: scale(0.94);
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.82);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes cellShake {
+  10%,
+  90% {
+    transform: translateX(-3%);
+  }
+  20%,
+  80% {
+    transform: translateX(4%);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-5%);
+  }
+  40%,
+  60% {
+    transform: translateX(5%);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.winDialogOverlay {
+  animation: fadeIn 180ms ease;
+}
+
+.winDialog {
+  animation: fadeInScale 220ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell,
+  .error,
+  .justInput,
+  .pauseOverlay,
+  .padButton,
+  .winDialogOverlay,
+  .winDialog {
+    animation: none !important;
+    transition: none !important;
+  }
+}
