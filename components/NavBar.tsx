@@ -9,8 +9,15 @@ const desktopNav = [
   { label: "Music", href: "/music-list" },
   { label: "Blog", href: "/blog" },
   { label: "Projects", href: "/projects" },
+  { label: "Games", href: "/games" },
   { label: "About", href: "/about" },
 ];
+
+function isActivePath(pathname: string, href: string) {
+  return href === "/"
+    ? pathname === href
+    : pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export function NavBar() {
   const pathname = usePathname();
@@ -32,7 +39,7 @@ export function NavBar() {
               href={item.href}
               className={clsx(
                 "transition-colors hover:text-blue-600",
-                pathname === item.href &&
+                isActivePath(pathname, item.href) &&
                   "border-b-2 border-blue-600 font-semibold text-blue-700",
               )}
             >

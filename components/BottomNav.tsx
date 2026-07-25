@@ -2,26 +2,32 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Music, FolderKanban, User, Mail } from "lucide-react";
+import { Home, Music, FolderKanban, Gamepad2, User } from "lucide-react";
 import clsx from "clsx";
 
 const navItems = [
   { label: "Home", href: "/", icon: Home },
   { label: "Music", href: "/music-list", icon: Music },
   { label: "Projects", href: "/projects", icon: FolderKanban },
+  { label: "Games", href: "/games", icon: Gamepad2 },
   { label: "About", href: "/about", icon: User },
-  { label: "Contact", href: "/contact", icon: Mail },
 ];
+
+function isActivePath(pathname: string, href: string) {
+  return href === "/"
+    ? pathname === href
+    : pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-white shadow md:hidden">
+    <nav className="fixed right-0 bottom-0 left-0 z-50 border-t bg-white shadow md:hidden">
       <ul className="flex justify-around py-2">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href;
+          const isActive = isActivePath(pathname, item.href);
           return (
             <li key={item.href} className="text-center">
               <Link
