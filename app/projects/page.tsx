@@ -56,6 +56,24 @@ export default function Home() {
 
           <li>
             <Link
+              href="/games/minesweeper"
+              className="block rounded-lg border bg-white p-4 transition-shadow hover:shadow-md"
+              aria-label="Open Minesweeper game page"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold">지뢰찾기</h2>
+                  <p className="text-sm text-gray-500">
+                    9×9 보드에서 지뢰 10개를 피해 칸을 여는 클래식 퍼즐 게임
+                  </p>
+                </div>
+                <div className="text-sm text-blue-500">→</div>
+              </div>
+            </Link>
+          </li>
+
+          <li>
+            <Link
               href="/DJ_Play_List"
               className="block rounded-lg border bg-white p-4 transition-shadow hover:shadow-md"
               aria-label="Open DJ Play List page"

@@ -1,0 +1,125 @@
+.board {
+  --closed-bg: #d7dce3;
+  --closed-border: #aab2bd;
+  --revealed-bg: #f3f4f6;
+  --revealed-border: #d1d5db;
+  --mine-bg: #ef4444;
+  --count-1: #2563eb;
+  --count-2: #16a34a;
+  --count-3: #dc2626;
+  --count-4: #1e3a8a;
+  --count-5: #7f1d1d;
+  --count-6: #0d9488;
+  --count-7: #111827;
+  --count-8: #6b7280;
+
+  background: var(--closed-border);
+}
+
+.cell {
+  background: var(--closed-bg);
+  border: 1px solid var(--closed-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 100ms ease-out,
+    transform 100ms ease-out;
+}
+
+.cell:active {
+  transform: scale(0.93);
+}
+
+.cell[data-revealed="true"] {
+  background: var(--revealed-bg);
+  border-color: var(--revealed-border);
+}
+
+.cell[data-mine="true"][data-revealed="true"] {
+  background: var(--mine-bg);
+}
+
+.cell[data-count="1"] {
+  color: var(--count-1);
+}
+.cell[data-count="2"] {
+  color: var(--count-2);
+}
+.cell[data-count="3"] {
+  color: var(--count-3);
+}
+.cell[data-count="4"] {
+  color: var(--count-4);
+}
+.cell[data-count="5"] {
+  color: var(--count-5);
+}
+.cell[data-count="6"] {
+  color: var(--count-6);
+}
+.cell[data-count="7"] {
+  color: var(--count-7);
+}
+.cell[data-count="8"] {
+  color: var(--count-8);
+}
+
+@keyframes flagPop {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.cell[data-flagged="true"] {
+  animation: flagPop 150ms ease-out;
+}
+
+@keyframes boardShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.board[data-status="lost"] {
+  animation: boardShake 400ms ease-in-out;
+}
+
+@keyframes winPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 12px rgba(34, 197, 94, 0);
+  }
+}
+
+.board[data-status="won"] {
+  animation: winPulse 600ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell,
+  .cell[data-flagged="true"],
+  .board[data-status="lost"],
+  .board[data-status="won"] {
+    animation: none;
+    transition: none;
+  }
+}

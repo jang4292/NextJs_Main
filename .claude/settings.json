@@ -85,7 +85,12 @@
       "Bash(node verify_2048.mjs)",
       "Bash(npm ls *)",
       "Bash(npx --version)",
-      "Bash(node verify_alignment.mjs)"
+      "Bash(node verify_alignment.mjs)",
+      "Bash(curl -s http://localhost:3000/games/minesweeper)",
+      "Bash(mkdir -p /private/tmp/claude-501/-Users-yunhwanjang-Developer-GitHub-NextJs-Main/89d5da63-de77-4691-880b-f4b53e4b9b6e/scratchpad/pw-check)",
+      "Bash(node smoke.js)",
+      "Bash(node mobile.js)",
+      "Bash(node longpress.js)"
     ],
     "additionalDirectories": [
       "/Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky",
