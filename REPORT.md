@@ -26,7 +26,7 @@
 ## 1. 프로젝트 개요
 
 이 프로젝트는 **개발자 YH Jang(장윤환)의 개인 포트폴리오 웹사이트**입니다. 경력 소개, 프로젝트 링크,
-이메일 연락 기능, 세금 계산기, DJ 재생 목록 플레이어, 날짜 기반 음원 리스트, 개발 블로그, JWT 세션
+이메일 연락 기능, 세금 계산기, DJ 재생 목록 플레이어, 브라우저 미니게임, 날짜 기반 음원 리스트, 개발 블로그, JWT 세션
 기반 관리자 대시보드 등 다양한 기능을 포함하고 있습니다.
 
 | 항목             | 내용                                                                                                                                                          |
@@ -36,7 +36,7 @@
 | 런타임           | Node.js                                                                                                                                                       |
 | 배포 대상        | Vercel (권장)                                                                                                                                                 |
 | 사이트 타이틀    | YH Jang                                                                                                                                                       |
-| 총 페이지 수     | 12개 (`/`, `/about`, `/music-list`, `/blog`, `/blog/[slug]`, `/DJ_Play_List`, `/tax-calculator`, `/contact`, `/projects`, `/login`, `/admin`, `/admin/users`) |
+| 총 페이지 수     | 18개 (`/`, `/about`, `/music-list`, `/blog`, `/blog/[slug]`, `/DJ_Play_List`, `/tax-calculator`, `/contact`, `/projects`, `/games`, `/games/2048`, `/games/minesweeper`, `/games/solitaire`, `/games/freecell`, `/games/sudoku`, `/login`, `/admin`, `/admin/users`) |
 | 총 API 라우트 수 | 3개 (`/api/auth/login`, `/api/auth/logout`, `/api/send-email`)                                                                                                |
 | 테스트           | Vitest, 유닛 테스트 5개 파일                                                                                                                                  |
 
@@ -72,6 +72,13 @@ NextJs_Main/
 │   │   └── page.tsx            # About 페이지 (경력/기술스택/연락 링크)
 │   ├── projects/
 │   │   └── page.tsx            # 프로젝트 & 링크 목록 페이지
+│   ├── games/
+│   │   ├── page.tsx            # 미니게임 허브 페이지
+│   │   ├── 2048/page.tsx
+│   │   ├── minesweeper/page.tsx
+│   │   ├── solitaire/page.tsx
+│   │   ├── freecell/page.tsx
+│   │   └── sudoku/page.tsx
 │   ├── contact/
 │   │   ├── page.tsx            # 서버 컴포넌트 (metadata)
 │   │   └── ContactClient.tsx   # 이메일 연락 폼 (client)
@@ -267,39 +274,45 @@ NextJs_Main/
 - 그리드 레이아웃으로 프로젝트/링크 카드 표시
 - 링크 항목: DJ Play List(내부), GitHub, LinkedIn, YouTube, About(내부)
 
-### 4.4 이메일 연락 페이지 (`/contact`)
+### 4.4 게임 허브 (`/games`)
+
+- **파일:** `app/games/page.tsx`
+- `/projects`에 섞여 있던 게임 링크를 별도 `Games` 섹션으로 분류
+- 링크 항목: Solitaire, 2048, 지뢰찾기, FreeCell, 스도쿠
+
+### 4.5 이메일 연락 페이지 (`/contact`)
 
 - **파일:** `app/contact/page.tsx`(서버, metadata) + `ContactClient.tsx`(client)
 - 입력 필드: 제목, 발신자 이메일, 내용
 - POST `/api/send-email` 호출, HTML 이메일 미리보기(`dangerouslySetInnerHTML`) 지원
 
-### 4.5 세금 계산기 (`/tax-calculator`)
+### 4.6 세금 계산기 (`/tax-calculator`)
 
 - **파일:** `app/tax-calculator/page.tsx`(서버) + `TaxCalculatorClient.tsx`(client)
 - 2025년 한국 세금 기준 세후 급여 계산
 - 월급/연봉 전환, 4대보험 포함 여부, 단위별 증감 버튼(+1만/+10만/+100만원)
 - 결과: 소득세, 지방소득세, 국민연금, 건강보험료, 고용보험료, 총 공제액, **실수령액**
 
-### 4.6 DJ 재생 목록 (`/DJ_Play_List`)
+### 4.7 DJ 재생 목록 (`/DJ_Play_List`)
 
 - **파일:** `app/DJ_Play_List/page.tsx`(서버) + `DJPlayListClient.tsx`(client)
 - Swing Jazz 트랙 6곡 기본 제공, AWS S3 버킷에서 스트리밍 (`lib/audio.ts`)
 - Play/Pause/Stop, 진행바 탐색, 볼륨, Repeat/Shuffle
 - URL/로컬 파일로 트랙 추가 가능, Object URL 언마운트 시 해제
 
-### 4.7 음원 리스트 (`/music-list`)
+### 4.8 음원 리스트 (`/music-list`)
 
 - **파일:** `app/music-list/page.tsx`(서버) + `MusicListClient.tsx`(client)
 - `data/musicData.ts`에서 날짜별 플레이리스트 로드
 - 날짜 선택 pill 버튼, 트랙 테이블, 스티키 오디오 플레이어
 
-### 4.8 블로그 (`/blog`, `/blog/[slug]`)
+### 4.9 블로그 (`/blog`, `/blog/[slug]`)
 
 - `data/blogPosts.ts` 단일 파일에서 게시글 관리
 - 목록: 날짜 역순 정렬, 태그/작성자 표시
 - 상세: `generateStaticParams` 기반 SSG, 마크다운형 본문 렌더링
 
-### 4.9 관리자 대시보드 (`/admin`, `/admin/users`)
+### 4.10 관리자 대시보드 (`/admin`, `/admin/users`)
 
 - **파일:** `app/admin/layout.tsx`, `AdminLayoutClient.tsx`, `page.tsx`, `users/page.tsx`
 - 반응형 2단 레이아웃: 좌측 사이드바 + 우측 콘텐츠, shadcn/ui `Sheet`로 모바일 메뉴
@@ -307,7 +320,7 @@ NextJs_Main/
 - `/admin/users`: 환경 변수로 설정된 관리자 계정 1개를 테이블로 표시 (별도 사용자 DB 없음을 명시)
 - `middleware.ts`가 `/admin/:path*`를 세션 쿠키로 보호
 
-### 4.10 로그인 페이지 (`/login`)
+### 4.11 로그인 페이지 (`/login`)
 
 - **파일:** `app/login/page.tsx`(서버) + `LoginClient.tsx`(client)
 - 아이디/비밀번호 입력 폼, `POST /api/auth/login` 호출
@@ -339,13 +352,13 @@ RootLayout (app/layout.tsx)
 
 - **역할:** 데스크톱 전용 상단 네비게이션 (`hidden md:flex`)
 - Sticky 헤더 + 배경 블러 효과
-- 메뉴: Home, Music, Blog, Projects, About
+- 메뉴: Home, Music, Blog, Projects, Games, About
 - 활성 링크: 파란색 밑줄 (현재 pathname 비교)
 
 ### 5.3 BottomNav.tsx
 
 - **역할:** 모바일 전용 하단 네비게이션 (`md:hidden`)
-- 고정 하단 바, 5개 아이템: Home, Music, Projects, About, Contact
+- 고정 하단 바, 5개 아이템: Home, Music, Projects, Games, About
 
 ### 5.4 Hero.tsx
 
@@ -635,6 +648,8 @@ npm run test
 | `/tax-calculator`       | 세금 계산기           |
 | `/contact`              | 이메일 연락           |
 | `/projects`             | 프로젝트 & 링크 목록  |
+| `/games`                | 미니게임 허브         |
+| `/games/*`              | 개별 미니게임         |
 | `/login`                | 관리자 로그인         |
 | `/admin`                | 관리자 대시보드       |
 | `/admin/users`          | 관리자 사용자 관리    |
@@ -653,6 +668,7 @@ npm run test
 | 이메일 연락 폼 + API                                   | ✅ 완성 (환경 변수 필요) |
 | 2025년 한국 세금 계산기                                | ✅ 완성                  |
 | DJ 재생 목록 오디오 플레이어                           | ✅ 완성                  |
+| 브라우저 미니게임 허브 및 개별 게임                    | ✅ 완성                  |
 | 날짜 기반 음원 리스트                                  | ✅ 완성                  |
 | 개발 블로그 (SSG)                                      | ✅ 완성                  |
 | JWT 세션 기반 관리자 인증 + 대시보드                   | ✅ 완성                  |

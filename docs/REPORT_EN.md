@@ -11,8 +11,8 @@
 This project is a personal portfolio website built with Next.js 15 App
 Router, React 19, and TypeScript. It combines a personal portfolio with
 practical utility tools: a music playlist viewer, a development blog, a
-Korean tax calculator, a DJ playlist audio player, an email contact form, and
-a JWT-session-protected admin dashboard.
+Korean tax calculator, a DJ playlist audio player, browser mini-games, an
+email contact form, and a JWT-session-protected admin dashboard.
 
 ---
 
@@ -29,6 +29,7 @@ a JWT-session-protected admin dashboard.
 | `/tax-calculator`  | Tax calculator                 | `page.tsx` (server) + `TaxCalculatorClient.tsx`         |
 | `/contact`         | Email contact form             | `page.tsx` (server) + `ContactClient.tsx`               |
 | `/projects`        | External links                 | Server component                                        |
+| `/games`           | Mini-game hub                  | Server component                                        |
 | `/login`           | Admin login                    | `page.tsx` (server) + `LoginClient.tsx`                 |
 | `/admin`           | Admin dashboard home           | Server component, reads username from session cookie    |
 | `/admin/users`     | User management                | Server component, shows the single env-configured admin |
@@ -133,7 +134,12 @@ increment/decrement buttons for common amounts (+10K/+100K/+1M KRW).
 A collection of link cards: DJ Play List (internal), GitHub, LinkedIn,
 YouTube, About (internal).
 
-### 4.9 Admin Dashboard (`app/admin/`)
+### 4.9 Games Hub (`app/games/page.tsx`)
+
+A dedicated collection of game cards for Solitaire, 2048, Minesweeper,
+FreeCell, and Sudoku.
+
+### 4.10 Admin Dashboard (`app/admin/`)
 
 - Desktop sidebar + mobile Sheet drawer (shadcn/ui `Button`, `Sheet`)
 - `/admin`: reads the username from the session cookie for a welcome
@@ -143,7 +149,7 @@ YouTube, About (internal).
 - `AdminLayoutClient.tsx` handles logout (`POST /api/auth/logout` → redirect
   to `/login`)
 
-### 4.10 Footer Visitor Counter (`components/Footer.tsx`)
+### 4.11 Footer Visitor Counter (`components/Footer.tsx`)
 
 - Renders a live visitor count via the `visitor-badge.laobi.icu` external
   badge image, with no backend of its own

@@ -10,7 +10,7 @@
 
 본 프로젝트는 Next.js 15 App Router와 React 19, TypeScript를 기반으로 개발된 개인 포트폴리오 웹사이트입니다.
 개인 포트폴리오이자 실용적인 유틸리티 도구 모음으로서, 음원 리스트, 개발 블로그, 세금 계산기, DJ 플레이리스트,
-이메일 문의, JWT 세션 기반 관리자 대시보드 등의 기능을 제공합니다.
+브라우저 미니게임, 이메일 문의, JWT 세션 기반 관리자 대시보드 등의 기능을 제공합니다.
 
 ---
 
@@ -27,6 +27,7 @@
 | `/tax-calculator`  | 세금 계산기                       | `page.tsx`(서버) + `TaxCalculatorClient.tsx`     |
 | `/contact`         | 이메일 문의 폼                    | `page.tsx`(서버) + `ContactClient.tsx`           |
 | `/projects`        | 외부 링크 모음                    | 서버 컴포넌트                                    |
+| `/games`           | 미니게임 허브                     | 서버 컴포넌트                                    |
 | `/login`           | 관리자 로그인                     | `page.tsx`(서버) + `LoginClient.tsx`             |
 | `/admin`           | 관리자 대시보드 홈                | 서버 컴포넌트, 세션 쿠키에서 사용자명 표시       |
 | `/admin/users`     | 사용자 관리                       | 서버 컴포넌트, 환경 변수 관리자 계정 1개 표시    |
@@ -110,14 +111,18 @@ DB 없이 환경 변수 기반의 단일 관리자 계정만 존재합니다.
 
 DJ Play List(내부), GitHub, LinkedIn, YouTube, About(내부) 링크 카드 모음.
 
-### 4.9 관리자 대시보드 (`app/admin/`)
+### 4.9 게임 허브 (`app/games/page.tsx`)
+
+Solitaire, 2048, 지뢰찾기, FreeCell, 스도쿠를 별도 `Games` 섹션으로 분류한 링크 카드 모음.
+
+### 4.10 관리자 대시보드 (`app/admin/`)
 
 - 데스크탑 사이드바 + 모바일 Sheet 드로어 (shadcn/ui `Button`, `Sheet`)
 - `/admin`: 세션 쿠키에서 사용자명을 읽어 환영 메시지 표시, `/admin/users`로 이동하는 빠른 링크 카드
 - `/admin/users`: 환경 변수로 설정된 관리자 계정 1개를 테이블로 표시 (실 사용자 DB 없음을 명시)
 - `AdminLayoutClient.tsx`가 로그아웃 처리(`POST /api/auth/logout` → `/login` 이동)
 
-### 4.10 Footer 방문자 카운터 (`components/Footer.tsx`)
+### 4.11 Footer 방문자 카운터 (`components/Footer.tsx`)
 
 - 별도 백엔드/DB 없이 `visitor-badge.laobi.icu` 외부 뱃지 이미지로 실시간 방문자 수 표시
 - Vercel 서버리스 환경은 파일시스템이 휘발성이라 자체 카운터 파일 방식은 배포/인스턴스마다 초기화되므로 외부 서비스로 대체
@@ -130,7 +135,7 @@ DJ Play List(내부), GitHub, LinkedIn, YouTube, About(내부) 링크 카드 모
 | ------------------------------------- | -------------------------- | --------------------------------------------------------- |
 | `NavBar`                              | `components/NavBar.tsx`    | 상단 고정 내비게이션 (`usePathname` 기반 활성 표시)       |
 | `Footer`                              | `components/Footer.tsx`    | 기술 스택 배지 + 방문자 뱃지 + SNS 링크 (데스크탑만)      |
-| `BottomNav`                           | `components/BottomNav.tsx` | 모바일 하단 고정 내비 (Home/Music/Projects/About/Contact) |
+| `BottomNav`                           | `components/BottomNav.tsx` | 모바일 하단 고정 내비 (Home/Music/Projects/Games/About) |
 | `Hero`                                | `components/Hero.tsx`      | GSAP 바운스 애니메이션 히어로 섹션                        |
 | `createSessionToken()` 등             | `lib/auth.ts`              | JWT 세션 생성/검증, 쿠키 옵션                             |
 | `verifyCredentials()`                 | `lib/credentials.ts`       | bcrypt 비밀번호 비교                                      |
