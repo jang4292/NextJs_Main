@@ -25,6 +25,7 @@ const MAX_USERNAME_LENGTH = 100;
 const MAX_PASSWORD_LENGTH = 200;
 const INVALID_REQUEST_MESSAGE = "요청 형식이 올바르지 않습니다.";
 const INPUT_TOO_LONG_MESSAGE = "입력 길이가 너무 깁니다.";
+const SERVER_CONFIG_MESSAGE = "서버 설정 오류가 발생했습니다.";
 
 const loginIpLimiter = createRateLimiter({
   max: 10,
@@ -99,7 +100,17 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const isValid = await verifyCredentials(username, password);
+  let isValid: boolean;
+  try {
+    isValid = await verifyCredentials(username, password);
+  } catch (error) {
+    console.error("로그인 설정 오류:", error);
+    return NextResponse.json(
+      { message: SERVER_CONFIG_MESSAGE },
+      { status: 500 },
+    );
+  }
+
   if (!isValid) {
     return NextResponse.json(
       { message: "아이디 또는 비밀번호가 올바르지 않습니다." },
@@ -107,7 +118,17 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const token = await createSessionToken(username);
+  let token: string;
+  try {
+    token = await createSessionToken(username);
+  } catch (error) {
+    console.error("세션 생성 설정 오류:", error);
+    return NextResponse.json(
+      { message: SERVER_CONFIG_MESSAGE },
+      { status: 500 },
+    );
+  }
+
   const response = NextResponse.json({ message: "로그인 성공" });
   response.cookies.set(
     SESSION_COOKIE,

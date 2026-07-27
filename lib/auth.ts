@@ -1,16 +1,13 @@
 import { SignJWT } from "jose/jwt/sign";
 import { jwtVerify } from "jose/jwt/verify";
 import type { JWTPayload } from "jose";
+import { getSessionSecret } from "@/lib/env";
 
 export const SESSION_COOKIE = "admin_session";
 export const SESSION_MAX_AGE_SECONDS = 2 * 60 * 60; // 2 hours
 
 function getSecretKey(): Uint8Array {
-  const secret = process.env.SESSION_SECRET;
-  if (!secret) {
-    throw new Error("SESSION_SECRET environment variable is not set");
-  }
-  return new TextEncoder().encode(secret);
+  return new TextEncoder().encode(getSessionSecret());
 }
 
 export async function createSessionToken(username: string): Promise<string> {

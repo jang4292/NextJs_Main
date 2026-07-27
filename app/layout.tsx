@@ -1,12 +1,10 @@
 import "@/styles/globals.css";
 
-import { BottomNav } from "@/components/BottomNav";
-import Footer from "@/components/Footer";
-import { NavBar } from "@/components/NavBar";
+import { getSiteUrl } from "@/lib/env";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://example.com"),
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: "YH Jang",
     template: "YH Jang | %s",
@@ -34,11 +32,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className="flex min-h-screen flex-col bg-background text-foreground antialiased">
-        <NavBar />
-        <main className="flex-grow overflow-y-auto">{children}</main>
-        <Footer />
-        <BottomNav /> {/* 모바일 하단 전용 네비게이션 */}
+      <body className="bg-background text-foreground min-h-screen antialiased">
+        {children}
       </body>
     </html>
   );
