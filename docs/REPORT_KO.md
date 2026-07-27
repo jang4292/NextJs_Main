@@ -131,18 +131,18 @@ Solitaire, 2048, 지뢰찾기, FreeCell, 스도쿠를 별도 `Games` 섹션으�
 
 ## 5. 공통 컴포넌트 & 유틸리티
 
-| 컴포넌트/함수                         | 경로                       | 설명                                                      |
-| ------------------------------------- | -------------------------- | --------------------------------------------------------- |
-| `NavBar`                              | `components/NavBar.tsx`    | 상단 고정 내비게이션 (`usePathname` 기반 활성 표시)       |
-| `Footer`                              | `components/Footer.tsx`    | 기술 스택 배지 + 방문자 뱃지 + SNS 링크 (데스크탑만)      |
+| 컴포넌트/함수                         | 경로                       | 설명                                                    |
+| ------------------------------------- | -------------------------- | ------------------------------------------------------- |
+| `NavBar`                              | `components/NavBar.tsx`    | 상단 고정 내비게이션 (`usePathname` 기반 활성 표시)     |
+| `Footer`                              | `components/Footer.tsx`    | 기술 스택 배지 + 방문자 뱃지 + SNS 링크 (데스크탑만)    |
 | `BottomNav`                           | `components/BottomNav.tsx` | 모바일 하단 고정 내비 (Home/Music/Projects/Games/About) |
-| `Hero`                                | `components/Hero.tsx`      | GSAP 바운스 애니메이션 히어로 섹션                        |
-| `createSessionToken()` 등             | `lib/auth.ts`              | JWT 세션 생성/검증, 쿠키 옵션                             |
-| `verifyCredentials()`                 | `lib/credentials.ts`       | bcrypt 비밀번호 비교                                      |
-| `buildContactHtml()` 등               | `lib/email.ts`             | 문의 메일 HTML 생성 + 헤더 새니타이즈                     |
-| `audioUrl()`                          | `lib/audio.ts`             | 오디오 베이스 URL 해석                                    |
-| `cn()`                                | `lib/utils.ts`             | clsx + tailwind-merge 조합 유틸리티                       |
-| `shuffleArray`, `upgradeShuffleArray` | `utils/Utils.ts`           | Fisher-Yates / `crypto.getRandomValues` 기반 셔플         |
+| `Hero`                                | `components/Hero.tsx`      | GSAP 바운스 애니메이션 히어로 섹션                      |
+| `createSessionToken()` 등             | `lib/auth.ts`              | JWT 세션 생성/검증, 쿠키 옵션                           |
+| `verifyCredentials()`                 | `lib/credentials.ts`       | bcrypt 비밀번호 비교                                    |
+| `buildContactHtml()` 등               | `lib/email.ts`             | 문의 메일 HTML 생성 + 헤더 새니타이즈                   |
+| `audioUrl()`                          | `lib/audio.ts`             | 오디오 베이스 URL 해석                                  |
+| `cn()`                                | `lib/utils.ts`             | clsx + tailwind-merge 조합 유틸리티                     |
+| `shuffleArray`, `upgradeShuffleArray` | `utils/Utils.ts`           | Fisher-Yates / `crypto.getRandomValues` 기반 셔플       |
 
 ---
 

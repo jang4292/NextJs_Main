@@ -130,6 +130,24 @@ describe("POST /api/send-email", () => {
     );
   });
 
+  it("returns 500 when SMTP env is missing", async () => {
+    delete process.env.SMTP_HOST;
+
+    const response = await POST(
+      emailRequest({
+        title: "문의",
+        sender: "a@b.com",
+        content: "hello",
+      }),
+    );
+
+    await expect(response.json()).resolves.toEqual({
+      message: "메일 전송 중 오류가 발생했습니다.",
+    });
+    expect(response.status).toBe(500);
+    expect(nodemailerMock.sendMail).not.toHaveBeenCalled();
+  });
+
   it("rate limits repeated requests from an IP", async () => {
     for (let attempt = 0; attempt < 3; attempt += 1) {
       const response = await POST(

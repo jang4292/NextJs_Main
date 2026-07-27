@@ -89,6 +89,32 @@ describe("POST /api/auth/login", () => {
     expect(response.headers.get("set-cookie")).toContain("admin_session=");
   });
 
+  it("returns 500 when admin credential env is missing", async () => {
+    delete process.env.ADMIN_PASSWORD_HASH;
+
+    const response = await POST(
+      loginRequest({ username: TEST_USERNAME, password: TEST_PASSWORD }),
+    );
+
+    await expect(response.json()).resolves.toEqual({
+      message: "서버 설정 오류가 발생했습니다.",
+    });
+    expect(response.status).toBe(500);
+  });
+
+  it("returns 500 when session secret env is missing", async () => {
+    delete process.env.SESSION_SECRET;
+
+    const response = await POST(
+      loginRequest({ username: TEST_USERNAME, password: TEST_PASSWORD }),
+    );
+
+    await expect(response.json()).resolves.toEqual({
+      message: "서버 설정 오류가 발생했습니다.",
+    });
+    expect(response.status).toBe(500);
+  });
+
   it("rate limits repeated attempts for a username", async () => {
     for (let attempt = 0; attempt < 5; attempt += 1) {
       const response = await POST(

@@ -1,8 +1,10 @@
-import { cookies } from "next/headers";
 import Link from "next/link";
 import { Metadata } from "next";
 import { Users } from "lucide-react";
-import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
+import {
+  getAdminSessionUsername,
+  requireAdminSession,
+} from "@/lib/adminSession";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
@@ -10,9 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminHome() {
-  const token = (await cookies()).get(SESSION_COOKIE)?.value;
-  const session = token ? await verifySessionToken(token) : null;
-  const username = typeof session?.sub === "string" ? session.sub : "관리자";
+  const username = getAdminSessionUsername(await requireAdminSession());
 
   return (
     <div>

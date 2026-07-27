@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import {
+  getNextSelectedVocabularyWordId,
+  resolveVocabularySelection,
+} from "@/features/vocabulary/application/use-cases/selectVocabulary";
 import { vocabularyWords } from "@/features/vocabulary/data/vocabulary.data";
 import type { PartOfSpeechFilter } from "@/features/vocabulary/types/vocabulary.types";
-import { filterVocabulary } from "@/features/vocabulary/utils/filterVocabulary";
 import { VocabularyDetail } from "@/features/vocabulary/components/VocabularyDetail";
 import { VocabularyFilter } from "@/features/vocabulary/components/VocabularyFilter";
 import { VocabularyList } from "@/features/vocabulary/components/VocabularyList";
@@ -78,23 +81,20 @@ export function VocabularyPage() {
   const selectedListItemRef = useRef<HTMLButtonElement | null>(null);
   const lastInteractionRef = useRef<LastInteraction>("programmatic");
 
-  const filteredWords = filterVocabulary({
+  const {
+    filteredWords,
+    selectedWord,
+    selectedIndex,
+    canGoPrevious,
+    canGoNext,
+    previousWord,
+    nextWord,
+  } = resolveVocabularySelection({
     words: vocabularyWords,
     query: searchQuery,
     partOfSpeech: partOfSpeechFilter,
+    selectedWordId,
   });
-  const selectedWord =
-    filteredWords.find((word) => word.id === selectedWordId) ??
-    filteredWords[0] ??
-    null;
-  const selectedIndex = selectedWord
-    ? filteredWords.findIndex((word) => word.id === selectedWord.id)
-    : -1;
-  const canGoPrevious = selectedIndex > 0;
-  const canGoNext =
-    selectedIndex >= 0 && selectedIndex < filteredWords.length - 1;
-  const previousWord = canGoPrevious ? filteredWords[selectedIndex - 1] : null;
-  const nextWord = canGoNext ? filteredWords[selectedIndex + 1] : null;
   const selectedWordIdForEffect = selectedWord?.id ?? null;
 
   useEffect(() => {
@@ -117,29 +117,16 @@ export function VocabularyPage() {
     }
   }, [selectedWordIdForEffect]);
 
-  function getNextSelectedWordId(
-    query: string,
-    nextPartOfSpeech: PartOfSpeechFilter,
-    currentWordId: string | null,
-  ) {
-    const nextFilteredWords = filterVocabulary({
-      words: vocabularyWords,
-      query,
-      partOfSpeech: nextPartOfSpeech,
-    });
-
-    if (nextFilteredWords.some((word) => word.id === currentWordId)) {
-      return currentWordId;
-    }
-
-    return nextFilteredWords[0]?.id ?? null;
-  }
-
   function handleSearchQueryChange(nextQuery: string) {
     lastInteractionRef.current = "programmatic";
     setSearchQuery(nextQuery);
     setSelectedWordId((currentWordId) =>
-      getNextSelectedWordId(nextQuery, partOfSpeechFilter, currentWordId),
+      getNextSelectedVocabularyWordId({
+        words: vocabularyWords,
+        query: nextQuery,
+        partOfSpeech: partOfSpeechFilter,
+        currentWordId,
+      }),
     );
   }
 
@@ -147,7 +134,12 @@ export function VocabularyPage() {
     lastInteractionRef.current = "programmatic";
     setPartOfSpeechFilter(nextFilter);
     setSelectedWordId((currentWordId) =>
-      getNextSelectedWordId(searchQuery, nextFilter, currentWordId),
+      getNextSelectedVocabularyWordId({
+        words: vocabularyWords,
+        query: searchQuery,
+        partOfSpeech: nextFilter,
+        currentWordId,
+      }),
     );
   }
 
@@ -187,10 +179,10 @@ export function VocabularyPage() {
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8 pb-24 md:pb-8">
       <Link
-        href="/projects"
+        href="/learn"
         className="mb-6 inline-block rounded-md text-sm text-blue-600 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
       >
-        Projects로 돌아가기
+        Learn으로 돌아가기
       </Link>
 
       <header className="mb-8">

@@ -5,6 +5,7 @@ import {
   isValidEmail,
   sanitizeHeaderValue,
 } from "@/lib/email";
+import { getSmtpConfig } from "@/lib/env";
 import {
   createRateLimiter,
   getClientIp,
@@ -95,20 +96,20 @@ export async function POST(request: NextRequest) {
     const sanitizedTitle = sanitizeHeaderValue(title, MAX_TITLE_LENGTH);
     const sanitizedSender = sanitizeHeaderValue(sender, MAX_TITLE_LENGTH);
 
+    const smtpConfig = getSmtpConfig();
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST, // 'smtp.naver.com'
-      port: Number(process.env.SMTP_PORT), // 465
-      secure: process.env.SMTP_SECURE === "true", // true
+      host: smtpConfig.host,
+      port: smtpConfig.port,
+      secure: smtpConfig.secure,
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: smtpConfig.user,
+        pass: smtpConfig.pass,
       },
     });
 
-    // 메일 옵션
     const mailOptions = {
-      from: `"YH Jang Portfolio" <${process.env.SMTP_USER}>`,
-      to: process.env.RECEIVER_EMAIL, // 수신 이메일 (환경변수)
+      from: `"YH Jang Portfolio" <${smtpConfig.user}>`,
+      to: smtpConfig.receiverEmail,
       subject: `[Contact] ${sanitizedTitle}`,
       html: buildContactHtml({
         title: sanitizedTitle,

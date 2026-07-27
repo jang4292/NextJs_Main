@@ -5,15 +5,16 @@ export type BaseTrack = {
   bpm: number;
   genre: string;
   src: string;
+  number?: number;
 };
 
-/** Track used by the DJ Play List page, which also accepts local file uploads. */
+/** Playable music track, including uploaded local files. */
 export type Track = BaseTrack & {
   /** true when the src is a local Object URL that we own and must revoke */
   isObjectUrl?: boolean;
 };
 
 /** Track used by the dated Music List page, numbered within its playlist. */
-export type PlaylistTrack = BaseTrack & {
+export type PlaylistTrack = Track & {
   number: number;
 };

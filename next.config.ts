@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { legacyRedirects } from "./features/navigation/siteNavigation";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const allowedDevOrigins = ["172.30.1.60"];
@@ -69,6 +70,9 @@ const nextConfig: NextConfig = {
         headers: securityHeaders,
       },
     ];
+  },
+  async redirects() {
+    return legacyRedirects;
   },
 };
 
