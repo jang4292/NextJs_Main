@@ -38,6 +38,24 @@ export default function Home() {
 
           <li>
             <Link
+              href="/projects/english-vocabulary"
+              className="block rounded-lg border bg-white p-4 transition-shadow hover:shadow-md"
+              aria-label="Open English vocabulary learning page"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-semibold">영어 단어 학습</h2>
+                  <p className="text-sm text-gray-500">
+                    기초 영단어 50개의 뜻, 예문, 발음을 확인하는 학습 페이지
+                  </p>
+                </div>
+                <div className="text-sm text-blue-500">→</div>
+              </div>
+            </Link>
+          </li>
+
+          <li>
+            <Link
               href="/DJ_Play_List"
               className="block rounded-lg border bg-white p-4 transition-shadow hover:shadow-md"
               aria-label="Open DJ Play List page"
