@@ -1,5 +1,10 @@
 export type GameSlug =
-  "solitaire" | "2048" | "minesweeper" | "freecell" | "sudoku";
+  | "solitaire"
+  | "2048"
+  | "minesweeper"
+  | "freecell"
+  | "sudoku"
+  | "match-three";
 
 export interface GameCatalogItem {
   slug: GameSlug;
@@ -55,6 +60,15 @@ export const gameCatalog: GameCatalogItem[] = [
     href: "/tools/games/sudoku",
     ariaLabel: "Open Sudoku game page",
     instructions: "각 행, 열, 3x3 박스에 1부터 9까지 중복 없이 채웁니다.",
+    updatedAt: "2026-07-27",
+  },
+  {
+    slug: "match-three",
+    title: "3-Match",
+    description: "보석을 맞바꿔 같은 모양 3개 이상을 연결하는 퍼즐 게임",
+    href: "/tools/games/match-three",
+    ariaLabel: "Open 3-Match game page",
+    instructions: "인접한 보석을 교환해 목표 점수에 도달하세요.",
     updatedAt: "2026-07-27",
   },
 ];
