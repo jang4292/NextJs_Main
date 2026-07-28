@@ -55,6 +55,16 @@ const gameComponents = {
       loading: () => <GameLoading />,
     },
   ),
+  "match-three": dynamic(
+    () =>
+      import("@/features/games/match-three/presentation/MatchThreeGame").then(
+        (mod) => mod.MatchThreeGame,
+      ),
+    {
+      ssr: false,
+      loading: () => <GameLoading />,
+    },
+  ),
 } satisfies Record<GameSlug, ComponentType>;
 
 export function GameHost({ slug }: { slug: GameSlug }) {

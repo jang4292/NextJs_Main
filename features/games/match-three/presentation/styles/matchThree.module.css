@@ -1,0 +1,441 @@
+.board {
+  --board-gap: clamp(4px, 1.2vw, 8px);
+
+  position: relative;
+  width: min(92vw, 560px);
+  aspect-ratio: 1;
+  padding: var(--board-gap);
+  border: 1px solid rgb(212 212 212);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgb(250 250 250), rgb(229 229 229)),
+    radial-gradient(circle at 20% 20%, rgb(255 255 255 / 70%), transparent 28%);
+  box-shadow: 0 16px 40px rgb(23 23 23 / 12%);
+  touch-action: none;
+  user-select: none;
+}
+
+.cellLayer,
+.clearLayer,
+.tileLayer {
+  position: absolute;
+  inset: var(--board-gap);
+}
+
+.cellLayer {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
+  pointer-events: none;
+}
+
+.boardCell {
+  margin: calc(var(--board-gap) / 2);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgb(229 229 229 / 76%), rgb(212 212 212 / 56%));
+  box-shadow:
+    inset 0 2px 8px rgb(23 23 23 / 14%),
+    inset 0 0 0 1px rgb(163 163 163 / 42%);
+}
+
+.clearLayer {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.clearedCell {
+  position: absolute;
+  padding: calc(var(--board-gap) / 2);
+  pointer-events: none;
+}
+
+.clearedCell::before {
+  position: absolute;
+  inset: calc(var(--board-gap) / 2);
+  border-radius: 8px;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgb(20 184 166 / 22%) 0 5px,
+      rgb(20 184 166 / 8%) 5px 10px
+    ),
+    rgb(255 255 255 / 16%);
+  box-shadow:
+    inset 0 0 0 2px rgb(20 184 166 / 58%),
+    inset 0 8px 18px rgb(23 23 23 / 14%);
+  content: "";
+  animation: clearedCellPulse 420ms ease-in-out both;
+}
+
+.tileLayer {
+  overflow: visible;
+  pointer-events: none;
+}
+
+.tilePosition {
+  position: absolute;
+  z-index: 2;
+  padding: calc(var(--board-gap) / 2);
+  transform: translate3d(var(--drag-x, 0px), var(--drag-y, 0px), 0);
+  transition:
+    left 170ms ease,
+    top 170ms ease,
+    transform 90ms ease;
+  pointer-events: none;
+  will-change: left, top, transform;
+}
+
+.tilePosition.swapping {
+  z-index: 5;
+}
+
+.tilePosition.falling {
+  z-index: 4;
+  transition:
+    left 330ms ease,
+    top 330ms cubic-bezier(0.2, 0.8, 0.22, 1),
+    transform 90ms ease;
+}
+
+.tilePosition.dragging {
+  z-index: 8;
+  transition: none;
+}
+
+.tileButton {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: rgb(245 245 245);
+  box-shadow: inset 0 0 0 1px rgb(212 212 212);
+  cursor: pointer;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    opacity 150ms ease,
+    filter 150ms ease;
+  pointer-events: auto;
+}
+
+.tileButton:disabled {
+  cursor: default;
+}
+
+.tileButton:focus-visible {
+  outline: 3px solid rgb(20 184 166);
+  outline-offset: 2px;
+}
+
+.filledTile {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 45%),
+    inset 0 -8px 14px rgb(0 0 0 / 12%),
+    0 4px 10px rgb(23 23 23 / 12%);
+}
+
+.gem {
+  position: absolute;
+  inset: 16%;
+  display: block;
+  background: var(--gem-bg);
+  box-shadow:
+    inset 0 2px 5px rgb(255 255 255 / 55%),
+    inset 0 -7px 10px rgb(0 0 0 / 14%);
+}
+
+.tileButton[data-tile-type="ruby"] {
+  --gem-bg:
+    radial-gradient(circle at 32% 28%, rgb(255 255 255 / 75%), transparent 16%),
+    linear-gradient(135deg, #ef4444, #991b1b);
+  background: #fecaca;
+}
+
+.tileButton[data-tile-type="ruby"] .gem {
+  border-radius: 999px;
+}
+
+.tileButton[data-tile-type="sapphire"] {
+  --gem-bg:
+    linear-gradient(45deg, rgb(255 255 255 / 65%) 0 12%, transparent 12% 100%),
+    linear-gradient(135deg, #38bdf8, #1d4ed8);
+  background: #bfdbfe;
+}
+
+.tileButton[data-tile-type="sapphire"] .gem {
+  inset: 18%;
+  transform: rotate(45deg);
+  border-radius: 4px;
+}
+
+.tileButton[data-tile-type="emerald"] {
+  --gem-bg:
+    repeating-linear-gradient(
+      135deg,
+      rgb(255 255 255 / 35%) 0 5px,
+      transparent 5px 11px
+    ),
+    linear-gradient(135deg, #34d399, #047857);
+  background: #bbf7d0;
+}
+
+.tileButton[data-tile-type="emerald"] .gem {
+  border-radius: 24%;
+}
+
+.tileButton[data-tile-type="topaz"] {
+  --gem-bg:
+    radial-gradient(circle, rgb(255 255 255 / 76%) 0 13%, transparent 13%),
+    linear-gradient(135deg, #fde047, #ca8a04);
+  background: #fef3c7;
+}
+
+.tileButton[data-tile-type="topaz"] .gem {
+  clip-path: polygon(
+    50% 0,
+    61% 32%,
+    95% 35%,
+    68% 55%,
+    79% 88%,
+    50% 68%,
+    21% 88%,
+    32% 55%,
+    5% 35%,
+    39% 32%
+  );
+}
+
+.tileButton[data-tile-type="amethyst"] {
+  --gem-bg:
+    radial-gradient(circle at 50% 18%, rgb(255 255 255 / 65%), transparent 18%),
+    linear-gradient(135deg, #c084fc, #7e22ce);
+  background: #e9d5ff;
+}
+
+.tileButton[data-tile-type="amethyst"] .gem {
+  clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0 50%);
+}
+
+.tileButton[data-tile-type="orange"] {
+  --gem-bg:
+    repeating-radial-gradient(
+      ellipse at center,
+      rgb(255 255 255 / 42%) 0 4px,
+      transparent 4px 9px
+    ),
+    linear-gradient(135deg, #fb923c, #c2410c);
+  background: #fed7aa;
+}
+
+.tileButton[data-tile-type="orange"] .gem {
+  inset: 20% 12%;
+  border-radius: 999px;
+}
+
+.selected {
+  box-shadow:
+    0 0 0 3px rgb(20 184 166),
+    0 0 0 7px rgb(20 184 166 / 20%),
+    inset 0 1px 0 rgb(255 255 255 / 45%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.active {
+  animation: tileActive 150ms ease;
+}
+
+.invalid {
+  animation: tileInvalid 170ms ease;
+  filter: saturate(1.2);
+}
+
+.removing {
+  animation: tileRemove 300ms ease-in forwards;
+}
+
+.generated {
+  animation: tileGenerate 330ms cubic-bezier(0.2, 0.8, 0.22, 1);
+}
+
+.removing .gem {
+  filter: brightness(1.18);
+}
+
+.progressTrack {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(229 229 229);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #10b981, #0ea5e9, #f59e0b);
+  transition: width 190ms ease;
+}
+
+.scorePop {
+  position: absolute;
+  z-index: 5;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 10px 22px rgb(23 23 23 / 16%);
+  color: rgb(22 163 74);
+  font-size: 0.875rem;
+  font-weight: 800;
+  animation: scorePop 520ms ease-out forwards;
+  pointer-events: none;
+}
+
+.resultOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: rgb(255 255 255 / 72%);
+  backdrop-filter: blur(5px);
+  animation: overlayIn 150ms ease-out;
+}
+
+.resultPanel {
+  width: min(82%, 320px);
+  border: 1px solid rgb(229 229 229);
+  border-radius: 8px;
+  background: white;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 22px 48px rgb(23 23 23 / 18%);
+  animation: panelIn 180ms ease-out;
+}
+
+@keyframes tileActive {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes tileInvalid {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes tileRemove {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.08);
+    filter: brightness(1.18) saturate(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.08) rotate(18deg);
+    filter: brightness(1.35) saturate(1.2);
+  }
+}
+
+@keyframes clearedCellPulse {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  28% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0.82;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes tileGenerate {
+  from {
+    opacity: 0;
+    transform: translate(var(--generated-offset-x, 0%), var(--generated-offset-y, -100%))
+      scale(0.5);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(0, 6%) scale(1.04);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes scorePop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px) scale(0.9);
+  }
+  35% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -34px) scale(1);
+  }
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes panelIn {
+  from {
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tileButton,
+  .tilePosition,
+  .progressFill {
+    transition: none;
+  }
+
+  .active,
+  .invalid,
+  .removing,
+  .generated,
+  .clearedCell::before,
+  .scorePop,
+  .resultOverlay,
+  .resultPanel {
+    animation: none;
+  }
+}

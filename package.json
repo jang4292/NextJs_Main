@@ -7,7 +7,7 @@
     "dev": "next dev",
     "dev:turbo": "next dev --turbopack",
     "dev:network": "next dev -H 0.0.0.0 -p 3000",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "next typegen && tsc --noEmit",
