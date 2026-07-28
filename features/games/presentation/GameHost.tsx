@@ -65,6 +65,16 @@ const gameComponents = {
       loading: () => <GameLoading />,
     },
   ),
+  "arithmetic-addition": dynamic(
+    () =>
+      import(
+        "@/features/games/arithmetic-addition/presentation/ArithmeticGame"
+      ).then((mod) => mod.ArithmeticGame),
+    {
+      ssr: false,
+      loading: () => <GameLoading />,
+    },
+  ),
 } satisfies Record<GameSlug, ComponentType>;
 
 export function GameHost({ slug }: { slug: GameSlug }) {
