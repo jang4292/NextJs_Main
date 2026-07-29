@@ -16,7 +16,8 @@ describe("generateQuestions", () => {
           question.leftOperand >= 1 &&
           question.leftOperand <= 9 &&
           question.rightOperand >= 1 &&
-          question.rightOperand <= 9,
+          question.rightOperand <= 9 &&
+          question.stageId === "addition-mixed",
       ),
     ).toBe(true);
   });
@@ -52,4 +53,3 @@ describe("generateQuestions", () => {
     expect(countByDifficulty).toEqual({ easy: 3, medium: 4, hard: 3 });
   });
 });
-

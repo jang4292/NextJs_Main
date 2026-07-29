@@ -19,6 +19,7 @@ function question(
     operator: "addition",
     answer: leftOperand + rightOperand,
     difficulty,
+    stageId: "addition-mixed",
   };
 }
 
@@ -113,4 +114,3 @@ describe("calculateSessionResult", () => {
     expect(analysis.starRating).toBe(1);
   });
 });
-

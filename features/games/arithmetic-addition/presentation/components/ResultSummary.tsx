@@ -1,27 +1,42 @@
 "use client";
 
-import { RotateCcw, Stars } from "lucide-react";
+import { Home, RotateCcw, Stars } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { SessionAnalysis } from "../../domain/arithmetic.types";
+import type {
+  LearningStage,
+  SessionAnalysis,
+} from "../../domain/arithmetic.types";
+import type { LearningRecommendation } from "../../domain/learningProgress.types";
+import { OPERATOR_LABEL } from "../../domain/operatorMeta";
 import { formatElapsedTime } from "../formatElapsedTime";
+import { MistakeSummary } from "./result/MistakeSummary";
+import { RecommendationCard } from "./result/RecommendationCard";
 
 interface ResultSummaryProps {
   analysis: SessionAnalysis;
   reviewMode: boolean;
+  stage?: LearningStage;
+  recommendation?: LearningRecommendation;
   onRestart: () => void;
   onReviewWrong: () => void;
+  onBackHome?: () => void;
+  onRecommendationAction?: (recommendation: LearningRecommendation) => void;
 }
 
 export function ResultSummary({
   analysis,
   reviewMode,
+  stage,
+  recommendation,
   onRestart,
   onReviewWrong,
+  onBackHome,
+  onRecommendationAction,
 }: ResultSummaryProps) {
   return (
     <section
       className="mx-auto flex w-full max-w-[640px] flex-col gap-4 px-3 py-6 sm:px-4"
-      aria-label="덧셈 학습 결과"
+      aria-label="사칙연산 학습 결과"
     >
       <div className="rounded-lg border border-emerald-200 bg-white p-5 shadow-sm">
         <div className="flex items-start gap-3">
@@ -35,6 +50,11 @@ export function ResultSummary({
             <h2 className="mt-1 text-2xl font-bold text-neutral-950">
               끝까지 잘 해냈어요
             </h2>
+            {stage && (
+              <p className="mt-1 text-sm font-semibold text-neutral-700">
+                {OPERATOR_LABEL[stage.operator]} · {stage.title}
+              </p>
+            )}
             <p className="mt-2 text-sm text-neutral-600">
               {analysis.evaluation.message}
             </p>
@@ -51,6 +71,13 @@ export function ResultSummary({
           </span>
         </div>
       </div>
+
+      {recommendation && onRecommendationAction && (
+        <RecommendationCard
+          recommendation={recommendation}
+          onAction={onRecommendationAction}
+        />
+      )}
 
       <dl className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
         <ResultMetric label="전체 문제" value={`${analysis.totalQuestions}문제`} />
@@ -82,31 +109,10 @@ export function ResultSummary({
           최초 정답률 {Math.round(analysis.firstTryAccuracy * 100)}%
         </p>
 
-        <div className="mt-4">
-          <h4 className="text-sm font-semibold text-neutral-800">
-            틀린 문제 목록
-          </h4>
-          {analysis.wrongResults.length > 0 ? (
-            <ul className="mt-2 grid gap-2 text-sm text-neutral-700">
-              {analysis.wrongResults.map((result) => (
-                <li
-                  key={result.question.id}
-                  className="rounded-lg bg-rose-50 px-3 py-2 text-rose-950"
-                >
-                  {result.question.leftOperand} + {result.question.rightOperand} ={" "}
-                  {result.question.answer}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="mt-2 rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-900">
-              처음부터 모두 맞혔어요.
-            </p>
-          )}
-        </div>
+        <MistakeSummary wrongResults={analysis.wrongResults} />
       </div>
 
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className="grid gap-2 sm:grid-cols-3">
         <Button
           type="button"
           onClick={onRestart}
@@ -124,6 +130,17 @@ export function ResultSummary({
         >
           틀린 문제만 다시 풀기
         </Button>
+        {onBackHome && (
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={onBackHome}
+            className="min-h-11"
+          >
+            <Home aria-hidden="true" />
+            처음으로
+          </Button>
+        )}
       </div>
     </section>
   );
@@ -137,4 +154,3 @@ function ResultMetric({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-

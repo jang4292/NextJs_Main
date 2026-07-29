@@ -59,10 +59,10 @@ export function FeedbackMessage({
           <QuantityVisualizer
             leftOperand={question.leftOperand}
             rightOperand={question.rightOperand}
+            operator={question.operator}
           />
         </div>
       )}
     </div>
   );
 }
-

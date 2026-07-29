@@ -11,6 +11,10 @@ import type {
   QuestionAttempt,
   QuestionResult,
 } from "../../domain/arithmetic.types";
+import {
+  formatAnswerSentence,
+  formatTryAgainMessage,
+} from "../../domain/operatorMeta";
 
 interface ArithmeticGameState {
   status: GameStatus;
@@ -160,7 +164,7 @@ function reducer(
           feedback: {
             kind: "correct",
             title: "정답이에요!",
-            message: `${currentQuestion.leftOperand} + ${currentQuestion.rightOperand} = ${currentQuestion.answer}`,
+            message: formatAnswerSentence(currentQuestion),
           },
           streak,
           maxStreak: Math.max(state.maxStreak, streak),
@@ -177,7 +181,7 @@ function reducer(
           feedback: {
             kind: "try-again",
             title: "다시 생각해 보세요.",
-            message: `${currentQuestion.leftOperand}개와 ${currentQuestion.rightOperand}개를 합쳐 보세요.`,
+            message: formatTryAgainMessage(currentQuestion),
           },
           streak: 0,
         };
@@ -191,7 +195,7 @@ function reducer(
         feedback: {
           kind: "answer-revealed",
           title: "정답을 함께 확인해요.",
-          message: `${currentQuestion.leftOperand} + ${currentQuestion.rightOperand} = ${currentQuestion.answer}`,
+          message: formatAnswerSentence(currentQuestion),
         },
         streak: 0,
       };
@@ -246,11 +250,18 @@ export function useArithmeticGame(options: UseArithmeticGameOptions = {}) {
   );
 
   function start() {
+    startWithQuestions(createQuestions(), false);
+  }
+
+  function startWithQuestions(
+    questions: ArithmeticQuestion[],
+    reviewMode = false,
+  ) {
     dispatch({
       type: "START",
-      questions: createQuestions(),
+      questions,
       now: now(),
-      reviewMode: false,
+      reviewMode,
     });
   }
 
@@ -265,12 +276,10 @@ export function useArithmeticGame(options: UseArithmeticGameOptions = {}) {
   function startReview() {
     if (!analysis || analysis.wrongResults.length === 0) return;
 
-    dispatch({
-      type: "START",
-      questions: analysis.wrongResults.map((result) => result.question),
-      now: now(),
-      reviewMode: true,
-    });
+    startWithQuestions(
+      analysis.wrongResults.map((result) => result.question),
+      true,
+    );
   }
 
   return {
@@ -293,6 +302,7 @@ export function useArithmeticGame(options: UseArithmeticGameOptions = {}) {
     start,
     restart,
     reset,
+    startWithQuestions,
     startReview,
     inputDigit: (digit: number) => dispatch({ type: "INPUT_DIGIT", digit }),
     deleteDigit: () => dispatch({ type: "DELETE_DIGIT" }),
@@ -344,4 +354,3 @@ function createSessionFromState(
     results: state.results,
   };
 }
-

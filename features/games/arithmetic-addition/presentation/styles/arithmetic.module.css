@@ -18,7 +18,8 @@
 }
 
 .dotLeft,
-.dotRight {
+.dotRight,
+.dotRemoved {
   width: clamp(0.52rem, 2.4vw, 0.9rem);
   aspect-ratio: 1 / 1;
   border-radius: 999px;
@@ -32,6 +33,23 @@
 
 .dotRight {
   background: #f59e0b;
+}
+
+.dotRemoved {
+  background: #fda4af;
+  position: relative;
+}
+
+.dotRemoved::after {
+  content: "";
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  top: 50%;
+  height: 2px;
+  border-radius: 999px;
+  background: #be123c;
+  transform: rotate(-18deg);
 }
 
 .quantityOperator {
@@ -100,4 +118,3 @@
     transition: none !important;
   }
 }
-

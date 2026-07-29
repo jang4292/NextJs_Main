@@ -1,8 +1,35 @@
-export type Operator = "addition";
+export type Operator = "addition" | "subtraction";
+
+export type AdditionStageId =
+  | "addition-within-5"
+  | "addition-within-10"
+  | "addition-doubles"
+  | "addition-make-10"
+  | "addition-over-10"
+  | "addition-mixed";
+
+export type SubtractionStageId =
+  | "subtraction-within-5"
+  | "subtraction-within-10"
+  | "subtraction-to-zero"
+  | "subtraction-from-10"
+  | "subtraction-mixed";
+
+export type StageId = AdditionStageId | SubtractionStageId;
 
 export type Difficulty = "easy" | "medium" | "hard";
 
 export type GameStatus = "idle" | "playing" | "feedback" | "completed";
+
+export interface LearningStage {
+  id: StageId;
+  operator: Operator;
+  order: number;
+  title: string;
+  shortTitle: string;
+  description: string;
+  questionCount: number;
+}
 
 export interface ArithmeticQuestion {
   id: string;
@@ -11,6 +38,7 @@ export interface ArithmeticQuestion {
   operator: Operator;
   answer: number;
   difficulty: Difficulty;
+  stageId: StageId;
 }
 
 export interface QuestionAttempt {
