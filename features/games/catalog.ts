@@ -4,7 +4,8 @@ export type GameSlug =
   | "minesweeper"
   | "freecell"
   | "sudoku"
-  | "match-three";
+  | "match-three"
+  | "arithmetic-addition";
 
 export interface GameCatalogItem {
   slug: GameSlug;
@@ -70,6 +71,15 @@ export const gameCatalog: GameCatalogItem[] = [
     ariaLabel: "Open 3-Match game page",
     instructions: "인접한 보석을 교환해 목표 점수에 도달하세요.",
     updatedAt: "2026-07-27",
+  },
+  {
+    slug: "arithmetic-addition",
+    title: "한 자리 덧셈",
+    description: "1부터 9까지의 수를 더하며 연습하는 초등 덧셈 학습 게임",
+    href: "/tools/games/arithmetic-addition",
+    ariaLabel: "Open one-digit addition practice game page",
+    instructions: "숫자 패드로 답을 입력하고 10문제 학습을 완료합니다.",
+    updatedAt: "2026-07-28",
   },
 ];
 

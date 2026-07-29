@@ -1,0 +1,120 @@
+.quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  color: #0f172a;
+}
+
+.dotGroup {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0.7rem, 1fr));
+  gap: 0.28rem;
+  width: min(34vw, 8.5rem);
+  max-width: 8.5rem;
+  justify-items: center;
+  align-items: center;
+}
+
+.dotLeft,
+.dotRight,
+.dotRemoved {
+  width: clamp(0.52rem, 2.4vw, 0.9rem);
+  aspect-ratio: 1 / 1;
+  border-radius: 999px;
+  border: 1px solid rgb(15 23 42 / 0.12);
+  box-shadow: inset 0 -1px 0 rgb(15 23 42 / 0.18);
+}
+
+.dotLeft {
+  background: #38bdf8;
+}
+
+.dotRight {
+  background: #f59e0b;
+}
+
+.dotRemoved {
+  background: #fda4af;
+  position: relative;
+}
+
+.dotRemoved::after {
+  content: "";
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  top: 50%;
+  height: 2px;
+  border-radius: 999px;
+  background: #be123c;
+  transform: rotate(-18deg);
+}
+
+.quantityOperator {
+  flex: 0 0 auto;
+  font-size: clamp(1.2rem, 5vw, 1.8rem);
+  font-weight: 900;
+  color: #334155;
+}
+
+.numberPad {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.padButton {
+  min-width: 44px;
+  min-height: 52px;
+  touch-action: manipulation;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.padButton:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.feedback {
+  min-height: 72px;
+  border: 1px solid currentColor;
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  animation: feedbackIn 220ms ease-out;
+}
+
+.feedbackCorrect {
+  color: #047857;
+  background: #ecfdf5;
+}
+
+.feedbackTryAgain {
+  color: #92400e;
+  background: #fffbeb;
+}
+
+.feedbackRevealed {
+  color: #be123c;
+  background: #fff1f2;
+}
+
+@keyframes feedbackIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .padButton,
+  .feedback {
+    animation: none !important;
+    transition: none !important;
+  }
+}
