@@ -2,35 +2,53 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { typingContents } from "../../data/typingContents";
-import { DIFFICULTY_CONFIGS } from "../../domain/difficulty.config";
+import { CONTENT_TYPE_DIFFICULTY_CONFIGS } from "../../domain/difficulty.config";
 import { calculateScore } from "../../domain/scoring";
 import type {
   DifficultyConfig,
   DifficultyLevel,
   FallingWord,
+  PlayableContentType,
   TypingContent,
   TypingGameResult,
   TypingGameSettings,
   TypingGameStatus,
+  TypingSession,
+  TypingTargetSessionRecord,
 } from "../../domain/typing.types";
 import {
   calculateAccuracy,
   calculateCompletedCharactersPerMinute,
 } from "../../application/use-cases/calculateAccuracy";
 import { createFallingWord } from "../../application/use-cases/createFallingWord";
+import {
+  calculateAverageInputDurationMs,
+  getFastestContent,
+  getMostMistypedSessionContents,
+  getSlowestContent,
+} from "../../application/use-cases/learningRecords";
 import { selectTypingContent } from "../../application/use-cases/selectContent";
+import {
+  completeTypingTiming,
+  createTypingTimingRecord,
+  markFirstInput,
+  missTypingTiming,
+} from "../../application/use-cases/typingTiming";
+import type { TypingInputCommitEvent } from "./useTypingInput";
 import { useGameLoop } from "./useGameLoop";
 
 interface TypingGameState {
   status: TypingGameStatus;
   settings: TypingGameSettings;
   activeWords: FallingWord[];
+  targetRecords: Record<string, TypingTargetSessionRecord>;
   score: number;
   health: number;
   combo: number;
   maxCombo: number;
   correctCount: number;
   missedCount: number;
+  typoCount: number;
   typedCharacterCount: number;
   correctCharacterCount: number;
   elapsedMs: number;
@@ -51,6 +69,7 @@ export interface UseTypingGameOptions {
 const DEFAULT_SETTINGS: TypingGameSettings = {
   language: "ko",
   difficulty: "easy",
+  contentType: "word",
 };
 
 const MATCH_REMOVE_MS = 180;
@@ -66,7 +85,10 @@ export function useTypingGame({
   now = Date.now,
 }: UseTypingGameOptions = {}) {
   const [state, setState] = useState<TypingGameState>(() =>
-    createInitialState(DEFAULT_SETTINGS, getConfig("easy", compact, difficultyConfigs)),
+    createInitialState(
+      DEFAULT_SETTINGS,
+      getConfig(DEFAULT_SETTINGS.contentType, "easy", compact, difficultyConfigs),
+    ),
   );
   const stateRef = useRef(state);
   const sequenceRef = useRef(0);
@@ -89,6 +111,7 @@ export function useTypingGame({
   }, []);
 
   const currentConfig = getConfig(
+    state.settings.contentType,
     state.settings.difficulty,
     compact,
     difficultyConfigs,
@@ -103,7 +126,12 @@ export function useTypingGame({
       elapsedSyncAtRef.current = 0;
       elapsedAccumulatorRef.current = 0;
 
-      const config = getConfig(settings.difficulty, compact, difficultyConfigs);
+      const config = getConfig(
+        settings.contentType,
+        settings.difficulty,
+        compact,
+        difficultyConfigs,
+      );
       const startTime = now();
 
       setState({
@@ -133,6 +161,7 @@ export function useTypingGame({
 
   const resetToIdle = useCallback(() => {
     const config = getConfig(
+      stateRef.current.settings.contentType,
       stateRef.current.settings.difficulty,
       compact,
       difficultyConfigs,
@@ -151,19 +180,6 @@ export function useTypingGame({
       }
 
       return finishGame(currentState);
-    });
-  }, []);
-
-  const recordTypedCharacters = useCallback((count: number) => {
-    if (count <= 0) return;
-
-    setState((currentState) => {
-      if (currentState.status !== "playing") return currentState;
-
-      return {
-        ...currentState,
-        typedCharacterCount: currentState.typedCharacterCount + count,
-      };
     });
   }, []);
 
@@ -198,6 +214,7 @@ export function useTypingGame({
       const selectedContent = selectTypingContent(contents, {
         language: currentState.settings.language,
         difficulty: currentState.settings.difficulty,
+        type: currentState.settings.contentType,
         activeTexts: currentState.activeWords.map((word) => word.text),
         previousContentId: currentState.previousContentId,
         rng,
@@ -219,6 +236,10 @@ export function useTypingGame({
         return {
           ...latestState,
           activeWords: [...latestState.activeWords, nextWord],
+          targetRecords: {
+            ...latestState.targetRecords,
+            [nextWord.id]: createTargetSessionRecord(nextWord),
+          },
           previousContentId: selectedContent.id,
         };
       });
@@ -226,8 +247,44 @@ export function useTypingGame({
     [contents, rng],
   );
 
+  const recordInputCommit = useCallback((event: TypingInputCommitEvent) => {
+    if (event.typedCharacterCount <= 0 && event.mistakePositions.length === 0) {
+      return;
+    }
+
+    setState((currentState) => {
+      if (currentState.status !== "playing") return currentState;
+
+      const targetRecord = event.target
+        ? currentState.targetRecords[event.target.id]
+        : null;
+      const targetRecordUpdate = targetRecord
+        ? updateTargetRecordFromInput(targetRecord, event)
+        : null;
+      const newTypoCount = targetRecordUpdate
+        ? targetRecordUpdate.newTypoCount
+        : event.typedCharacterCount;
+
+      return {
+        ...currentState,
+        targetRecords:
+          targetRecord && targetRecordUpdate
+            ? {
+                ...currentState.targetRecords,
+                [targetRecord.targetId]: targetRecordUpdate.record,
+              }
+            : currentState.targetRecords,
+        typedCharacterCount:
+          currentState.typedCharacterCount + event.typedCharacterCount,
+        correctCharacterCount:
+          currentState.correctCharacterCount + event.correctCharacterCount,
+        typoCount: currentState.typoCount + newTypoCount,
+      };
+    });
+  }, []);
+
   const matchWord = useCallback(
-    (word: FallingWord) => {
+    (word: FallingWord, session?: TypingSession) => {
       setState((currentState) => {
         if (currentState.status !== "playing") return currentState;
 
@@ -237,17 +294,24 @@ export function useTypingGame({
         );
         if (!targetWord) return currentState;
 
+        const completedAt = session?.completedAt ?? currentState.elapsedMs;
         const nextCombo = currentState.combo + 1;
         const nextActiveWords = currentState.activeWords.map((candidate) =>
           candidate.id === targetWord.id
             ? { ...candidate, status: "matched" as const }
             : candidate,
         );
+        const nextTargetRecords = markTargetRecordCompleted(
+          currentState.targetRecords,
+          targetWord,
+          completedAt,
+        );
         scheduleTimeout(() => removeWord(targetWord.id), MATCH_REMOVE_MS);
 
         return {
           ...currentState,
           activeWords: nextActiveWords,
+          targetRecords: nextTargetRecords,
           score:
             currentState.score +
             calculateScore({
@@ -257,8 +321,6 @@ export function useTypingGame({
           combo: nextCombo,
           maxCombo: Math.max(currentState.maxCombo, nextCombo),
           correctCount: currentState.correctCount + 1,
-          correctCharacterCount:
-            currentState.correctCharacterCount + targetWord.text.length,
         };
       });
     },
@@ -279,6 +341,11 @@ export function useTypingGame({
         ...currentState,
         activeWords: currentState.activeWords.filter(
           (word) => word.id !== wordId,
+        ),
+        targetRecords: markTargetRecordsMissed(
+          currentState.targetRecords,
+          [targetWord],
+          currentState.elapsedMs,
         ),
         health: nextHealth,
         combo: 0,
@@ -342,6 +409,11 @@ export function useTypingGame({
             activeWords: latestState.activeWords.filter(
               (word) => !missedIds.has(word.id),
             ),
+            targetRecords: markTargetRecordsMissed(
+              latestState.targetRecords,
+              missedActiveWords,
+              projectedElapsedMs,
+            ),
             health: nextHealth,
             combo: 0,
             missedCount: latestState.missedCount + missedActiveWords.length,
@@ -354,16 +426,16 @@ export function useTypingGame({
       }
 
       const config = getConfig(
+        currentState.settings.contentType,
         currentState.settings.difficulty,
         compact,
         difficultyConfigs,
       );
-      const shouldSpawnImmediately =
-        currentState.activeWords.filter((word) => word.status === "active")
-          .length === 0;
-      const canSpawn =
-        currentState.activeWords.filter((word) => word.status === "active")
-          .length < config.maxActiveWords;
+      const activeWordCount = currentState.activeWords.filter(
+        (word) => word.status === "active",
+      ).length;
+      const shouldSpawnImmediately = activeWordCount === 0;
+      const canSpawn = activeWordCount < config.maxActiveWords;
       const waitedLongEnough =
         timestamp - lastSpawnAtRef.current >= config.spawnIntervalMs;
 
@@ -432,7 +504,7 @@ export function useTypingGame({
     resetToIdle,
     matchWord,
     missWord,
-    recordTypedCharacters,
+    recordInputCommit,
   };
 }
 
@@ -444,12 +516,14 @@ function createInitialState(
     status: "idle",
     settings,
     activeWords: [],
+    targetRecords: {},
     score: 0,
     health: config.initialHealth,
     combo: 0,
     maxCombo: 0,
     correctCount: 0,
     missedCount: 0,
+    typoCount: 0,
     typedCharacterCount: 0,
     correctCharacterCount: 0,
     elapsedMs: 0,
@@ -460,21 +534,106 @@ function createInitialState(
 }
 
 function getConfig(
+  contentType: PlayableContentType,
   difficulty: DifficultyLevel,
   compact: boolean,
   overrides?: Partial<Record<DifficultyLevel, Partial<DifficultyConfig>>>,
 ): DifficultyConfig {
   const config = {
-    ...DIFFICULTY_CONFIGS[difficulty],
+    ...CONTENT_TYPE_DIFFICULTY_CONFIGS[contentType][difficulty],
     ...overrides?.[difficulty],
   };
+  const compactMaxActiveWords =
+    contentType === "short-sentence"
+      ? 1
+      : Math.max(1, config.maxActiveWords - 1);
 
   return {
     ...config,
-    maxActiveWords: compact
-      ? Math.max(1, config.maxActiveWords - 1)
-      : config.maxActiveWords,
+    maxActiveWords: compact ? compactMaxActiveWords : config.maxActiveWords,
   };
+}
+
+function createTargetSessionRecord(
+  word: FallingWord,
+): TypingTargetSessionRecord {
+  return {
+    ...createTypingTimingRecord(word.spawnedAt),
+    targetId: word.id,
+    contentId: word.contentId,
+    text: word.text,
+    contentType: word.contentType ?? "word",
+    typoCount: 0,
+    mistakePositions: [],
+    typedCharacterCount: 0,
+    correctCharacterCount: 0,
+  };
+}
+
+function updateTargetRecordFromInput(
+  record: TypingTargetSessionRecord,
+  event: TypingInputCommitEvent,
+): { record: TypingTargetSessionRecord; newTypoCount: number } {
+  const existingMistakePositions = new Set(record.mistakePositions);
+  const nextMistakePositions = [...record.mistakePositions];
+  let newTypoCount = 0;
+
+  for (const position of event.mistakePositions) {
+    if (!existingMistakePositions.has(position)) {
+      existingMistakePositions.add(position);
+      nextMistakePositions.push(position);
+      newTypoCount += 1;
+    }
+  }
+
+  return {
+    record: {
+      ...record,
+      ...markFirstInput(record, event.occurredAt),
+      mistakePositions: nextMistakePositions,
+      typoCount: record.typoCount + newTypoCount,
+      typedCharacterCount:
+        record.typedCharacterCount + event.typedCharacterCount,
+      correctCharacterCount:
+        record.correctCharacterCount + event.correctCharacterCount,
+    },
+    newTypoCount,
+  };
+}
+
+function markTargetRecordCompleted(
+  records: Record<string, TypingTargetSessionRecord>,
+  word: FallingWord,
+  completedAt: number,
+): Record<string, TypingTargetSessionRecord> {
+  const record = records[word.id] ?? createTargetSessionRecord(word);
+  return {
+    ...records,
+    [word.id]: {
+      ...record,
+      ...completeTypingTiming(record, completedAt),
+    },
+  };
+}
+
+function markTargetRecordsMissed(
+  records: Record<string, TypingTargetSessionRecord>,
+  words: readonly FallingWord[],
+  missedAt: number,
+): Record<string, TypingTargetSessionRecord> {
+  return words.reduce<Record<string, TypingTargetSessionRecord>>(
+    (nextRecords, word) => {
+      const record = nextRecords[word.id] ?? createTargetSessionRecord(word);
+
+      nextRecords[word.id] = {
+        ...record,
+        ...missTypingTiming(record, missedAt),
+      };
+
+      return nextRecords;
+    },
+    { ...records },
+  );
 }
 
 function finishGame(state: TypingGameState): TypingGameState {
@@ -492,16 +651,23 @@ function buildResult(state: TypingGameState): TypingGameResult {
     typedCharacterCount: state.typedCharacterCount,
     correctCharacterCount: state.correctCharacterCount,
   });
+  const targetRecords = Object.values(state.targetRecords);
 
   return {
     score: state.score,
     correctCount: state.correctCount,
     missedCount: state.missedCount,
+    typoCount: state.typoCount,
     typedCharacterCount: state.typedCharacterCount,
     correctCharacterCount: state.correctCharacterCount,
     accuracy,
     maxCombo: state.maxCombo,
     elapsedMs: state.elapsedMs,
+    averageInputDurationMs: calculateAverageInputDurationMs(targetRecords),
+    fastestContent: getFastestContent(targetRecords),
+    slowestContent: getSlowestContent(targetRecords),
+    mostMistypedContents: getMostMistypedSessionContents(targetRecords),
+    targetRecords,
     completedCharactersPerMinute: calculateCompletedCharactersPerMinute({
       correctCharacterCount: state.correctCharacterCount,
       elapsedMs: state.elapsedMs,

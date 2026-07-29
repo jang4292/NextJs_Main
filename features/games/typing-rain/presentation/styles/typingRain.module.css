@@ -87,10 +87,44 @@
   background: #fef9c3;
 }
 
+.fallingWord[data-locked="true"] {
+  border-color: #f59e0b;
+  background: #fffbeb;
+  box-shadow:
+    0 14px 30px rgb(15 23 42 / 0.28),
+    0 0 0 4px rgb(245 158 11 / 0.2);
+}
+
+.fallingWord[data-content-type="short-sentence"] {
+  min-width: min(70vw, 15rem);
+  max-width: min(76vw, 26rem);
+  border-radius: 8px;
+  font-size: 1.02rem;
+  line-height: 1.35;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
 .fallingWord[data-status="matched"] {
   border-color: #34d399;
   background: #ecfdf5;
   animation: wordMatched 180ms ease-out forwards;
+}
+
+.targetBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.25rem;
+  margin-right: 0.45rem;
+  border-radius: 999px;
+  background: #f59e0b;
+  padding: 0 0.42rem;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 900;
+  line-height: 1;
+  vertical-align: middle;
 }
 
 .wordMatchedPart {
@@ -204,6 +238,12 @@
   .fallingWord {
     max-width: 64vw;
     font-size: 1.08rem;
+  }
+
+  .fallingWord[data-content-type="short-sentence"] {
+    min-width: 72vw;
+    max-width: 82vw;
+    font-size: 0.92rem;
   }
 
   .countdown {

@@ -17,9 +17,11 @@ describe("createFallingWord", () => {
       id: "typing-rain-1000-3",
       contentId: "ko-word-test",
       text: "학교",
+      contentType: "word",
       x: 47,
       spawnedAt: 1000,
       fallDurationMs: DIFFICULTY_CONFIGS.easy.fallDurationMs,
+      sequence: 3,
       status: "active",
     });
   });

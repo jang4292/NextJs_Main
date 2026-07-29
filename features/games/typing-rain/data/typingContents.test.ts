@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import type { DifficultyLevel, LanguageType } from "../domain/typing.types";
+import type {
+  DifficultyLevel,
+  LanguageType,
+  PlayableContentType,
+} from "../domain/typing.types";
 import { typingContents } from "./typingContents";
 
 describe("typingContents", () => {
@@ -10,7 +14,16 @@ describe("typingContents", () => {
     expect(countBy("en", "easy")).toBeGreaterThanOrEqual(40);
     expect(countBy("en", "normal")).toBeGreaterThanOrEqual(35);
     expect(countBy("en", "hard")).toBeGreaterThanOrEqual(25);
-    expect(typingContents).toHaveLength(200);
+    expect(typingContents).toHaveLength(272);
+  });
+
+  it("contains the requested short sentence counts", () => {
+    expect(countTypeByLanguage("ko", "short-sentence")).toBeGreaterThanOrEqual(
+      30,
+    );
+    expect(countTypeByLanguage("en", "short-sentence")).toBeGreaterThanOrEqual(
+      30,
+    );
   });
 
   it("does not duplicate ids or text within a language", () => {
@@ -37,6 +50,18 @@ function countBy(
       content.language === language &&
       content.difficulty === difficulty &&
       content.type === "word" &&
+      content.enabled,
+  ).length;
+}
+
+function countTypeByLanguage(
+  language: LanguageType,
+  contentType: PlayableContentType,
+): number {
+  return typingContents.filter(
+    (content) =>
+      content.language === language &&
+      content.type === contentType &&
       content.enabled,
   ).length;
 }

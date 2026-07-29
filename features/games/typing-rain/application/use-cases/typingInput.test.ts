@@ -28,6 +28,19 @@ describe("typingInput", () => {
     expect(getInputFeedback("학교", words)).toBe("exact");
     expect(getInputFeedback("틀림", words)).toBe("invalid");
   });
+
+  it("keeps feedback scoped to a locked target", () => {
+    expect(
+      getInputFeedback("학생", words, {
+        lockedTargetId: "w1",
+      }),
+    ).toBe("invalid");
+    expect(
+      getInputFeedback("학교", words, {
+        lockedTargetId: "w1",
+      }),
+    ).toBe("exact");
+  });
 });
 
 const words: FallingWord[] = [

@@ -14,7 +14,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { TYPING_RAIN_STORAGE_KEY } from "../application/use-cases/storage";
 import type {
   TypingContent,
-  TypingGameStorage,
+  TypingGameStorageV1,
 } from "../domain/typing.types";
 import { TypingRainGame } from "./TypingRainGame";
 
@@ -57,7 +57,7 @@ describe("TypingRainGame", () => {
           soundEnabled: true,
           reduceMotion: true,
         },
-      } satisfies TypingGameStorage),
+      } satisfies TypingGameStorageV1),
     );
 
     renderGame();
@@ -124,7 +124,7 @@ describe("TypingRainGame", () => {
 
     expect(await screen.findByRole("heading", { name: "도전을 마쳤어요" }))
       .toBeInTheDocument();
-    expect(screen.getByText("놓친 단어")).toBeInTheDocument();
+    expect(screen.getByText("실패")).toBeInTheDocument();
     expect(screen.getByText("1개")).toBeInTheDocument();
   });
 

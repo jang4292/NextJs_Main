@@ -3,10 +3,14 @@
 import { Keyboard, Play, Volume2, Waves } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { buildHighScoreKey } from "../../application/use-cases/storage";
-import { DIFFICULTY_LABELS } from "../../domain/difficulty.config";
+import {
+  CONTENT_TYPE_LABELS,
+  DIFFICULTY_LABELS,
+} from "../../domain/difficulty.config";
 import type {
   DifficultyLevel,
   LanguageType,
+  PlayableContentType,
   TypingGameSettings,
   TypingGameStorage,
 } from "../../domain/typing.types";
@@ -27,6 +31,7 @@ const LANGUAGES: Array<{ value: LanguageType; label: string }> = [
 ];
 
 const DIFFICULTIES: DifficultyLevel[] = ["easy", "normal", "hard"];
+const CONTENT_TYPES: PlayableContentType[] = ["word", "short-sentence"];
 
 export function StartPanel({
   settings,
@@ -37,7 +42,11 @@ export function StartPanel({
 }: StartPanelProps) {
   const highScore =
     storage.highScores[
-      buildHighScoreKey(settings.language, settings.difficulty)
+      buildHighScoreKey(
+        settings.language,
+        settings.difficulty,
+        settings.contentType,
+      )
     ] ?? 0;
 
   return (
@@ -53,10 +62,10 @@ export function StartPanel({
           <div>
             <p className="text-sm font-semibold text-sky-700">Typing Rain</p>
             <h1 className="mt-1 text-3xl font-bold tracking-normal text-neutral-950">
-              떨어지는 단어를 입력해요
+              떨어지는 타깃을 입력해요
             </h1>
             <p className="mt-2 text-sm leading-6 text-neutral-600">
-              한글과 영문 단어를 정확히 입력해 비를 걷어내는 타자 연습 게임입니다.
+              한글과 영문 단어, 짧은 문장을 정확히 입력해 비를 걷어내는 타자 연습 게임입니다.
             </p>
           </div>
         </div>
@@ -74,12 +83,14 @@ export function StartPanel({
           </div>
           <div className="rounded-lg bg-amber-50 p-3">
             <dt className="text-neutral-500">모드</dt>
-            <dd className="mt-1 font-bold text-amber-950">점수 도전</dd>
+            <dd className="mt-1 font-bold text-amber-950">
+              {CONTENT_TYPE_LABELS[settings.contentType]}
+            </dd>
           </div>
         </dl>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-3">
         <fieldset className="rounded-lg border border-neutral-200 bg-white p-4">
           <legend className="text-sm font-bold text-neutral-950">언어</legend>
           <div className="mt-3 grid grid-cols-2 gap-2">
@@ -123,6 +134,30 @@ export function StartPanel({
                 className="px-2"
               >
                 {DIFFICULTY_LABELS[difficulty]}
+              </Button>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset className="rounded-lg border border-neutral-200 bg-white p-4">
+          <legend className="text-sm font-bold text-neutral-950">콘텐츠</legend>
+          <div className="mt-3 grid grid-cols-1 gap-2">
+            {CONTENT_TYPES.map((contentType) => (
+              <Button
+                key={contentType}
+                type="button"
+                variant={
+                  settings.contentType === contentType ? "default" : "outline"
+                }
+                onClick={() =>
+                  onSettingsChange({
+                    ...settings,
+                    contentType,
+                  })
+                }
+                className="px-2"
+              >
+                {CONTENT_TYPE_LABELS[contentType]}
               </Button>
             ))}
           </div>

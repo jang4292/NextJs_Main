@@ -29,8 +29,10 @@ export function TypingRainGame(options: UseTypingGameOptions = {}) {
     () => ({
       language: typingStorage.storage.preferences.language,
       difficulty: typingStorage.storage.preferences.difficulty,
+      contentType: typingStorage.storage.preferences.contentType,
     }),
     [
+      typingStorage.storage.preferences.contentType,
       typingStorage.storage.preferences.difficulty,
       typingStorage.storage.preferences.language,
     ],
@@ -42,8 +44,10 @@ export function TypingRainGame(options: UseTypingGameOptions = {}) {
   const typingInput = useTypingInput({
     enabled: game.status === "playing",
     words: game.activeWords,
+    nowMs: game.elapsedMs,
+    typingRules: typingStorage.storage.preferences.typingRules,
     onMatch: game.matchWord,
-    onTypedCharacters: game.recordTypedCharacters,
+    onInputCommit: game.recordInputCommit,
   });
   const { focusInput, resetInput } = typingInput;
 
@@ -64,7 +68,11 @@ export function TypingRainGame(options: UseTypingGameOptions = {}) {
 
     const previousHighScore =
       typingStorage.storage.highScores[
-        buildHighScoreKey(game.settings.language, game.settings.difficulty)
+        buildHighScoreKey(
+          game.settings.language,
+          game.settings.difficulty,
+          game.settings.contentType,
+        )
       ] ?? 0;
     const result = {
       ...game.result,
@@ -112,6 +120,7 @@ export function TypingRainGame(options: UseTypingGameOptions = {}) {
       <ResultPanel
         result={finalResult.result}
         settings={game.settings}
+        learningRecords={typingStorage.storage.learningRecords}
         onRestart={handleRestart}
         onChangeSettings={game.resetToIdle}
       />
@@ -142,6 +151,7 @@ export function TypingRainGame(options: UseTypingGameOptions = {}) {
           words={game.activeWords}
           inputValue={typingInput.value}
           highlightedWordIds={typingInput.prefixMatchedWordIds}
+          lockedWordId={typingInput.lockedTargetId}
           paused={game.status !== "playing"}
           onFocusInput={typingInput.focusInput}
         />

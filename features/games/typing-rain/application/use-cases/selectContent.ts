@@ -11,6 +11,8 @@ export interface SelectContentOptions {
   type?: ContentType;
   activeTexts?: readonly string[];
   previousContentId?: string | null;
+  reviewContentIds?: readonly string[];
+  reviewPriorityEnabled?: boolean;
   rng?: () => number;
 }
 
@@ -38,7 +40,15 @@ export function selectTypingContent(
   const eligibleContents = getEligibleContents(contents, options);
   if (eligibleContents.length === 0) return null;
 
+  const reviewContents =
+    options.reviewPriorityEnabled && options.reviewContentIds?.length
+      ? eligibleContents.filter((content) =>
+          options.reviewContentIds?.includes(content.id),
+        )
+      : [];
+  const selectionPool =
+    reviewContents.length > 0 ? reviewContents : eligibleContents;
   const rng = options.rng ?? Math.random;
-  const index = Math.floor(rng() * eligibleContents.length);
-  return eligibleContents[Math.min(index, eligibleContents.length - 1)];
+  const index = Math.floor(rng() * selectionPool.length);
+  return selectionPool[Math.min(index, selectionPool.length - 1)];
 }

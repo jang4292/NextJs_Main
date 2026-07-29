@@ -38,6 +38,19 @@ describe("selectContent", () => {
       }),
     ).toBeNull();
   });
+
+  it("can prefer review content ids when enabled", () => {
+    const selected = selectTypingContent(contents, {
+      language: "ko",
+      difficulty: "easy",
+      activeTexts: [],
+      reviewContentIds: ["ko-5"],
+      reviewPriorityEnabled: true,
+      rng: () => 0,
+    });
+
+    expect(selected?.id).toBe("ko-5");
+  });
 });
 
 const contents: TypingContent[] = [
