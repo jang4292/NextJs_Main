@@ -75,6 +75,16 @@ const gameComponents = {
       loading: () => <GameLoading />,
     },
   ),
+  "typing-rain": dynamic(
+    () =>
+      import("@/features/games/typing-rain/presentation/TypingRainGame").then(
+        (mod) => mod.TypingRainGame,
+      ),
+    {
+      ssr: false,
+      loading: () => <GameLoading />,
+    },
+  ),
 } satisfies Record<GameSlug, ComponentType>;
 
 export function GameHost({ slug }: { slug: GameSlug }) {

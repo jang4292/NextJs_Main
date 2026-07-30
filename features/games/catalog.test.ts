@@ -14,6 +14,9 @@ describe("gameCatalog", () => {
     expect(getGameBySlug("match-three")?.href).toBe(
       "/tools/games/match-three",
     );
+    expect(getGameBySlug("typing-rain")?.href).toBe(
+      "/tools/games/typing-rain",
+    );
     expect(getGameBySlug("unknown")).toBeUndefined();
   });
 });

@@ -1,0 +1,252 @@
+.shell {
+  width: min(100%, 860px);
+  min-height: min(
+    calc(var(--typing-rain-viewport-height, 720px) - 5rem),
+    760px
+  );
+  margin: 0 auto;
+  padding: 1rem 0.75rem calc(1rem + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-x: hidden;
+}
+
+.playArea {
+  position: relative;
+}
+
+.board {
+  position: relative;
+  height: var(--typing-rain-board-height, 420px);
+  overflow: hidden;
+  border: 1px solid rgb(14 165 233 / 0.35);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 16% 18%, rgb(252 211 77 / 0.55), transparent 9rem),
+    linear-gradient(180deg, #0c4a6e 0%, #155e75 46%, #115e59 100%);
+  box-shadow: inset 0 -28px 36px rgb(6 78 59 / 0.32);
+  touch-action: manipulation;
+}
+
+.skyLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      105deg,
+      rgb(255 255 255 / 0.18) 0 1px,
+      transparent 1px 1.35rem
+    ),
+    radial-gradient(circle at 78% 12%, rgb(186 230 253 / 0.5), transparent 5rem);
+  opacity: 0.7;
+}
+
+.groundLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3.2rem;
+  background:
+    linear-gradient(180deg, rgb(20 184 166 / 0.1), rgb(15 23 42 / 0.28)),
+    repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.18) 0 1.2rem,
+      rgb(255 255 255 / 0.05) 1.2rem 2.4rem
+    );
+  border-top: 2px solid rgb(253 224 71 / 0.75);
+}
+
+.fallingWord {
+  position: absolute;
+  top: -3rem;
+  left: var(--word-left);
+  z-index: 2;
+  min-width: 3.5rem;
+  max-width: min(52vw, 14rem);
+  padding: 0.48rem 0.72rem;
+  border: 2px solid rgb(255 255 255 / 0.66);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.92);
+  box-shadow: 0 12px 28px rgb(15 23 42 / 0.22);
+  color: #0f172a;
+  font-size: 1.32rem;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+  white-space: nowrap;
+  transform: translate3d(-50%, 0, 0);
+  animation: fallDown var(--fall-duration) linear forwards;
+  will-change: transform;
+}
+
+.fallingWord[data-highlighted="true"] {
+  border-color: #facc15;
+  background: #fef9c3;
+}
+
+.fallingWord[data-locked="true"] {
+  border-color: #f59e0b;
+  background: #fffbeb;
+  box-shadow:
+    0 14px 30px rgb(15 23 42 / 0.28),
+    0 0 0 4px rgb(245 158 11 / 0.2);
+}
+
+.fallingWord[data-content-type="short-sentence"] {
+  min-width: min(70vw, 15rem);
+  max-width: min(76vw, 26rem);
+  border-radius: 8px;
+  font-size: 1.02rem;
+  line-height: 1.35;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.fallingWord[data-status="matched"] {
+  border-color: #34d399;
+  background: #ecfdf5;
+  animation: wordMatched 180ms ease-out forwards;
+}
+
+.targetBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.25rem;
+  margin-right: 0.45rem;
+  border-radius: 999px;
+  background: #f59e0b;
+  padding: 0 0.42rem;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 900;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.wordMatchedPart {
+  color: #047857;
+}
+
+.pauseOverlay,
+.countdown {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.countdown {
+  color: white;
+  font-size: 4rem;
+  font-weight: 1000;
+  text-shadow: 0 8px 32px rgb(15 23 42 / 0.58);
+  background: rgb(15 23 42 / 0.28);
+}
+
+.inputDock {
+  position: sticky;
+  bottom: calc(var(--typing-rain-keyboard-offset, 0px) + env(safe-area-inset-bottom));
+  z-index: 5;
+  display: grid;
+  gap: 0.45rem;
+  border: 1px solid rgb(14 165 233 / 0.28);
+  border-radius: 8px;
+  background: rgb(255 255 255 / 0.98);
+  padding: 0.75rem;
+  box-shadow: 0 -8px 26px rgb(15 23 42 / 0.12);
+}
+
+.typingInput {
+  min-height: 3.1rem;
+  width: 100%;
+  border: 2px solid #bae6fd;
+  border-radius: 8px;
+  padding: 0 0.9rem;
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 800;
+  outline: none;
+}
+
+.typingInput:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgb(14 165 233 / 0.18);
+}
+
+.typingInputPrefix {
+  border-color: #facc15;
+  background: #fefce8;
+}
+
+.typingInputInvalid {
+  border-color: #fb7185;
+  background: #fff1f2;
+}
+
+.shell[data-reduce-motion="true"] .board {
+  box-shadow: inset 0 -18px 24px rgb(6 78 59 / 0.2);
+}
+
+.shell[data-reduce-motion="true"] .skyLayer {
+  opacity: 0.42;
+}
+
+.shell[data-reduce-motion="true"] .fallingWord[data-status="matched"] {
+  animation-duration: 1ms;
+}
+
+@keyframes fallDown {
+  to {
+    transform: translate3d(
+      -50%,
+      calc(var(--typing-rain-board-height, 420px) + 5rem),
+      0
+    );
+  }
+}
+
+@keyframes wordMatched {
+  to {
+    opacity: 0;
+    transform: translate3d(-50%, -0.5rem, 0) scale(0.82);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fallingWord[data-status="matched"] {
+    animation-duration: 1ms;
+  }
+
+  .typingInput,
+  .fallingWord {
+    transition: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .shell {
+    padding-inline: 0.5rem;
+  }
+
+  .fallingWord {
+    max-width: 64vw;
+    font-size: 1.08rem;
+  }
+
+  .fallingWord[data-content-type="short-sentence"] {
+    min-width: 72vw;
+    max-width: 82vw;
+    font-size: 0.92rem;
+  }
+
+  .countdown {
+    font-size: 2.75rem;
+  }
+}

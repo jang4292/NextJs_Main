@@ -5,7 +5,8 @@ export type GameSlug =
   | "freecell"
   | "sudoku"
   | "match-three"
-  | "arithmetic-addition";
+  | "arithmetic-addition"
+  | "typing-rain";
 
 export interface GameCatalogItem {
   slug: GameSlug;
@@ -80,6 +81,15 @@ export const gameCatalog: GameCatalogItem[] = [
     ariaLabel: "Open one-digit addition practice game page",
     instructions: "숫자 패드로 답을 입력하고 10문제 학습을 완료합니다.",
     updatedAt: "2026-07-28",
+  },
+  {
+    slug: "typing-rain",
+    title: "Typing Rain",
+    description: "떨어지는 한글과 영문 단어를 입력해 점수를 올리는 타자 연습 게임",
+    href: "/tools/games/typing-rain",
+    ariaLabel: "Open Typing Rain game page",
+    instructions: "하단 입력창에 떨어지는 단어를 정확히 입력해 체력이 다하기 전까지 도전합니다.",
+    updatedAt: "2026-07-29",
   },
 ];
 
