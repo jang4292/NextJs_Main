@@ -6,7 +6,8 @@ export type GameSlug =
   | "sudoku"
   | "match-three"
   | "arithmetic-addition"
-  | "typing-rain";
+  | "typing-rain"
+  | "slot-machine";
 
 export interface GameCatalogItem {
   slug: GameSlug;
@@ -85,11 +86,22 @@ export const gameCatalog: GameCatalogItem[] = [
   {
     slug: "typing-rain",
     title: "Typing Rain",
-    description: "떨어지는 한글과 영문 단어를 입력해 점수를 올리는 타자 연습 게임",
+    description:
+      "떨어지는 한글과 영문 단어를 입력해 점수를 올리는 타자 연습 게임",
     href: "/tools/games/typing-rain",
     ariaLabel: "Open Typing Rain game page",
-    instructions: "하단 입력창에 떨어지는 단어를 정확히 입력해 체력이 다하기 전까지 도전합니다.",
+    instructions:
+      "하단 입력창에 떨어지는 단어를 정확히 입력해 체력이 다하기 전까지 도전합니다.",
     updatedAt: "2026-07-29",
+  },
+  {
+    slug: "slot-machine",
+    title: "Slot Machine",
+    description: "가상 크레딧으로 즐기는 3릴 단일 페이라인 슬롯 머신",
+    href: "/tools/games/slot-machine",
+    ariaLabel: "Open Slot Machine game page",
+    instructions: "베팅을 선택하고 가운데 페이라인에 같은 심볼 3개를 맞춥니다.",
+    updatedAt: "2026-07-30",
   },
 ];
 

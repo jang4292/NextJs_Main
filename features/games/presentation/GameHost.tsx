@@ -67,9 +67,9 @@ const gameComponents = {
   ),
   "arithmetic-addition": dynamic(
     () =>
-      import(
-        "@/features/games/arithmetic-addition/presentation/ArithmeticGame"
-      ).then((mod) => mod.ArithmeticGame),
+      import("@/features/games/arithmetic-addition/presentation/ArithmeticGame").then(
+        (mod) => mod.ArithmeticGame,
+      ),
     {
       ssr: false,
       loading: () => <GameLoading />,
@@ -79,6 +79,16 @@ const gameComponents = {
     () =>
       import("@/features/games/typing-rain/presentation/TypingRainGame").then(
         (mod) => mod.TypingRainGame,
+      ),
+    {
+      ssr: false,
+      loading: () => <GameLoading />,
+    },
+  ),
+  "slot-machine": dynamic(
+    () =>
+      import("@/features/games/slot-machine/presentation/SlotMachineGame").then(
+        (mod) => mod.SlotMachineGame,
       ),
     {
       ssr: false,
