@@ -40,6 +40,11 @@ describe("siteNavigation", () => {
           destination: "/tools/games/:slug*",
           permanent: false,
         }),
+        expect.objectContaining({
+          source: "/projects/japanese-vocabulary",
+          destination: "/learn/japanese-vocabulary",
+          permanent: false,
+        }),
       ]),
     );
   });

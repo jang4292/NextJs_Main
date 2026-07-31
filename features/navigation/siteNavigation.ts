@@ -104,6 +104,11 @@ export const legacyRedirects: LegacyRedirect[] = [
     destination: "/learn/vocabulary",
     permanent: false,
   },
+  {
+    source: "/projects/japanese-vocabulary",
+    destination: "/learn/japanese-vocabulary",
+    permanent: false,
+  },
   { source: "/projects", destination: "/tools", permanent: false },
   { source: "/projects/:slug*", destination: "/tools", permanent: false },
 ];
