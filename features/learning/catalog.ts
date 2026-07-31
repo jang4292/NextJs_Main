@@ -1,5 +1,10 @@
 export type LearningCatalogItem = {
-  id: "blog" | "idioms" | "vocabulary" | "japanese-vocabulary";
+  id:
+    | "blog"
+    | "idioms"
+    | "vocabulary"
+    | "japanese-vocabulary"
+    | "chinese-vocabulary";
   title: string;
   eyebrow: string;
   description: string;
@@ -42,6 +47,16 @@ export const learningCatalog: LearningCatalogItem[] = [
     eyebrow: "Japanese",
     description: "N5 수준 기초 일본어 50개의 뜻과 예문, 발음을 확인합니다.",
     href: "/learn/japanese-vocabulary",
+    featured: true,
+    updatedAt: "2026-08-01",
+  },
+  {
+    id: "chinese-vocabulary",
+    title: "중국어 기초 단어",
+    eyebrow: "Chinese",
+    description:
+      "기초 중국어 50개의 간체자, 병음, 뜻, 예문, 발음을 확인합니다.",
+    href: "/learn/chinese-vocabulary",
     featured: true,
     updatedAt: "2026-08-01",
   },
