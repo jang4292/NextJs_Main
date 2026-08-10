@@ -1,4 +1,42 @@
-export type Operator = "addition" | "subtraction";
+export type Operator =
+  | "addition"
+  | "subtraction"
+  | "multiplication"
+  | "division";
+
+export type Operation = Operator;
+
+export type LearningCategory =
+  | "basic"
+  | "practice"
+  | "application"
+  | "advanced";
+
+export type QuestionType =
+  | "standard"
+  | "missing-left"
+  | "missing-right"
+  | "missing-answer"
+  | "comparison"
+  | "operation-choice"
+  | "multiple-operations"
+  | "visual"
+  | "vertical-form"
+  | "word-problem"
+  | "quotient-remainder";
+
+export interface QuestionRule {
+  minLeft?: number;
+  maxLeft?: number;
+  minRight?: number;
+  maxRight?: number;
+  minAnswer?: number;
+  maxAnswer?: number;
+  maxDigits?: number;
+  allowCarry?: boolean;
+  allowBorrow?: boolean;
+  allowRemainder?: boolean;
+}
 
 export type AdditionStageId =
   | "addition-within-5"
@@ -15,7 +53,18 @@ export type SubtractionStageId =
   | "subtraction-from-10"
   | "subtraction-mixed";
 
-export type StageId = AdditionStageId | SubtractionStageId;
+export type MultiplicationStageId =
+  | "multiplication-equal-groups"
+  | "multiplication-by-zero"
+  | "multiplication-by-one";
+
+export type DivisionStageId = "division-equal-sharing";
+
+export type StageId =
+  | AdditionStageId
+  | SubtractionStageId
+  | MultiplicationStageId
+  | DivisionStageId;
 
 export type Difficulty = "easy" | "medium" | "hard";
 
@@ -24,11 +73,15 @@ export type GameStatus = "idle" | "playing" | "feedback" | "completed";
 export interface LearningStage {
   id: StageId;
   operator: Operator;
+  category: LearningCategory;
   order: number;
   title: string;
   shortTitle: string;
   description: string;
+  questionTypes: QuestionType[];
   questionCount: number;
+  prerequisites?: StageId[];
+  ruleId?: string;
 }
 
 export interface ArithmeticQuestion {

@@ -26,20 +26,27 @@ describe("ArithmeticGame", () => {
     expect(screen.getByRole("heading", { name: "오늘의 연산을 골라요" }))
       .toBeInTheDocument();
 
-    await startAdditionStage(user);
+    await user.click(screen.getByRole("button", { name: /덧셈/ }));
+
+    expect(screen.getByRole("heading", { name: "기초" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "숙련" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "응용" }))
+      .not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /5 이하 덧셈/ }));
 
     expect(screen.getByText("문제 1 / 2")).toBeInTheDocument();
     expect(screen.getByLabelText("1 더하기 2")).toBeInTheDocument();
   });
 
-  it("keeps unavailable operations disabled on the home screen", async () => {
+  it("keeps mixed practice disabled on the home screen", async () => {
     const user = userEvent.setup();
     renderGame();
 
-    const multiplication = screen.getByRole("button", { name: /곱셈/ });
+    const unavailableOperation = screen.getByRole("button", { name: /혼합/ });
 
-    expect(multiplication).toBeDisabled();
-    await user.click(multiplication);
+    expect(unavailableOperation).toBeDisabled();
+    await user.click(unavailableOperation);
     expect(screen.getByRole("heading", { name: "오늘의 연산을 골라요" }))
       .toBeInTheDocument();
   });
@@ -170,6 +177,49 @@ describe("ArithmeticGame", () => {
     expect(screen.getByText("- 뺄셈")).toBeInTheDocument();
     expect(screen.getByLabelText("4 빼기 1")).toBeInTheDocument();
   });
+
+  it("starts multiplication basic stages from the arithmetic home screen", async () => {
+    const user = userEvent.setup();
+    renderGame(createMultiplicationQuestions());
+
+    await user.click(screen.getByRole("button", { name: /곱셈/ }));
+
+    expect(screen.getByRole("heading", { name: "기초" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /같은 묶음/ }))
+      .toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /같은 묶음/ }));
+
+    expect(screen.getByText("× 곱셈")).toBeInTheDocument();
+    expect(screen.getByText("문제 1 / 1")).toBeInTheDocument();
+    expect(screen.getByLabelText("2 곱하기 3")).toBeInTheDocument();
+
+    await submitDigits(user, [6]);
+
+    expect(screen.getByText("정답이에요!")).toBeInTheDocument();
+  });
+
+  it("starts division basic stages from the arithmetic home screen", async () => {
+    const user = userEvent.setup();
+    renderGame(createDivisionQuestions());
+
+    await user.click(screen.getByRole("button", { name: /나눗셈/ }));
+
+    expect(screen.getByRole("heading", { name: "기초" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /똑같이 나누기/ }))
+      .toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /똑같이 나누기/ }));
+
+    expect(screen.getByText("÷ 나눗셈")).toBeInTheDocument();
+    expect(screen.getByText("문제 1 / 1")).toBeInTheDocument();
+    expect(screen.getByLabelText("12개를 3개의 묶음으로 나누기"))
+      .toBeInTheDocument();
+
+    await submitDigits(user, [4]);
+
+    expect(screen.getByText("정답이에요!")).toBeInTheDocument();
+  });
 });
 
 function renderGame(questions = createQuestions()) {
@@ -244,6 +294,34 @@ function createSubtractionQuestions(): ArithmeticQuestion[] {
       answer: 3,
       difficulty: "easy",
       stageId: "subtraction-within-5",
+    },
+  ];
+}
+
+function createMultiplicationQuestions(): ArithmeticQuestion[] {
+  return [
+    {
+      id: "2-3-multiplication",
+      leftOperand: 2,
+      rightOperand: 3,
+      operator: "multiplication",
+      answer: 6,
+      difficulty: "easy",
+      stageId: "multiplication-equal-groups",
+    },
+  ];
+}
+
+function createDivisionQuestions(): ArithmeticQuestion[] {
+  return [
+    {
+      id: "12-3-division",
+      leftOperand: 12,
+      rightOperand: 3,
+      operator: "division",
+      answer: 4,
+      difficulty: "medium",
+      stageId: "division-equal-sharing",
     },
   ];
 }
