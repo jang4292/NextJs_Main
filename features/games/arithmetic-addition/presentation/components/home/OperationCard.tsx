@@ -2,9 +2,10 @@
 
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { isArithmeticOperator } from "../../../application/arithmeticOperatorRegistry";
 import type { Operator } from "../../../domain/arithmetic.types";
 
-export type OperationMenuId = Operator | "multiplication" | "division" | "mixed";
+export type OperationMenuId = Operator | "mixed";
 
 export interface OperationCardItem {
   id: OperationMenuId;
@@ -38,7 +39,7 @@ export function OperationCard({ item, onSelect }: OperationCardProps) {
       disabled={!item.enabled}
       aria-disabled={!item.enabled}
       onClick={() => {
-        if (item.enabled && isSupportedOperator(item.id)) {
+        if (item.enabled && isArithmeticOperator(item.id)) {
           onSelect(item.id);
         }
       }}
@@ -61,8 +62,4 @@ export function OperationCard({ item, onSelect }: OperationCardProps) {
       </span>
     </button>
   );
-}
-
-function isSupportedOperator(id: OperationMenuId): id is Operator {
-  return id === "addition" || id === "subtraction";
 }

@@ -3,9 +3,13 @@
 import { useEffect, useMemo, useRef } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { NumberPad } from "@/features/math-learning/shared/components/NumberPad";
+import {
+  generateQuestionsForStage,
+  getArithmeticStageById as getStageById,
+  getStagesForOperator,
+} from "../application/arithmeticOperatorRegistry";
 import { buildRecommendation } from "../application/use-cases/buildRecommendation";
-import { generateAdditionStageQuestions } from "../application/use-cases/generateAdditionStageQuestions";
-import { generateSubtractionQuestions } from "../application/use-cases/generateSubtractionQuestions";
 import {
   getFrequentMistakes,
   getRecentMistakes,
@@ -21,19 +25,10 @@ import type {
   MistakeRecord,
 } from "../domain/learningProgress.types";
 import { OPERATOR_LABEL } from "../domain/operatorMeta";
-import {
-  ADDITION_STAGES,
-  type AdditionStageConfig,
-} from "../domain/stages/additionStages";
-import {
-  SUBTRACTION_STAGES,
-  type SubtractionStageConfig,
-} from "../domain/stages/subtractionStages";
 import { AnswerDisplay } from "./components/AnswerDisplay";
 import { FeedbackMessage } from "./components/FeedbackMessage";
 import { GameHeader } from "./components/GameHeader";
 import { ArithmeticHome } from "./components/home/ArithmeticHome";
-import { NumberPad } from "./components/NumberPad";
 import { QuestionBoard } from "./components/QuestionBoard";
 import { ReviewMenu } from "./components/review/ReviewMenu";
 import { ResultSummary } from "./components/ResultSummary";
@@ -301,30 +296,10 @@ function createQuestionsForStage(
   options: UseArithmeticGameOptions,
 ): ArithmeticQuestion[] {
   if (options.createQuestions) {
-    return options.createQuestions().map((question) => ({
-      ...question,
-      operator: stage.operator,
-      stageId: stage.id,
-    }));
+    return options.createQuestions(stage);
   }
 
-  if (stage.operator === "addition") {
-    return generateAdditionStageQuestions(stage as AdditionStageConfig);
-  }
-
-  return generateSubtractionQuestions(stage as SubtractionStageConfig);
-}
-
-function getStagesForOperator(operator: Operator): LearningStage[] {
-  return operator === "addition" ? ADDITION_STAGES : SUBTRACTION_STAGES;
-}
-
-function getStageById(stageId: StageId | undefined): LearningStage | undefined {
-  if (!stageId) return undefined;
-
-  return [...ADDITION_STAGES, ...SUBTRACTION_STAGES].find(
-    (stage) => stage.id === stageId,
-  );
+  return generateQuestionsForStage(stage);
 }
 
 function getContinueStage(stageId: StageId | undefined) {
@@ -332,7 +307,7 @@ function getContinueStage(stageId: StageId | undefined) {
 }
 
 function getRecommendedStageId(
-  stages: LearningStage[],
+  stages: readonly LearningStage[],
   progress: { stageId: StageId; status: string }[],
 ): StageId | undefined {
   const firstOpenStage = stages.find((stage) => {

@@ -19,7 +19,9 @@
 
 .dotLeft,
 .dotRight,
-.dotRemoved {
+.dotRemoved,
+.dotMultiplication,
+.dotDivision {
   width: clamp(0.52rem, 2.4vw, 0.9rem);
   aspect-ratio: 1 / 1;
   border-radius: 999px;
@@ -52,6 +54,14 @@
   transform: rotate(-18deg);
 }
 
+.dotMultiplication {
+  background: #a78bfa;
+}
+
+.dotDivision {
+  background: #fb7185;
+}
+
 .quantityOperator {
   flex: 0 0 auto;
   font-size: clamp(1.2rem, 5vw, 1.8rem);
@@ -59,22 +69,46 @@
   color: #334155;
 }
 
-.numberPad {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.multiplicationQuantity {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.5rem;
+  margin-top: 1rem;
 }
 
-.padButton {
-  min-width: 44px;
-  min-height: 52px;
-  touch-action: manipulation;
-  font-size: 1.1rem;
+.divisionQuantity {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.multiplicationGroup,
+.divisionGroup {
+  display: inline-flex;
+  min-width: 3.25rem;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(15 23 42 / 0.12);
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  padding: 0.4rem;
+}
+
+.emptyGroup {
+  display: inline-flex;
+  min-width: 3rem;
+  min-height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed rgb(100 116 139 / 0.55);
+  border-radius: 0.5rem;
+  color: #64748b;
+  font-size: 0.75rem;
   font-weight: 800;
-}
-
-.padButton:active:not(:disabled) {
-  transform: scale(0.97);
 }
 
 .feedback {
@@ -112,7 +146,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .padButton,
   .feedback {
     animation: none !important;
     transition: none !important;

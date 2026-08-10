@@ -15,6 +15,24 @@ export function QuantityVisualizer({
   rightOperand,
   operator = "addition",
 }: QuantityVisualizerProps) {
+  if (operator === "multiplication") {
+    return (
+      <MultiplicationVisualizer
+        groupCount={leftOperand}
+        itemsPerGroup={rightOperand}
+      />
+    );
+  }
+
+  if (operator === "division") {
+    return (
+      <DivisionVisualizer
+        totalCount={leftOperand}
+        groupCount={rightOperand}
+      />
+    );
+  }
+
   return (
     <div
       className={styles.quantity}
@@ -36,12 +54,64 @@ export function QuantityVisualizer({
   );
 }
 
+function DivisionVisualizer({
+  totalCount,
+  groupCount,
+}: {
+  totalCount: number;
+  groupCount: number;
+}) {
+  const itemsPerGroup = totalCount / groupCount;
+
+  return (
+    <div
+      className={styles.divisionQuantity}
+      aria-label={`${totalCount}개를 ${groupCount}개의 묶음으로 똑같이 나누는 모습`}
+    >
+      {Array.from({ length: groupCount }, (_, groupIndex) => (
+        <span key={groupIndex} className={styles.divisionGroup}>
+          <DotGroup count={itemsPerGroup} tone="division" />
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function MultiplicationVisualizer({
+  groupCount,
+  itemsPerGroup,
+}: {
+  groupCount: number;
+  itemsPerGroup: number;
+}) {
+  return (
+    <div
+      className={styles.multiplicationQuantity}
+      aria-label={`${groupCount}묶음에 ${itemsPerGroup}개씩 곱하는 모습`}
+    >
+      {groupCount === 0 ? (
+        <span className={styles.emptyGroup}>0묶음</span>
+      ) : (
+        Array.from({ length: groupCount }, (_, groupIndex) => (
+          <span key={groupIndex} className={styles.multiplicationGroup}>
+            {itemsPerGroup === 0 ? (
+              <span className={styles.emptyGroup}>0개</span>
+            ) : (
+              <DotGroup count={itemsPerGroup} tone="multiplication" />
+            )}
+          </span>
+        ))
+      )}
+    </div>
+  );
+}
+
 function DotGroup({
   count,
   tone,
 }: {
   count: number;
-  tone: "left" | "right" | "removed";
+  tone: "left" | "right" | "removed" | "multiplication" | "division";
 }) {
   return (
     <span className={styles.dotGroup}>
@@ -53,7 +123,11 @@ function DotGroup({
               ? styles.dotLeft
               : tone === "right"
                 ? styles.dotRight
-                : styles.dotRemoved
+                : tone === "multiplication"
+                  ? styles.dotMultiplication
+                  : tone === "division"
+                    ? styles.dotDivision
+                    : styles.dotRemoved
           }
           aria-hidden="true"
         />

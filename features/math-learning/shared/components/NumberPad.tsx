@@ -2,7 +2,6 @@
 
 import { CornerDownLeft, Delete } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import styles from "../styles/arithmetic.module.css";
 
 interface NumberPadProps {
   canInput: boolean;
@@ -29,7 +28,11 @@ export function NumberPad({
 }: NumberPadProps) {
   return (
     <div className="space-y-3">
-      <div className={styles.numberPad} role="group" aria-label="숫자 입력 패드">
+      <div
+        className="grid grid-cols-3 gap-2"
+        role="group"
+        aria-label="숫자 입력 패드"
+      >
         {DIGITS.map((digit) => (
           <Button
             key={digit}
@@ -37,7 +40,7 @@ export function NumberPad({
             variant="outline"
             disabled={!canInput}
             onClick={() => onDigit(digit)}
-            className={styles.padButton}
+            className="min-h-[52px] min-w-11 touch-manipulation text-lg font-extrabold active:scale-[0.97] disabled:active:scale-100"
             aria-label={`${digit} 입력`}
           >
             {digit}
@@ -48,7 +51,7 @@ export function NumberPad({
           variant="outline"
           disabled={!canInput}
           onClick={onDelete}
-          className={styles.padButton}
+          className="min-h-[52px] min-w-11 touch-manipulation text-lg font-extrabold active:scale-[0.97] disabled:active:scale-100"
           aria-label="한 자리 지우기"
         >
           <Delete aria-hidden="true" />
@@ -59,7 +62,7 @@ export function NumberPad({
           variant="outline"
           disabled={!canInput}
           onClick={() => onDigit(0)}
-          className={styles.padButton}
+          className="min-h-[52px] min-w-11 touch-manipulation text-lg font-extrabold active:scale-[0.97] disabled:active:scale-100"
           aria-label="0 입력"
         >
           0
@@ -68,7 +71,7 @@ export function NumberPad({
           type="button"
           disabled={!canSubmit}
           onClick={onSubmit}
-          className={styles.padButton}
+          className="min-h-[52px] min-w-11 touch-manipulation text-lg font-extrabold active:scale-[0.97] disabled:active:scale-100"
           aria-label="정답 확인"
         >
           <CornerDownLeft aria-hidden="true" />
@@ -88,4 +91,3 @@ export function NumberPad({
     </div>
   );
 }
-

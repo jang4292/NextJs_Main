@@ -1,5 +1,6 @@
 export type LearningCatalogItem = {
   id:
+    | "math"
     | "blog"
     | "idioms"
     | "vocabulary"
@@ -14,6 +15,16 @@ export type LearningCatalogItem = {
 };
 
 export const learningCatalog: LearningCatalogItem[] = [
+  {
+    id: "math",
+    title: "Math Learning",
+    eyebrow: "Math",
+    description:
+      "사칙연산, 수열, 통계, 확률 기초를 시작점으로 수와 연산, 대수, 함수, 기하로 확장하는 수학 학습 허브입니다.",
+    href: "/learn/math",
+    featured: true,
+    updatedAt: "2026-08-10",
+  },
   {
     id: "blog",
     title: "Development Blog",

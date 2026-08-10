@@ -7,6 +7,10 @@ import {
   Shuffle,
   X,
 } from "lucide-react";
+import {
+  ARITHMETIC_OPERATOR_CONFIGS,
+  ARITHMETIC_OPERATORS,
+} from "../../../application/arithmeticOperatorRegistry";
 import type { Operator } from "../../../domain/arithmetic.types";
 import {
   OperationCard,
@@ -17,43 +21,47 @@ interface OperationGridProps {
   onSelectOperation: (operator: Operator) => void;
 }
 
-const OPERATIONS: OperationCardItem[] = [
-  {
-    id: "addition",
-    title: "덧셈",
+const OPERATION_PRESENTATION: Record<
+  Operator,
+  Pick<OperationCardItem, "description" | "icon" | "tone">
+> = {
+  addition: {
     description: "작은 수부터 한 자리 수 종합까지 단계별로 풀어요.",
-    badge: "6단계",
-    enabled: true,
     icon: Plus,
     tone: "emerald",
   },
-  {
-    id: "subtraction",
-    title: "뺄셈",
+  subtraction: {
     description: "0 만들기와 10에서 빼기를 차근차근 연습해요.",
-    badge: "5단계",
-    enabled: true,
     icon: Minus,
     tone: "sky",
   },
-  {
-    id: "multiplication",
-    title: "곱셈",
-    description: "구구단 단계는 다음 업데이트에서 열려요.",
-    badge: "예정",
-    enabled: false,
+  multiplication: {
+    description: "같은 묶음, 0 곱하기, 1 곱하기부터 시작해요.",
     icon: X,
     tone: "amber",
   },
-  {
-    id: "division",
-    title: "나눗셈",
-    description: "나머지 없는 나눗셈부터 준비하고 있어요.",
-    badge: "예정",
-    enabled: false,
+  division: {
+    description: "나머지 없이 몇 묶음으로 나누는지 살펴보며 풀어요.",
     icon: Divide,
     tone: "rose",
   },
+};
+
+const OPERATIONS: OperationCardItem[] = [
+  ...ARITHMETIC_OPERATORS.map((operator) => {
+    const config = ARITHMETIC_OPERATOR_CONFIGS[operator];
+    const presentation = OPERATION_PRESENTATION[operator];
+
+    return {
+      id: operator,
+      title: config.label,
+      description: presentation.description,
+      badge: `${config.stages.length}단계`,
+      enabled: true,
+      icon: presentation.icon,
+      tone: presentation.tone,
+    };
+  }),
   {
     id: "mixed",
     title: "혼합",
