@@ -18,4 +18,3 @@ describe("classifyAdditionDifficulty", () => {
     expect(classifyAdditionDifficulty(8, 7)).toBe("hard");
   });
 });
-

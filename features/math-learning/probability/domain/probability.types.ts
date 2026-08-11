@@ -1,8 +1,6 @@
 export type ProbabilityStageId = "probability-basic";
 
-export type ProbabilityQuestionKind =
-  | "total-outcomes"
-  | "favorable-outcomes";
+export type ProbabilityQuestionKind = "total-outcomes" | "favorable-outcomes";
 
 export type ProbabilityScenarioKind = "coin" | "die" | "color-pick";
 

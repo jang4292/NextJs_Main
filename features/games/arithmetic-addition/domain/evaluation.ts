@@ -1,7 +1,4 @@
-import type {
-  EvaluationMessage,
-  LearningEvaluation,
-} from "./arithmetic.types";
+import type { EvaluationMessage, LearningEvaluation } from "./arithmetic.types";
 
 export function calculateStarRating(firstTryCorrectCount: number): 1 | 2 | 3 {
   if (firstTryCorrectCount >= 9) return 3;
@@ -61,4 +58,3 @@ function getEvaluationLevel(
 
   return "needs-basics";
 }
-

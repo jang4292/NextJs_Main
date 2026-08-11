@@ -1,16 +1,10 @@
 export type Operator =
-  | "addition"
-  | "subtraction"
-  | "multiplication"
-  | "division";
+  "addition" | "subtraction" | "multiplication" | "division";
 
 export type Operation = Operator;
 
 export type LearningCategory =
-  | "basic"
-  | "practice"
-  | "application"
-  | "advanced";
+  "basic" | "practice" | "application" | "advanced";
 
 export type QuestionType =
   | "standard"
@@ -149,10 +143,7 @@ export interface SessionAnalysis {
 }
 
 export type LearningEvaluation =
-  | "very-stable"
-  | "doing-well"
-  | "needs-practice"
-  | "needs-basics";
+  "very-stable" | "doing-well" | "needs-practice" | "needs-basics";
 
 export interface EvaluationMessage {
   level: LearningEvaluation;

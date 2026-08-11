@@ -77,10 +77,12 @@ export const gameCatalog: GameCatalogItem[] = [
   {
     slug: "arithmetic-addition",
     title: "사칙연산 학습",
-    description: "덧셈, 뺄셈, 곱셈, 나눗셈을 단계별로 풀며 기초 연산 감각을 키우는 학습 게임",
+    description:
+      "덧셈, 뺄셈, 곱셈, 나눗셈을 단계별로 풀며 기초 연산 감각을 키우는 학습 게임",
     href: "/tools/games/arithmetic-addition",
     ariaLabel: "Open arithmetic learning game page",
-    instructions: "연산과 단계를 고른 뒤 숫자 패드로 답을 입력하고 10문제 학습을 완료합니다.",
+    instructions:
+      "연산과 단계를 고른 뒤 숫자 패드로 답을 입력하고 10문제 학습을 완료합니다.",
     updatedAt: "2026-07-28",
   },
   {

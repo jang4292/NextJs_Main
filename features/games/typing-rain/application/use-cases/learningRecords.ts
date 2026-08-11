@@ -260,7 +260,9 @@ function compareLearningWeakness(
   }
 
   if (left.averageInputDurationMs !== right.averageInputDurationMs) {
-    return (right.averageInputDurationMs ?? 0) - (left.averageInputDurationMs ?? 0);
+    return (
+      (right.averageInputDurationMs ?? 0) - (left.averageInputDurationMs ?? 0)
+    );
   }
 
   return (

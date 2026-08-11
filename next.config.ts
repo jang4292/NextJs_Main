@@ -12,7 +12,7 @@ const contentSecurityPolicy = [
   "form-action 'self'",
   `script-src 'self' 'unsafe-inline'${isDevelopment ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https://img.shields.io https://visitor-badge.laobi.icu",
+  "img-src 'self' data: https://img.shields.io https://visitor-badge.laobi.icu https://i.ytimg.com https://i9.ytimg.com",
   "font-src 'self'",
   "connect-src 'self'",
   "media-src 'self' blob: https:",
@@ -59,6 +59,16 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "img.shields.io",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "i.ytimg.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "i9.ytimg.com",
         pathname: "/**",
       },
     ],

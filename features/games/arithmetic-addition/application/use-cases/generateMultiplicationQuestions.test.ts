@@ -16,8 +16,7 @@ describe("generateMultiplicationQuestions", () => {
           (question) =>
             question.operator === "multiplication" &&
             question.stageId === stage.id &&
-            question.answer ===
-              question.leftOperand * question.rightOperand,
+            question.answer === question.leftOperand * question.rightOperand,
         ),
       ).toBe(true);
     }
@@ -60,9 +59,7 @@ describe("generateMultiplicationQuestions", () => {
     ).toBe(true);
     expect(
       byOne.every(
-        (question) =>
-          question.leftOperand === 1 ||
-          question.rightOperand === 1,
+        (question) => question.leftOperand === 1 || question.rightOperand === 1,
       ),
     ).toBe(true);
   });

@@ -14,17 +14,10 @@ interface FeedbackMessageProps {
   question: ArithmeticQuestion;
 }
 
-export function FeedbackMessage({
-  feedback,
-  question,
-}: FeedbackMessageProps) {
+export function FeedbackMessage({ feedback, question }: FeedbackMessageProps) {
   if (!feedback) {
     return (
-      <div
-        className="min-h-[72px]"
-        aria-live="polite"
-        aria-atomic="true"
-      />
+      <div className="min-h-[72px]" aria-live="polite" aria-atomic="true" />
     );
   }
 

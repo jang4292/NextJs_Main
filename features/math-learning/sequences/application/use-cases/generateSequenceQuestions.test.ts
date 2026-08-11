@@ -15,10 +15,12 @@ describe("generateSequenceQuestions", () => {
   it("includes both increasing and decreasing patterns", () => {
     const questions = generateSequenceQuestions(SEQUENCE_STAGE, fixedRng);
 
-    expect(questions.some((question) => question.direction === "increase"))
-      .toBe(true);
-    expect(questions.some((question) => question.direction === "decrease"))
-      .toBe(true);
+    expect(
+      questions.some((question) => question.direction === "increase"),
+    ).toBe(true);
+    expect(
+      questions.some((question) => question.direction === "decrease"),
+    ).toBe(true);
   });
 
   it("keeps every answer aligned with the sequence step", () => {
@@ -45,8 +47,7 @@ describe("generateSequenceQuestions", () => {
     expect(
       decreasingQuestions.every(
         (question) =>
-          question.answer > 0 &&
-          question.values.every((value) => value > 0),
+          question.answer > 0 && question.values.every((value) => value > 0),
       ),
     ).toBe(true);
   });

@@ -221,9 +221,7 @@ function sanitizePreferences(value: unknown): TypingGamePreferences {
   if (!isRecord(value)) return defaults;
 
   return {
-    language: isLanguage(value.language)
-      ? value.language
-      : defaults.language,
+    language: isLanguage(value.language) ? value.language : defaults.language,
     difficulty: isDifficulty(value.difficulty)
       ? value.difficulty
       : defaults.difficulty,
@@ -365,7 +363,8 @@ function isGameHistoryRecord(value: unknown): value is GameHistoryRecord {
     Number.isFinite(value.accuracy) &&
     sanitizeNonNegativeNumber(value.maxCombo) !== null &&
     sanitizeNonNegativeNumber(value.playDurationMs) !== null &&
-    sanitizeNullableNonNegativeNumber(value.averageInputDurationMs) !== undefined
+    sanitizeNullableNonNegativeNumber(value.averageInputDurationMs) !==
+      undefined
   );
 }
 

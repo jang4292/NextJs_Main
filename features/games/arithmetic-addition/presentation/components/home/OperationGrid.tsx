@@ -1,21 +1,12 @@
 "use client";
 
-import {
-  Divide,
-  Minus,
-  Plus,
-  Shuffle,
-  X,
-} from "lucide-react";
+import { Divide, Minus, Plus, Shuffle, X } from "lucide-react";
 import {
   ARITHMETIC_OPERATOR_CONFIGS,
   ARITHMETIC_OPERATORS,
 } from "../../../application/arithmeticOperatorRegistry";
 import type { Operator } from "../../../domain/arithmetic.types";
-import {
-  OperationCard,
-  type OperationCardItem,
-} from "./OperationCard";
+import { OperationCard, type OperationCardItem } from "./OperationCard";
 
 interface OperationGridProps {
   onSelectOperation: (operator: Operator) => void;

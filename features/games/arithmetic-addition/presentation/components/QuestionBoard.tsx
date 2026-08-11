@@ -19,7 +19,7 @@ export function QuestionBoard({ question }: QuestionBoardProps) {
         {getQuestionPrompt(question.operator)}
       </p>
       <div
-        className="mt-2 text-[clamp(2.75rem,17vw,5.5rem)] font-black leading-none text-neutral-950"
+        className="mt-2 text-[clamp(2.75rem,17vw,5.5rem)] leading-none font-black text-neutral-950"
         aria-label={formatQuestionAriaLabel(question)}
       >
         {formatQuestionExpression(question)}

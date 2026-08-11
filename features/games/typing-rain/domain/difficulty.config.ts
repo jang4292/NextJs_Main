@@ -96,7 +96,10 @@ function createDifficultyConfig({
   initialHealth,
   minContentLength,
   maxContentLength,
-}: Omit<DifficultyConfig, "minWordLength" | "maxWordLength">): DifficultyConfig {
+}: Omit<
+  DifficultyConfig,
+  "minWordLength" | "maxWordLength"
+>): DifficultyConfig {
   return {
     spawnIntervalMs,
     fallDurationMs,

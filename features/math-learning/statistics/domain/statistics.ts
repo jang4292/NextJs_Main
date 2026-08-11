@@ -7,7 +7,9 @@ export interface StatisticsSummary {
   mode: number;
 }
 
-export function calculateStatistics(values: readonly number[]): StatisticsSummary {
+export function calculateStatistics(
+  values: readonly number[],
+): StatisticsSummary {
   assertNonEmpty(values);
 
   return {

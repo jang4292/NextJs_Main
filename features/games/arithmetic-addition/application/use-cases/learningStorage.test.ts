@@ -74,9 +74,8 @@ describe("learningStorage", () => {
     const analysis = calculateSessionResult(session);
     const currentData: ArithmeticLearningData = {
       ...getDefaultLearningData(),
-      recentSessions: Array.from(
-        { length: MAX_RECENT_SESSIONS },
-        (_, index) => createSessionSummary(index),
+      recentSessions: Array.from({ length: MAX_RECENT_SESSIONS }, (_, index) =>
+        createSessionSummary(index),
       ),
       mistakes: Array.from({ length: MAX_MISTAKES }, (_, index) =>
         createMistake(index),
@@ -106,7 +105,10 @@ describe("learningStorage", () => {
   });
 });
 
-function question(leftOperand: number, rightOperand: number): ArithmeticQuestion {
+function question(
+  leftOperand: number,
+  rightOperand: number,
+): ArithmeticQuestion {
   return {
     id: `${leftOperand}-${rightOperand}`,
     leftOperand,

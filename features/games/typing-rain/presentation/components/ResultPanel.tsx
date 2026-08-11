@@ -18,10 +18,7 @@ import type {
   TypingGameResult,
   TypingGameSettings,
 } from "../../domain/typing.types";
-import {
-  formatElapsedTime,
-  formatPercent,
-} from "../formatTypingStats";
+import { formatElapsedTime, formatPercent } from "../formatTypingStats";
 
 interface ResultPanelProps {
   result: TypingGameResult;
@@ -38,7 +35,10 @@ export function ResultPanel({
   onRestart,
   onChangeSettings,
 }: ResultPanelProps) {
-  const cumulativeMistypedContents = getMostMistypedContents(learningRecords, 5);
+  const cumulativeMistypedContents = getMostMistypedContents(
+    learningRecords,
+    5,
+  );
 
   return (
     <section

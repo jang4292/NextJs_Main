@@ -37,10 +37,7 @@ export interface ArithmeticOperatorConfig {
   symbol: string;
   verb: string;
   stages: readonly LearningStage[];
-  generateQuestions: (
-    stage: LearningStage,
-    rng?: Rng,
-  ) => ArithmeticQuestion[];
+  generateQuestions: (stage: LearningStage, rng?: Rng) => ArithmeticQuestion[];
 }
 
 export const ARITHMETIC_OPERATORS: Operator[] = [
@@ -102,7 +99,9 @@ export function isArithmeticOperator(value: string): value is Operator {
   return ARITHMETIC_OPERATORS.includes(value as Operator);
 }
 
-export function getStagesForOperator(operator: Operator): readonly LearningStage[] {
+export function getStagesForOperator(
+  operator: Operator,
+): readonly LearningStage[] {
   return getArithmeticOperatorConfig(operator).stages;
 }
 
@@ -120,5 +119,8 @@ export function generateQuestionsForStage(
   stage: LearningStage,
   rng?: Rng,
 ): ArithmeticQuestion[] {
-  return getArithmeticOperatorConfig(stage.operator).generateQuestions(stage, rng);
+  return getArithmeticOperatorConfig(stage.operator).generateQuestions(
+    stage,
+    rng,
+  );
 }

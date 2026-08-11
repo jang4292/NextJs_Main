@@ -29,7 +29,10 @@ export function TypingInput({
 }: TypingInputProps) {
   return (
     <div className={styles.inputDock}>
-      <label className="text-sm font-bold text-neutral-800" htmlFor="typing-rain-input">
+      <label
+        className="text-sm font-bold text-neutral-800"
+        htmlFor="typing-rain-input"
+      >
         현재 입력
       </label>
       <input
@@ -44,7 +47,9 @@ export function TypingInput({
         className={cn(
           styles.typingInput,
           feedback === "prefix" && styles.typingInputPrefix,
-          feedback === "invalid" && value.length > 0 && styles.typingInputInvalid,
+          feedback === "invalid" &&
+            value.length > 0 &&
+            styles.typingInputInvalid,
         )}
         aria-invalid={feedback === "invalid" && value.length > 0}
       />

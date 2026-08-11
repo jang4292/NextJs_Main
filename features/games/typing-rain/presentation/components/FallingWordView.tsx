@@ -21,9 +21,10 @@ export function FallingWordView({
   paused,
 }: FallingWordViewProps) {
   const normalizedInput = normalizeTypingInput(inputValue);
-  const matchingLength = highlighted || locked
-    ? Math.min(normalizedInput.length, word.text.length)
-    : 0;
+  const matchingLength =
+    highlighted || locked
+      ? Math.min(normalizedInput.length, word.text.length)
+      : 0;
   const style = {
     "--word-left": `${word.x}%`,
     "--fall-duration": `${word.fallDurationMs}ms`,

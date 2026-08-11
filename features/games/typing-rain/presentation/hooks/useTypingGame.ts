@@ -59,7 +59,9 @@ interface TypingGameState {
 
 export interface UseTypingGameOptions {
   contents?: TypingContent[];
-  difficultyConfigs?: Partial<Record<DifficultyLevel, Partial<DifficultyConfig>>>;
+  difficultyConfigs?: Partial<
+    Record<DifficultyLevel, Partial<DifficultyConfig>>
+  >;
   compact?: boolean;
   countdownMs?: number;
   rng?: () => number;
@@ -87,7 +89,12 @@ export function useTypingGame({
   const [state, setState] = useState<TypingGameState>(() =>
     createInitialState(
       DEFAULT_SETTINGS,
-      getConfig(DEFAULT_SETTINGS.contentType, "easy", compact, difficultyConfigs),
+      getConfig(
+        DEFAULT_SETTINGS.contentType,
+        "easy",
+        compact,
+        difficultyConfigs,
+      ),
     ),
   );
   const stateRef = useRef(state);
@@ -676,8 +683,6 @@ function buildResult(state: TypingGameState): TypingGameResult {
   };
 }
 
-function clearScheduledTimeouts(
-  timeoutIds: ReturnType<typeof setTimeout>[],
-) {
+function clearScheduledTimeouts(timeoutIds: ReturnType<typeof setTimeout>[]) {
   for (const timeoutId of timeoutIds) clearTimeout(timeoutId);
 }

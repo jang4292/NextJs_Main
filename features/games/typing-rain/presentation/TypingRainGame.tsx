@@ -2,14 +2,20 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { buildHighScoreKey } from "../application/use-cases/storage";
-import type { TypingGameResult, TypingGameSettings } from "../domain/typing.types";
+import type {
+  TypingGameResult,
+  TypingGameSettings,
+} from "../domain/typing.types";
 import { GameBoard } from "./components/GameBoard";
 import { GameHud } from "./components/GameHud";
 import { PauseOverlay } from "./components/PauseOverlay";
 import { ResultPanel } from "./components/ResultPanel";
 import { StartPanel } from "./components/StartPanel";
 import { TypingInput } from "./components/TypingInput";
-import { useTypingGame, type UseTypingGameOptions } from "./hooks/useTypingGame";
+import {
+  useTypingGame,
+  type UseTypingGameOptions,
+} from "./hooks/useTypingGame";
 import { useTypingInput } from "./hooks/useTypingInput";
 import { useTypingRainStorage } from "./hooks/useTypingRainStorage";
 import { useVisualViewport } from "./hooks/useVisualViewport";
@@ -165,7 +171,10 @@ export function TypingRainGame(options: UseTypingGameOptions = {}) {
             종료
           </div>
         )}
-        <PauseOverlay visible={game.status === "paused"} onResume={game.resume} />
+        <PauseOverlay
+          visible={game.status === "paused"}
+          onResume={game.resume}
+        />
       </div>
       <TypingInput
         value={typingInput.value}

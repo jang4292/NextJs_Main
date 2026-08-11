@@ -122,9 +122,13 @@ export function buildInvalidSwapPlaybackFrames(
 
   if (!result.previewBoard) {
     return [
-      createInvalidFrame("invalid-restore", { ...current, phase: "idle" }, {
-        invalidTileIds,
-      }),
+      createInvalidFrame(
+        "invalid-restore",
+        { ...current, phase: "idle" },
+        {
+          invalidTileIds,
+        },
+      ),
     ];
   }
 
@@ -137,9 +141,13 @@ export function buildInvalidSwapPlaybackFrames(
         invalidTileIds,
       },
     ),
-    createInvalidFrame("invalid-restore", { ...current, phase: "idle" }, {
-      invalidTileIds,
-    }),
+    createInvalidFrame(
+      "invalid-restore",
+      { ...current, phase: "idle" },
+      {
+        invalidTileIds,
+      },
+    ),
   ];
 }
 

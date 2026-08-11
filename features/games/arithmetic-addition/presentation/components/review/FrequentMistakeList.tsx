@@ -8,5 +8,7 @@ interface FrequentMistakeListProps {
 }
 
 export function FrequentMistakeList({ mistakes }: FrequentMistakeListProps) {
-  return <MistakeList mistakes={mistakes} emptyLabel="자주 틀린 문제가 없어요." />;
+  return (
+    <MistakeList mistakes={mistakes} emptyLabel="자주 틀린 문제가 없어요." />
+  );
 }

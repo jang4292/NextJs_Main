@@ -16,8 +16,9 @@ describe("SequenceLearning", () => {
     renderLearning();
 
     expect(screen.getByText("문제 1 / 2")).toBeInTheDocument();
-    expect(screen.getByLabelText("수열 2, 4, 6, 8, 다음 수"))
-      .toBeInTheDocument();
+    expect(
+      screen.getByLabelText("수열 2, 4, 6, 8, 다음 수"),
+    ).toBeInTheDocument();
   });
 
   it("displays number-pad input and deletes one digit", async () => {
@@ -52,8 +53,9 @@ describe("SequenceLearning", () => {
     await submitDigits(user, [9]);
 
     expect(screen.getByText("다시 생각해 보세요.")).toBeInTheDocument();
-    expect(screen.getByLabelText("수열 2, 4, 6, 8, 다음 수"))
-      .toBeInTheDocument();
+    expect(
+      screen.getByLabelText("수열 2, 4, 6, 8, 다음 수"),
+    ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "1 입력" })).toBeEnabled();
   });
 

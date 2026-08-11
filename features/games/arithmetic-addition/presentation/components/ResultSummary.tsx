@@ -80,7 +80,10 @@ export function ResultSummary({
       )}
 
       <dl className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
-        <ResultMetric label="전체 문제" value={`${analysis.totalQuestions}문제`} />
+        <ResultMetric
+          label="전체 문제"
+          value={`${analysis.totalQuestions}문제`}
+        />
         <ResultMetric
           label="처음에 맞힌 문제"
           value={`${analysis.firstTryCorrectCount}문제`}
@@ -104,7 +107,9 @@ export function ResultSummary({
       </dl>
 
       <div className="rounded-lg border border-neutral-200 bg-white p-4">
-        <h3 className="font-bold text-neutral-950">{analysis.evaluation.title}</h3>
+        <h3 className="font-bold text-neutral-950">
+          {analysis.evaluation.title}
+        </h3>
         <p className="mt-1 text-sm text-neutral-600">
           최초 정답률 {Math.round(analysis.firstTryAccuracy * 100)}%
         </p>

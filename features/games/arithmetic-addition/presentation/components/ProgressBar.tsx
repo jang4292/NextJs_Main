@@ -24,4 +24,3 @@ export function ProgressBar({ value, max }: ProgressBarProps) {
     </div>
   );
 }
-

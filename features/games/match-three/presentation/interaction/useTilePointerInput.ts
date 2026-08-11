@@ -2,10 +2,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
-import type {
-  Direction,
-  Position,
-} from "../../domain/entities/Position";
+import type { Direction, Position } from "../../domain/entities/Position";
 import { resolveSwipeDirection } from "./swipeGeometry";
 
 interface PendingPointer {

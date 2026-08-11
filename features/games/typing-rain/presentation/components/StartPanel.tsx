@@ -65,7 +65,8 @@ export function StartPanel({
               떨어지는 타깃을 입력해요
             </h1>
             <p className="mt-2 text-sm leading-6 text-neutral-600">
-              한글과 영문 단어, 짧은 문장을 정확히 입력해 비를 걷어내는 타자 연습 게임입니다.
+              한글과 영문 단어, 짧은 문장을 정확히 입력해 비를 걷어내는 타자
+              연습 게임입니다.
             </p>
           </div>
         </div>
