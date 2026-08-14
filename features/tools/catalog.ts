@@ -29,7 +29,7 @@ export const toolCatalog: ToolCatalogItem[] = [
     id: "music",
     title: "Music Studio",
     eyebrow: "Audio",
-    description: "날짜별 스윙 재즈 목록과 DJ 큐를 한 화면에서 다룹니다.",
+    description: "DJ 히스토리, 커스텀 큐, JSON 소스 플레이어를 다룹니다.",
     href: "/tools/music",
     category: "creative",
     status: "expanded",

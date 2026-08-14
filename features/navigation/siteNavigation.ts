@@ -64,12 +64,12 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/music-list", destination: "/tools/music", permanent: false },
   {
     source: "/DJ_Play_List",
-    destination: "/tools/music?mode=dj",
+    destination: "/tools/music?mode=custom",
     permanent: false,
   },
   {
     source: "/dj-play-list",
-    destination: "/tools/music?mode=dj",
+    destination: "/tools/music?mode=custom",
     permanent: false,
   },
   {

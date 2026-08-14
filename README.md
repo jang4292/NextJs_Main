@@ -63,6 +63,14 @@ npm run dev
 
 브라우저에서 [http://localhost:3000](http://localhost:3000)에 접속합니다.
 
+같은 로컬 네트워크의 모바일 기기에서 테스트할 때는 `.env.local`의
+`NEXT_ALLOWED_DEV_ORIGINS`에 접속할 호스트 IP를 추가한 뒤 아래 명령을
+사용합니다.
+
+```bash
+npm run dev:network
+```
+
 ### 관리자 계정
 
 관리자 계정은 DB가 아닌 환경 변수로 설정합니다 (`.env.example` 참고):
@@ -157,6 +165,9 @@ RECEIVER_EMAIL=you@example.com
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD_HASH=<bcrypt 해시>
 SESSION_SECRET=<32바이트 랜덤 base64>
+
+# 로컬 네트워크 개발 접속 허용 (프로토콜/포트 없이 hostname 또는 IP만 입력)
+NEXT_ALLOWED_DEV_ORIGINS=172.30.1.23,172.30.1.60
 
 # Music Studio 오디오 소스 (선택, 미설정 시 기본 데모 버킷 사용)
 NEXT_PUBLIC_AUDIO_BASE_URL=https://audiofilestudy.s3.ap-northeast-2.amazonaws.com
