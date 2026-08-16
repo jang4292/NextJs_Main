@@ -9,10 +9,7 @@ import {
 } from "../../application/use-cases/swapTiles";
 import { getCell } from "../../domain/entities/Board";
 import type { GameSession } from "../../domain/entities/GameSession";
-import type {
-  Direction,
-  Position,
-} from "../../domain/entities/Position";
+import type { Direction, Position } from "../../domain/entities/Position";
 import {
   areAdjacent,
   arePositionsEqual,

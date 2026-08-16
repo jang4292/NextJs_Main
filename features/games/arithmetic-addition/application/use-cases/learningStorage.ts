@@ -45,10 +45,9 @@ export function parseLearningData(raw: string | null): ArithmeticLearningData {
         ? parsed.stageProgress.filter(isStageProgressRecord)
         : [],
       recentSessions: Array.isArray(parsed.recentSessions)
-        ? parsed.recentSessions.filter(isLearningSessionSummary).slice(
-            0,
-            MAX_RECENT_SESSIONS,
-          )
+        ? parsed.recentSessions
+            .filter(isLearningSessionSummary)
+            .slice(0, MAX_RECENT_SESSIONS)
         : [],
       mistakes: Array.isArray(parsed.mistakes)
         ? parsed.mistakes.filter(isMistakeRecord).slice(0, MAX_MISTAKES)
@@ -204,9 +203,7 @@ function applyMistakes(
     .slice(0, MAX_MISTAKES);
 }
 
-function isStageProgressRecord(
-  value: unknown,
-): value is StageProgressRecord {
+function isStageProgressRecord(value: unknown): value is StageProgressRecord {
   if (!value || typeof value !== "object") return false;
   const candidate = value as Partial<StageProgressRecord>;
   return (

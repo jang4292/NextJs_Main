@@ -47,7 +47,9 @@ export function generateStatisticsQuestions(
 ): StatisticsQuestion[] {
   const candidates = createCandidates(stage);
   const requiredQuestions = QUESTION_KINDS.map((kind) => {
-    const kindCandidates = candidates.filter((question) => question.kind === kind);
+    const kindCandidates = candidates.filter(
+      (question) => question.kind === kind,
+    );
     return shuffle(kindCandidates, rng)[0];
   });
   const requiredIds = new Set(requiredQuestions.map((question) => question.id));

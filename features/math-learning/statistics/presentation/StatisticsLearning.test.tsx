@@ -16,8 +16,7 @@ describe("StatisticsLearning", () => {
     renderLearning();
 
     expect(screen.getByText("문제 1 / 2")).toBeInTheDocument();
-    expect(screen.getByLabelText("자료 3, 5, 5, 7, 10"))
-      .toBeInTheDocument();
+    expect(screen.getByLabelText("자료 3, 5, 5, 7, 10")).toBeInTheDocument();
     expect(screen.getByText("자료의 합계는?")).toBeInTheDocument();
   });
 
@@ -53,8 +52,7 @@ describe("StatisticsLearning", () => {
     await submitDigits(user, [9]);
 
     expect(screen.getByText("다시 생각해 보세요.")).toBeInTheDocument();
-    expect(screen.getByLabelText("자료 3, 5, 5, 7, 10"))
-      .toBeInTheDocument();
+    expect(screen.getByLabelText("자료 3, 5, 5, 7, 10")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "1 입력" })).toBeEnabled();
   });
 

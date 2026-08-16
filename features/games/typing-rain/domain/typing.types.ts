@@ -4,15 +4,13 @@ export type DifficultyLevel = "easy" | "normal" | "hard";
 
 export type ContentType = "word" | "short-sentence" | "long-sentence";
 
-export type PlayableContentType = Extract<ContentType, "word" | "short-sentence">;
+export type PlayableContentType = Extract<
+  ContentType,
+  "word" | "short-sentence"
+>;
 
 export type TypingGameStatus =
-  | "idle"
-  | "countdown"
-  | "playing"
-  | "paused"
-  | "game-over"
-  | "result";
+  "idle" | "countdown" | "playing" | "paused" | "game-over" | "result";
 
 export interface TypingContent {
   id: string;

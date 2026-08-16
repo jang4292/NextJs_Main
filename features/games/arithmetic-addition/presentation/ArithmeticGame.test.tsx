@@ -1,12 +1,7 @@
 // @vitest-environment jsdom
 
 import "@testing-library/jest-dom/vitest";
-import {
-  cleanup,
-  render,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it } from "vitest";
 import { STORAGE_KEY } from "../application/use-cases/learningStorage";
@@ -23,15 +18,17 @@ describe("ArithmeticGame", () => {
     const user = userEvent.setup();
     renderGame();
 
-    expect(screen.getByRole("heading", { name: "오늘의 연산을 골라요" }))
-      .toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "오늘의 연산을 골라요" }),
+    ).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /덧셈/ }));
 
     expect(screen.getByRole("heading", { name: "기초" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "숙련" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "응용" }))
-      .not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "응용" }),
+    ).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /5 이하 덧셈/ }));
 
@@ -47,8 +44,9 @@ describe("ArithmeticGame", () => {
 
     expect(unavailableOperation).toBeDisabled();
     await user.click(unavailableOperation);
-    expect(screen.getByRole("heading", { name: "오늘의 연산을 골라요" }))
-      .toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "오늘의 연산을 골라요" }),
+    ).toBeInTheDocument();
   });
 
   it("displays number-pad input and deletes one digit", async () => {
@@ -185,8 +183,9 @@ describe("ArithmeticGame", () => {
     await user.click(screen.getByRole("button", { name: /곱셈/ }));
 
     expect(screen.getByRole("heading", { name: "기초" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /같은 묶음/ }))
-      .toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /같은 묶음/ }),
+    ).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /같은 묶음/ }));
 
@@ -206,15 +205,17 @@ describe("ArithmeticGame", () => {
     await user.click(screen.getByRole("button", { name: /나눗셈/ }));
 
     expect(screen.getByRole("heading", { name: "기초" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /똑같이 나누기/ }))
-      .toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /똑같이 나누기/ }),
+    ).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /똑같이 나누기/ }));
 
     expect(screen.getByText("÷ 나눗셈")).toBeInTheDocument();
     expect(screen.getByText("문제 1 / 1")).toBeInTheDocument();
-    expect(screen.getByLabelText("12개를 3개의 묶음으로 나누기"))
-      .toBeInTheDocument();
+    expect(
+      screen.getByLabelText("12개를 3개의 묶음으로 나누기"),
+    ).toBeInTheDocument();
 
     await submitDigits(user, [4]);
 

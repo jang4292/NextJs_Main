@@ -9,11 +9,5 @@ export function buildQuestionKey(
   leftOperand: number,
   rightOperand: number,
 ): string {
-  return [
-    operator,
-    stageId,
-    questionType,
-    leftOperand,
-    rightOperand,
-  ].join(":");
+  return [operator, stageId, questionType, leftOperand, rightOperand].join(":");
 }

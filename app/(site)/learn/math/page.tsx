@@ -32,7 +32,7 @@ export default function MathLearningPage() {
         action={
           <Link
             href={ARITHMETIC_LEARNING_HREF}
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-neutral-950 px-4 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-neutral-950 px-4 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 focus:outline-none"
           >
             연산 학습 시작
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -43,9 +43,7 @@ export default function MathLearningPage() {
       <section aria-labelledby="math-subjects-heading">
         <div className="mb-3 flex items-end justify-between gap-3">
           <div>
-            <p className="text-sm font-semibold text-emerald-700">
-              학습 영역
-            </p>
+            <p className="text-sm font-semibold text-emerald-700">학습 영역</p>
             <h2
               id="math-subjects-heading"
               className="mt-1 text-2xl font-bold text-neutral-950"
@@ -131,7 +129,7 @@ function MathSubjectCard({ subject }: { subject: MathSubjectItem }) {
     return (
       <Link
         href={subject.href}
-        className="group flex min-h-[240px] flex-col rounded-md border border-emerald-200 bg-white p-5 transition-colors hover:border-neutral-900 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
+        className="group flex min-h-[240px] flex-col rounded-md border border-emerald-200 bg-white p-5 transition-colors hover:border-neutral-900 focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 focus:outline-none"
       >
         <div className="flex-1">{content}</div>
         <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-neutral-950 group-hover:underline">

@@ -44,7 +44,10 @@ export function compareTypingInput({
   const normalizedTarget = normalizeTypingForRules(targetText, rules);
   const inputCharacters = Array.from(normalizedInput);
   const targetCharacters = Array.from(normalizedTarget);
-  const sharedLength = Math.min(inputCharacters.length, targetCharacters.length);
+  const sharedLength = Math.min(
+    inputCharacters.length,
+    targetCharacters.length,
+  );
   const mismatchPositions = getMismatchPositions({
     inputValue: normalizedInput,
     targetText: normalizedTarget,
@@ -61,7 +64,8 @@ export function compareTypingInput({
   return {
     isExactMatch: normalizedInput === normalizedTarget,
     isPrefixMatch:
-      normalizedInput.length > 0 && normalizedTarget.startsWith(normalizedInput),
+      normalizedInput.length > 0 &&
+      normalizedTarget.startsWith(normalizedInput),
     correctCharacterCount,
     mismatchPositions,
     missingCharacterCount: Math.max(
@@ -128,7 +132,9 @@ export function isPrefixMatch({
 }): boolean {
   const normalizedInput = normalizeTypingForRules(inputValue, rules);
   const normalizedTarget = normalizeTypingForRules(targetText, rules);
-  return normalizedInput.length > 0 && normalizedTarget.startsWith(normalizedInput);
+  return (
+    normalizedInput.length > 0 && normalizedTarget.startsWith(normalizedInput)
+  );
 }
 
 export function countCorrectInsertedCharacters({

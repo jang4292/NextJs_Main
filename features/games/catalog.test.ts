@@ -11,12 +11,8 @@ describe("gameCatalog", () => {
 
   it("resolves canonical games by slug", () => {
     expect(getGameBySlug("2048")?.href).toBe("/tools/games/2048");
-    expect(getGameBySlug("match-three")?.href).toBe(
-      "/tools/games/match-three",
-    );
-    expect(getGameBySlug("typing-rain")?.href).toBe(
-      "/tools/games/typing-rain",
-    );
+    expect(getGameBySlug("match-three")?.href).toBe("/tools/games/match-three");
+    expect(getGameBySlug("typing-rain")?.href).toBe("/tools/games/typing-rain");
     expect(getGameBySlug("unknown")).toBeUndefined();
   });
 });

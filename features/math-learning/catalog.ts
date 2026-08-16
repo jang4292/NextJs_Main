@@ -54,12 +54,7 @@ export const mathSubjectCatalog: MathSubjectItem[] = [
     status: "available",
     statusLabel: "학습 가능",
     href: SEQUENCES_LEARNING_HREF,
-    topics: [
-      "다음 수 찾기",
-      "일정한 증가",
-      "일정한 감소",
-      "패턴 추론",
-    ],
+    topics: ["다음 수 찾기", "일정한 증가", "일정한 감소", "패턴 추론"],
   },
   {
     id: "statistics",
@@ -70,14 +65,7 @@ export const mathSubjectCatalog: MathSubjectItem[] = [
     status: "available",
     statusLabel: "학습 가능",
     href: STATISTICS_LEARNING_HREF,
-    topics: [
-      "합계",
-      "최댓값",
-      "최솟값",
-      "평균",
-      "중앙값",
-      "최빈값",
-    ],
+    topics: ["합계", "최댓값", "최솟값", "평균", "중앙값", "최빈값"],
   },
   {
     id: "probability",
@@ -88,20 +76,13 @@ export const mathSubjectCatalog: MathSubjectItem[] = [
     status: "available",
     statusLabel: "학습 가능",
     href: PROBABILITY_LEARNING_HREF,
-    topics: [
-      "전체 경우 수",
-      "유리한 경우 수",
-      "동전",
-      "주사위",
-      "색 공 뽑기",
-    ],
+    topics: ["전체 경우 수", "유리한 경우 수", "동전", "주사위", "색 공 뽑기"],
   },
   {
     id: "algebra",
     title: "대수",
     eyebrow: "Algebra",
-    description:
-      "빈칸 문제에서 변수와 간단한 방정식으로 이어지는 흐름입니다.",
+    description: "빈칸 문제에서 변수와 간단한 방정식으로 이어지는 흐름입니다.",
     status: "coming-soon",
     statusLabel: "준비 중",
     topics: ["빈칸", "변수", "문자와 식", "방정식"],
@@ -110,8 +91,7 @@ export const mathSubjectCatalog: MathSubjectItem[] = [
     id: "functions",
     title: "함수",
     eyebrow: "Functions",
-    description:
-      "좌표, 입력과 출력, 일차함수로 확장되는 학습 영역입니다.",
+    description: "좌표, 입력과 출력, 일차함수로 확장되는 학습 영역입니다.",
     status: "coming-soon",
     statusLabel: "준비 중",
     topics: ["좌표", "함수 개념", "일차함수", "이차함수"],
@@ -130,8 +110,7 @@ export const mathSubjectCatalog: MathSubjectItem[] = [
     id: "trigonometry",
     title: "삼각법",
     eyebrow: "Trigonometry",
-    description:
-      "비율과 직각삼각형을 충분히 다진 뒤 삼각비로 확장합니다.",
+    description: "비율과 직각삼각형을 충분히 다진 뒤 삼각비로 확장합니다.",
     status: "coming-soon",
     statusLabel: "준비 중",
     topics: ["삼각비", "sin", "cos", "tan"],

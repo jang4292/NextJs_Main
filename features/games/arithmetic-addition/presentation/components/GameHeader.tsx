@@ -3,10 +3,7 @@
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { LearningStage, Operator } from "../../domain/arithmetic.types";
-import {
-  OPERATOR_LABEL,
-  OPERATOR_SYMBOL,
-} from "../../domain/operatorMeta";
+import { OPERATOR_LABEL, OPERATOR_SYMBOL } from "../../domain/operatorMeta";
 import { ProgressBar } from "./ProgressBar";
 
 interface GameHeaderProps {

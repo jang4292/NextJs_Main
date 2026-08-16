@@ -1,7 +1,4 @@
-import type {
-  DivisionStageId,
-  LearningStage,
-} from "../arithmetic.types";
+import type { DivisionStageId, LearningStage } from "../arithmetic.types";
 
 export interface DivisionPair {
   leftOperand: number;
@@ -24,7 +21,8 @@ export const DIVISION_STAGES: DivisionStageConfig[] = [
     order: 1,
     title: "똑같이 나누기",
     shortTitle: "똑같이 나누기",
-    description: "전체 개수를 몇 개의 묶음으로 똑같이 나누는지 보고 한 묶음의 수를 찾아요.",
+    description:
+      "전체 개수를 몇 개의 묶음으로 똑같이 나누는지 보고 한 묶음의 수를 찾아요.",
     questionTypes: ["standard"],
     questionCount: QUESTION_COUNT,
     ruleId: "division.equal-sharing",

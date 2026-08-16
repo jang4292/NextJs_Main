@@ -41,10 +41,7 @@ describe("typingContents", () => {
   });
 });
 
-function countBy(
-  language: LanguageType,
-  difficulty: DifficultyLevel,
-): number {
+function countBy(language: LanguageType, difficulty: DifficultyLevel): number {
   return typingContents.filter(
     (content) =>
       content.language === language &&

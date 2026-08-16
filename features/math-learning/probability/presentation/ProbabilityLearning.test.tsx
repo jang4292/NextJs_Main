@@ -16,8 +16,7 @@ describe("ProbabilityLearning", () => {
     renderLearning();
 
     expect(screen.getByText("문제 1 / 2")).toBeInTheDocument();
-    expect(screen.getByLabelText("가능한 결과 앞면, 뒷면"))
-      .toBeInTheDocument();
+    expect(screen.getByLabelText("가능한 결과 앞면, 뒷면")).toBeInTheDocument();
     expect(
       screen.getByText("나올 수 있는 결과는 모두 몇 가지인가요?"),
     ).toBeInTheDocument();
@@ -55,8 +54,7 @@ describe("ProbabilityLearning", () => {
     await submitDigits(user, [9]);
 
     expect(screen.getByText("다시 생각해 보세요.")).toBeInTheDocument();
-    expect(screen.getByLabelText("가능한 결과 앞면, 뒷면"))
-      .toBeInTheDocument();
+    expect(screen.getByLabelText("가능한 결과 앞면, 뒷면")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "1 입력" })).toBeEnabled();
   });
 

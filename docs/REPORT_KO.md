@@ -1,195 +1,225 @@
-# YH Jang 포트폴리오 — 개발 보고서 (한국어)
+# YH Jang Interactive Lab - 개발 보고서 (한국어)
 
-**작성일**: 2026년 7월
-**프로젝트**: 개인 포트폴리오 & 유틸리티 도구
-**스택**: Next.js 15 · React 19 · TypeScript · Tailwind CSS
+- **작성일**: 2026-08-11
+- **프로젝트**: 개인 Interactive Lab & 유틸리티 도구 모음
+- **스택**: Next.js 16.2.11 · React 19.2.8 · TypeScript 6 tooling · Tailwind CSS 4
 
 ---
 
 ## 1. 프로젝트 개요
 
-본 프로젝트는 Next.js 15 App Router와 React 19, TypeScript를 기반으로 개발된 개인 포트폴리오 웹사이트입니다.
-개인 포트폴리오이자 실용적인 유틸리티 도구 모음으로서, 음원 리스트, 개발 블로그, 세금 계산기, DJ 플레이리스트,
-브라우저 미니게임, 이메일 문의, JWT 세션 기반 관리자 대시보드 등의 기능을 제공합니다.
+이 프로젝트는 포트폴리오, 실용 도구, 학습 콘텐츠를 하나의 App Router
+애플리케이션으로 묶은 개인 Interactive Lab입니다. 홈 화면은 도구와 학습 콘텐츠
+진입을 우선 배치하고, 소개/문의/관리자 영역은 보조 흐름으로 구성합니다.
+
+현재 주요 기능은 Music Studio, Media Downloader, 9개 미니게임, 2025 한국 세금
+계산기, 개발 블로그, 사자성어/영어/일본어/중국어 단어 학습, 수학 학습, 이메일
+문의, JWT 세션 기반 관리자 대시보드입니다.
+
+| 항목              | 현재 상태                                     |
+| ----------------- | --------------------------------------------- |
+| Framework         | Next.js 16 App Router                         |
+| Runtime           | React 19                                      |
+| 언어              | TypeScript 6 tooling                          |
+| Public page route | 24개 `page.tsx`                               |
+| API route         | 5개 route handler                             |
+| 테스트            | Vitest 테스트 141개 파일 / 599개 케이스       |
+| 기준 브랜치       | `feature/play-musics-videos` (`develop` 대비) |
 
 ---
 
-## 2. 전체 라우트 맵
+## 2. 라우트 맵
 
-| 경로               | 설명                              | 컴포넌트 구성                                    |
-| ------------------ | --------------------------------- | ------------------------------------------------ |
-| `/`                | 홈 / 히어로                       | 서버 `page.tsx` + `components/Hero.tsx` (client) |
-| `/about`           | 소개 (경력, 기술 스택, 연락 링크) | 서버 컴포넌트                                    |
-| `/music-list`      | 날짜 기반 음원 리스트             | `page.tsx`(서버) + `MusicListClient.tsx`         |
-| `/blog`            | 블로그 목록                       | 서버 컴포넌트                                    |
-| `/blog/[slug]`     | 블로그 상세 (SSG)                 | 서버 컴포넌트, `generateStaticParams`            |
-| `/DJ_Play_List`    | 오디오 플레이어                   | `page.tsx`(서버) + `DJPlayListClient.tsx`        |
-| `/tax-calculator`  | 세금 계산기                       | `page.tsx`(서버) + `TaxCalculatorClient.tsx`     |
-| `/contact`         | 이메일 문의 폼                    | `page.tsx`(서버) + `ContactClient.tsx`           |
-| `/projects`        | 외부 링크 모음                    | 서버 컴포넌트                                    |
-| `/games`           | 미니게임 허브                     | 서버 컴포넌트                                    |
-| `/login`           | 관리자 로그인                     | `page.tsx`(서버) + `LoginClient.tsx`             |
-| `/admin`           | 관리자 대시보드 홈                | 서버 컴포넌트, 세션 쿠키에서 사용자명 표시       |
-| `/admin/users`     | 사용자 관리                       | 서버 컴포넌트, 환경 변수 관리자 계정 1개 표시    |
-| `/api/auth/login`  | 로그인 API                        | Route Handler — bcrypt 검증 + JWT 세션 발급      |
-| `/api/auth/logout` | 로그아웃 API                      | Route Handler — 세션 쿠키 제거                   |
-| `/api/send-email`  | 이메일 발송 API                   | Route Handler — Nodemailer SMTP                  |
+| 경로                                    | 설명                  | 구성                      |
+| --------------------------------------- | --------------------- | ------------------------- |
+| `/`                                     | Interactive Lab 홈    | `(site)` public chrome    |
+| `/tools`                                | 도구 허브             | tool catalog              |
+| `/tools/music`                          | Music Studio          | playlist + DJ queue       |
+| `/tools/media-downloader`               | Media Downloader      | client UI + media API     |
+| `/tools/tax-calculator`                 | 2025 한국 세금 계산기 | tax view model + UI       |
+| `/tools/games`                          | 게임 허브             | 9-game catalog            |
+| `/tools/games/[slug]`                   | 개별 게임 실행        | `GameHost` dynamic import |
+| `/learn`                                | 학습 허브             | learning catalog          |
+| `/learn/blog`, `/learn/blog/[slug]`     | 개발 블로그 목록/상세 | SSG detail route          |
+| `/learn/idioms`, `/learn/idioms/[slug]` | 사자성어 목록/상세    | typed idiom data          |
+| `/learn/vocabulary`                     | 영어 단어 학습        | search/filter/detail      |
+| `/learn/japanese-vocabulary`            | 일본어 단어 학습      | speech + filter           |
+| `/learn/chinese-vocabulary`             | 중국어 단어 학습      | speech + filter           |
+| `/learn/math`                           | 수학 학습 허브        | math catalog              |
+| `/learn/math/sequences`                 | 수열 학습             | quiz flow                 |
+| `/learn/math/statistics`                | 통계 학습             | quiz flow                 |
+| `/learn/math/probability`               | 확률 학습             | quiz flow                 |
+| `/about`                                | 소개/외부 링크        | server route              |
+| `/contact`                              | 이메일 문의 폼        | contact feature           |
+| `/login`                                | 관리자 로그인         | auth-only layout          |
+| `/admin`, `/admin/users`                | 보호된 관리자 화면    | session required          |
 
-`/admin/**` 경로는 `middleware.ts`에서 세션 쿠키를 검증하여 보호합니다.
+이전 공개 URL은 `features/navigation/siteNavigation.ts`의 `legacyRedirects`와
+`next.config.ts`를 통해 canonical route로 임시 연결됩니다.
 
 ---
 
-## 3. 인증 시스템
+## 3. API와 서버 흐름
 
-DB 없이 환경 변수 기반의 단일 관리자 계정만 존재합니다.
+| API                        | 역할                              | 주요 보호 장치                         |
+| -------------------------- | --------------------------------- | -------------------------------------- |
+| `POST /api/auth/login`     | 관리자 로그인, JWT 세션 쿠키 발급 | IP/username rate limit, 입력 길이 제한 |
+| `POST /api/auth/logout`    | 세션 쿠키 만료                    | httpOnly cookie 삭제                   |
+| `POST /api/send-email`     | 문의 메일 발송                    | IP rate limit, email/length validation |
+| `POST /api/media/analyze`  | YouTube 단일 영상 메타데이터 분석 | URL allowlist, stable error mapping    |
+| `POST /api/media/download` | MP4/MP3 파일 응답                 | format validation, temp cleanup        |
 
-- `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH` (bcrypt 해시) 환경 변수로 계정 정의
-- `POST /api/auth/login`: `lib/credentials.ts`의 `verifyCredentials()`로 비밀번호 비교
-- 성공 시 `lib/auth.ts`의 `createSessionToken()`으로 JWT 생성 (jose, HS256, 2시간 만료)
-- 세션은 httpOnly + `SameSite=Lax` 쿠키(`admin_session`)로 저장 — 클라이언트 JS에서 읽거나 위조 불가
-- `middleware.ts`가 `/admin/:path*` 요청마다 쿠키를 검증, 없거나 유효하지 않으면 `/login`으로 리다이렉트
-- `POST /api/auth/logout`: 쿠키를 만료시켜 제거
-
-> ⚠️ 참고: 별도 사용자 DB가 없어 다중 사용자/역할 관리는 지원하지 않습니다. `/admin/users`는
-> 등록된 관리자 계정 1개(환경 변수)를 조회 전용으로 보여줍니다.
+`proxy.ts`는 `/admin/**` 요청의 `admin_session` 쿠키를 검증하고, 유효하지 않은
+요청을 `/login`으로 리다이렉트합니다. 서버 렌더링 단계에서도
+`app/admin/layout.tsx`가 세션을 확인합니다.
 
 ---
 
 ## 4. 주요 기능 상세
 
-### 4.1 홈 / 히어로 (`app/page.tsx`, `components/Hero.tsx`)
+### 4.1 Music Studio
 
-- GSAP `bounce.out` ease + `yoyo: true, repeat: -1`로 제목 바운스 애니메이션 (GSAP는 마운트 후 동적 import로 지연 로드)
-- "이력서 보기"(`/resume.pdf`) 및 "프로젝트 보기"(`/projects`) CTA 버튼
-- 12년 이상 경력 소개 텍스트
+`/tools/music`는 날짜별 플레이리스트와 DJ 큐를 한 화면에 통합합니다.
+기본 트랙은 `features/music/domain/data/musicPlaylists.ts`가 소유하며,
+URL/로컬 파일로 추가한 트랙은 DJ 큐에서만 관리합니다. Object URL은 제거 또는
+언마운트 시 해제합니다.
 
-### 4.2 소개 (`app/about/page.tsx`)
+### 4.2 Media Downloader
 
-- 경력 소개 문구 (Hero와 동일한 톤 재사용)
-- 기술 스택 배지 (shields.io): TypeScript, JavaScript, Next.js, TailwindCSS, Node.js, Cocos Creator, HTML5
-- GitHub, YouTube, LinkedIn, 네이버 블로그, 이메일 문의 링크
+`/tools/media-downloader`는 공개 YouTube 단일 영상을 분석하고 MP4 또는 MP3로
+저장하는 로컬 MVP입니다.
 
-### 4.3 음원 리스트 (`data/musicData.ts`, `app/music-list/`)
+- Analyze: `POST /api/media/analyze` with `{ url: string }`
+- Download: `POST /api/media/download` with `{ url, type, formatId, quality? }`
+- Video presets: `video-mp4-360`, `video-mp4-720`, `video-mp4-1080`
+- Audio presets: `audio-mp3-128`, `audio-mp3-192`
+- Runtime tools: `yt-dlp`, `ffmpeg`, `ffprobe`
 
-- 모든 플레이리스트를 `data/musicData.ts` 한 파일에서 중앙 관리 (날짜 + 트랙 배열)
-- 날짜 선택 버튼(pill)으로 플레이리스트 전환, 트랙 테이블(#, 제목, 아티스트, BPM)
-- 스티키 오디오 플레이어: 재생/일시정지/정지, 클릭 가능한 진행바, 현재 재생 트랙 강조
+URL validation, platform resolution, format mapping, filename sanitization,
+status label, error mapping은 feature 내부 순수 유틸리티로 분리되어 있고,
+프로세스 실행은 infrastructure adapter에 격리되어 있습니다.
 
-### 4.4 블로그 (`data/blogPosts.ts`, `app/blog/`, `app/blog/[slug]/`)
+### 4.3 Games
 
-- 게시글을 `data/blogPosts.ts` 단일 파일에 저장 (slug, 제목 한/영, 날짜, 태그, 마크다운형 본문)
-- 목록 페이지: 날짜 역순 정렬, 태그/작성자 표시
-- 상세 페이지: `generateStaticParams` 기반 SSG, 헤딩/리스트/문단 렌더링
+게임 catalog는 9개 slug를 관리합니다: Solitaire, 2048, 지뢰찾기, FreeCell,
+스도쿠, 3-Match, 사칙연산 학습, Typing Rain, Slot Machine.
+`GameHost.tsx`가 각 게임을 `ssr: false`로 동적 로드해 초기 난수와 브라우저
+전용 상태로 인한 hydration 불일치를 피합니다.
 
-### 4.5 DJ 플레이 리스트 (`app/DJ_Play_List/`)
+### 4.4 Learning
 
-- 스윙 재즈 트랙 6곡 기본 제공 (AWS S3에서 스트리밍, `lib/audio.ts`의 `audioUrl()`로 베이스 URL 해석)
-- Play/Pause/Stop, 진행바 탐색, 볼륨 조절, Repeat/Shuffle 토글
-- URL로 트랙 추가, 로컬 파일 업로드(Object URL) 지원, 언마운트 시 Object URL 해제로 메모리 누수 방지
+학습 콘텐츠는 `/learn` 아래로 모여 있습니다. 블로그와 사자성어는 상세 route를
+갖고, 영어/일본어/중국어 단어 학습은 검색/필터/발음 흐름을 제공합니다. 수학
+학습은 수열, 통계, 확률을 독립 subroute로 제공합니다.
 
-### 4.6 세금 계산기 (`app/tax-calculator/`, `app/lib/taxCalculator.ts`, `app/config/taxRates2025.ts`)
+### 4.5 Contact
 
-2025년 대한민국 세금 구조 기반 계산기.
+문의 폼은 title, sender, content를 입력받고 HTML 메일 미리보기와 API client를
+feature로 분리합니다. 서버는 Nodemailer로 SMTP 발송하며, 헤더 인젝션 방지를
+위해 제목/발신자 값을 sanitize합니다.
 
-| 항목       | 기준              |
-| ---------- | ----------------- |
-| 소득세     | 누진세율 (6%~45%) |
-| 지방소득세 | 소득세의 10%      |
-| 국민연금   | 연봉의 4.5%       |
-| 건강보험   | 연봉의 3.545%     |
-| 고용보험   | 연봉의 0.9%       |
+### 4.6 Admin
 
-월급/연봉 전환, 4대보험 포함 여부, 단위별 금액 증감 버튼(+1만/+10만/+100만) 지원.
-
-### 4.7 문의 폼 (`app/contact/`, `app/api/send-email/route.ts`)
-
-- 입력: 타이틀, 보내는 사람(이메일), 내용 — HTML 메일 실시간 미리보기
-- `POST /api/send-email`: `lib/email.ts`로 헤더 인젝션 방지 새니타이즈 후 Nodemailer로 SMTP 발송
-- 필요 환경 변수: `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `RECEIVER_EMAIL`
-
-### 4.8 프로젝트 페이지 (`app/projects/page.tsx`)
-
-DJ Play List(내부), GitHub, LinkedIn, YouTube, About(내부) 링크 카드 모음.
-
-### 4.9 게임 허브 (`app/games/page.tsx`)
-
-Solitaire, 2048, 지뢰찾기, FreeCell, 스도쿠를 별도 `Games` 섹션으로 분류한 링크 카드 모음.
-
-### 4.10 관리자 대시보드 (`app/admin/`)
-
-- 데스크탑 사이드바 + 모바일 Sheet 드로어 (shadcn/ui `Button`, `Sheet`)
-- `/admin`: 세션 쿠키에서 사용자명을 읽어 환영 메시지 표시, `/admin/users`로 이동하는 빠른 링크 카드
-- `/admin/users`: 환경 변수로 설정된 관리자 계정 1개를 테이블로 표시 (실 사용자 DB 없음을 명시)
-- `AdminLayoutClient.tsx`가 로그아웃 처리(`POST /api/auth/logout` → `/login` 이동)
-
-### 4.11 Footer 방문자 카운터 (`components/Footer.tsx`)
-
-- 별도 백엔드/DB 없이 `visitor-badge.laobi.icu` 외부 뱃지 이미지로 실시간 방문자 수 표시
-- Vercel 서버리스 환경은 파일시스템이 휘발성이라 자체 카운터 파일 방식은 배포/인스턴스마다 초기화되므로 외부 서비스로 대체
+관리자 계정은 DB 없이 환경 변수로 설정합니다. `jose`로 JWT를 발급하고
+httpOnly `SameSite=Lax` 쿠키에 저장합니다. 관리자 UI는 public chrome과 분리된
+route tree에서 렌더링됩니다.
 
 ---
 
-## 5. 공통 컴포넌트 & 유틸리티
+## 5. 구조와 소유권
 
-| 컴포넌트/함수                         | 경로                       | 설명                                                    |
-| ------------------------------------- | -------------------------- | ------------------------------------------------------- |
-| `NavBar`                              | `components/NavBar.tsx`    | 상단 고정 내비게이션 (`usePathname` 기반 활성 표시)     |
-| `Footer`                              | `components/Footer.tsx`    | 기술 스택 배지 + 방문자 뱃지 + SNS 링크 (데스크탑만)    |
-| `BottomNav`                           | `components/BottomNav.tsx` | 모바일 하단 고정 내비 (Home/Music/Projects/Games/About) |
-| `Hero`                                | `components/Hero.tsx`      | GSAP 바운스 애니메이션 히어로 섹션                      |
-| `createSessionToken()` 등             | `lib/auth.ts`              | JWT 세션 생성/검증, 쿠키 옵션                           |
-| `verifyCredentials()`                 | `lib/credentials.ts`       | bcrypt 비밀번호 비교                                    |
-| `buildContactHtml()` 등               | `lib/email.ts`             | 문의 메일 HTML 생성 + 헤더 새니타이즈                   |
-| `audioUrl()`                          | `lib/audio.ts`             | 오디오 베이스 URL 해석                                  |
-| `cn()`                                | `lib/utils.ts`             | clsx + tailwind-merge 조합 유틸리티                     |
-| `shuffleArray`, `upgradeShuffleArray` | `utils/Utils.ts`           | Fisher-Yates / `crypto.getRandomValues` 기반 셔플       |
-
----
-
-## 6. 기술 스택 전체
-
-| 분류        | 기술                                   | 버전          |
-| ----------- | -------------------------------------- | ------------- |
-| 프레임워크  | Next.js                                | 15.5.18       |
-| 런타임      | React                                  | 19.0.0        |
-| 언어        | TypeScript                             | 5             |
-| 스타일링    | Tailwind CSS                           | 3.4.1         |
-| UI 컴포넌트 | shadcn/ui (Radix UI)                   | —             |
-| 애니메이션  | GSAP                                   | 3.13.0        |
-| 아이콘      | Lucide React                           | 0.511.0       |
-| 이메일      | Nodemailer                             | 9.0.1         |
-| 인증        | jose (JWT) + bcryptjs                  | 6.2.3 / 3.0.3 |
-| 테스트      | Vitest                                 | 4.1.10        |
-| 포맷터      | Prettier + prettier-plugin-tailwindcss | 3.9.5 / 0.8.1 |
-
----
-
-## 7. 테스트
-
-Vitest로 `**/*.test.ts` 패턴의 유닛 테스트를 실행합니다 (`vitest.config.ts`).
-
-| 파일                            | 테스트 대상                      |
-| ------------------------------- | -------------------------------- |
-| `lib/auth.test.ts`              | JWT 세션 생성/검증               |
-| `lib/credentials.test.ts`       | 관리자 자격 증명 검증            |
-| `lib/email.test.ts`             | 문의 메일 HTML 생성 + 새니타이즈 |
-| `utils/Utils.test.ts`           | 배열 셔플 유틸리티               |
-| `app/lib/taxCalculator.test.ts` | 세금 계산 로직                   |
-
-```bash
-npm run test            # 전체 실행
-npm run test:watch       # watch 모드
-npm run test:coverage    # 커버리지 리포트 (v8)
+```text
+app/            route, metadata, API handler
+components/     layout, navigation, card, ui primitives
+features/       feature-owned domain/application/presentation code
+lib/            auth, credentials, email, env, rateLimit, audio, utils
+data/           compatibility re-exports
+types/          shared types
+utils/          small legacy utilities
+docs/           architecture, reports, feature notes
 ```
 
+핵심 원칙은 `app/`를 얇게 유지하고, 화면 상태와 도메인 로직을 feature 폴더가
+소유하게 하는 것입니다.
+
 ---
 
-## 8. 알려진 제한 사항 및 향후 과제
+## 6. 기술 스택
 
-1. **단일 관리자 계정**: 사용자 DB가 없어 다중 사용자/역할 기반 접근 제어는 지원하지 않습니다.
-2. **정적 데이터**: 음원/블로그 데이터는 코드에 포함된 정적 파일 기반이라, 실제 콘텐츠 관리 시스템이
-   필요하다면 별도 DB/CMS 연동이 필요합니다.
-3. **이메일**: SMTP 환경 변수 미설정 시 문의 폼 발송이 실패합니다.
-4. **DJ Play List 오디오**: 기본 트랙은 특정 AWS S3 버킷에 의존하며, `NEXT_PUBLIC_AUDIO_BASE_URL`로만
-   베이스 URL을 교체할 수 있습니다.
-5. **방문자 카운터**: 외부 무료 뱃지 서비스에 의존하므로 해당 서비스 가용성에 영향을 받습니다.
+| 분류       | 기술                                   | 버전/비고                 |
+| ---------- | -------------------------------------- | ------------------------- |
+| Framework  | Next.js                                | 16.2.11                   |
+| Runtime    | React / React DOM                      | 19.2.8                    |
+| Language   | TypeScript                             | `@typescript/typescript6` |
+| Styling    | Tailwind CSS                           | 4.3.3                     |
+| UI         | shadcn/ui, Radix Dialog/Slot           | local primitives          |
+| Animation  | GSAP                                   | 3.15.0                    |
+| Icons      | Lucide React                           | 1.26.0                    |
+| Email      | Nodemailer                             | 9.0.3                     |
+| Auth       | jose + bcryptjs                        | 6.2.4 / 3.0.3             |
+| Media      | yt-dlp, FFmpeg, FFprobe                | local PATH or env path    |
+| Testing    | Vitest, Testing Library                | 4.1.10                    |
+| Formatting | Prettier + prettier-plugin-tailwindcss | 3.9.6 / 0.8.1             |
+
+---
+
+## 7. 환경 변수
+
+| 그룹  | 변수                                                                                                                           |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------ |
+| SMTP  | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `RECEIVER_EMAIL`                                            |
+| Admin | `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`, `SESSION_SECRET`                                                                      |
+| Music | `NEXT_PUBLIC_AUDIO_BASE_URL`                                                                                                   |
+| Media | `YTDLP_PATH`, `FFMPEG_PATH`, `FFPROBE_PATH`, `MEDIA_ANALYZE_TIMEOUT_MS`, `MEDIA_DOWNLOAD_TIMEOUT_MS`, `MEDIA_MAX_OUTPUT_BYTES` |
+
+`ADMIN_PASSWORD_HASH`의 bcrypt `$` 문자는 `.env`에서 `\$`로 이스케이프해야 합니다.
+
+---
+
+## 8. 테스트
+
+Vitest는 `**/*.test.ts`, `**/*.test.tsx`를 실행합니다. 현재 저장소 기준 테스트
+파일은 141개, 테스트 케이스는 599개이며, 게임 기능 테스트가 100개 파일로 가장 큰
+비중을 차지합니다.
+
+주요 테스트 범위:
+
+- 인증/세션/관리자 rate limit
+- 문의 폼 view model, API client, email HTML/sanitize
+- Music playlist/track formatting
+- 도구/학습/navigation catalog
+- 9개 게임의 domain rule, use case, 일부 presentation interaction
+- 수학 학습 문제 생성과 UI
+- Media Downloader URL validation, format mapping, runtime env, extractor,
+  downloader, API route, presentation
+
+실행 명령:
+
+```bash
+npm run test
+npm run test:coverage
+npm run lint
+npm run typecheck
+npm run format:check
+npm run ci
+npm run ci:local
+```
+
+`npm run ci`는 format check, lint, typecheck, test, build를 실행합니다.
+`npm run ci:local`은 `git diff --check`까지 포함하며, `.husky/pre-push`가
+`npm run prepush`를 통해 같은 로컬 게이트를 사용합니다.
+
+---
+
+## 9. 알려진 제한 사항과 향후 과제
+
+1. Media Downloader는 로컬 Node.js runtime MVP입니다. 운영 환경에서는 queue,
+   worker, object storage, signed URL 구조로 옮겨야 합니다.
+2. Media Downloader는 공개 YouTube 단일 영상만 지원합니다. playlist, private,
+   paid, DRM, login/cookie 기반 접근은 범위 밖입니다.
+3. 관리자 기능은 단일 환경 변수 계정만 지원하며, 다중 사용자/역할 관리는 없습니다.
+4. 문의 폼과 관리자 rate limit은 메모리 기반이므로 서버리스 다중 인스턴스에서
+   전역 제한으로 동작하지 않습니다.
+5. 학습/블로그/게임 데이터는 코드에 포함된 정적 데이터입니다. 비개발자 편집이
+   필요하면 CMS나 DB 연동이 필요합니다.
+6. Music Studio 기본 오디오 소스는 외부 S3/CDN URL에 의존합니다.

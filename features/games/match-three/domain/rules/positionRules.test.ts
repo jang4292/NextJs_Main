@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  areAdjacent,
-  isWithinBoard,
-  movePosition,
-} from "./positionRules";
+import { areAdjacent, isWithinBoard, movePosition } from "./positionRules";
 
 describe("positionRules", () => {
   it("accepts all four orthogonal adjacent positions", () => {

@@ -15,9 +15,7 @@ import {
 } from "../../application/use-cases/storage";
 
 export function useTypingRainStorage() {
-  const [storage, setStorage] = useState<TypingGameStorage>(
-    getDefaultStorage,
-  );
+  const [storage, setStorage] = useState<TypingGameStorage>(getDefaultStorage);
   const [hydrated, setHydrated] = useState(false);
   const hydratedRef = useRef(false);
 

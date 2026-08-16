@@ -24,7 +24,9 @@ function getViewportState(): VisualViewportState {
   const viewportHeight = Math.round(viewport?.height ?? window.innerHeight);
   const keyboardOffset = Math.max(
     0,
-    Math.round(window.innerHeight - viewportHeight - (viewport?.offsetTop ?? 0)),
+    Math.round(
+      window.innerHeight - viewportHeight - (viewport?.offsetTop ?? 0),
+    ),
   );
 
   return {

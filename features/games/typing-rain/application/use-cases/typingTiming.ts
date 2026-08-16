@@ -1,6 +1,8 @@
 import type { TypingTimingRecord } from "../../domain/typing.types";
 
-export function createTypingTimingRecord(spawnedAt: number): TypingTimingRecord {
+export function createTypingTimingRecord(
+  spawnedAt: number,
+): TypingTimingRecord {
   return {
     spawnedAt,
     firstInputAt: null,

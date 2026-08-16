@@ -21,4 +21,3 @@ export function classifyAdditionDifficulty(
 
   return "medium";
 }
-

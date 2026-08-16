@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  calculateStarRating,
-  evaluateLearningSession,
-} from "./evaluation";
+import { calculateStarRating, evaluateLearningSession } from "./evaluation";
 
 describe("calculateStarRating", () => {
   it("returns 3 stars for 9 or 10 first-try correct answers", () => {
@@ -34,4 +31,3 @@ describe("evaluateLearningSession", () => {
     expect(evaluateLearningSession(0.5, 7000).level).toBe("needs-basics");
   });
 });
-

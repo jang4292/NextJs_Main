@@ -1,7 +1,4 @@
-import type {
-  LearningStage,
-  MultiplicationStageId,
-} from "../arithmetic.types";
+import type { LearningStage, MultiplicationStageId } from "../arithmetic.types";
 import type { OperandPair } from "./additionStages";
 
 export interface MultiplicationStageConfig extends LearningStage {

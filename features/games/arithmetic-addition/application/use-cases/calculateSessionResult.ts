@@ -139,4 +139,3 @@ function sortedFrequentValues(counts: Map<number, number>): number[] {
     })
     .map(([value]) => value);
 }
-

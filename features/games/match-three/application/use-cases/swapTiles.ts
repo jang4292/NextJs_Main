@@ -27,17 +27,10 @@ import {
   createSequentialTileIdGenerator,
   type TileIdGenerator,
 } from "../../domain/services/tileFactory";
-import {
-  areAdjacent,
-  isWithinBoard,
-} from "../../domain/rules/positionRules";
+import { areAdjacent, isWithinBoard } from "../../domain/rules/positionRules";
 
 export type SwapFailureReason =
-  | "locked"
-  | "out-of-bounds"
-  | "not-adjacent"
-  | "empty-cell"
-  | "no-match";
+  "locked" | "out-of-bounds" | "not-adjacent" | "empty-cell" | "no-match";
 
 export interface ResolutionStep {
   cascadeStep: number;

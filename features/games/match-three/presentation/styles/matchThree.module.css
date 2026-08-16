@@ -32,8 +32,11 @@
 .boardCell {
   margin: calc(var(--board-gap) / 2);
   border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgb(229 229 229 / 76%), rgb(212 212 212 / 56%));
+  background: linear-gradient(
+    135deg,
+    rgb(229 229 229 / 76%),
+    rgb(212 212 212 / 56%)
+  );
   box-shadow:
     inset 0 2px 8px rgb(23 23 23 / 14%),
     inset 0 0 0 1px rgb(163 163 163 / 42%);
@@ -376,7 +379,10 @@
 @keyframes tileGenerate {
   from {
     opacity: 0;
-    transform: translate(var(--generated-offset-x, 0%), var(--generated-offset-y, -100%))
+    transform: translate(
+        var(--generated-offset-x, 0%),
+        var(--generated-offset-y, -100%)
+      )
       scale(0.5);
   }
   70% {

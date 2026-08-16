@@ -37,19 +37,17 @@ describe("arithmetic stages", () => {
       ),
     ).toBe(true);
     expect(
-      ADDITION_STAGES.slice(0, 4).every(
-        (stage) => stage.category === "basic",
-      ),
+      ADDITION_STAGES.slice(0, 4).every((stage) => stage.category === "basic"),
     ).toBe(true);
     expect(
-      ADDITION_STAGES.slice(4).every(
-        (stage) => stage.category === "practice",
-      ),
+      ADDITION_STAGES.slice(4).every((stage) => stage.category === "practice"),
     ).toBe(true);
-    expect(SUBTRACTION_STAGES.every((stage) => stage.category === "basic"))
-      .toBe(true);
-    expect(MULTIPLICATION_STAGES.every((stage) => stage.category === "basic"))
-      .toBe(true);
+    expect(
+      SUBTRACTION_STAGES.every((stage) => stage.category === "basic"),
+    ).toBe(true);
+    expect(
+      MULTIPLICATION_STAGES.every((stage) => stage.category === "basic"),
+    ).toBe(true);
     expect(DIVISION_STAGES.every((stage) => stage.category === "basic")).toBe(
       true,
     );
@@ -83,8 +81,7 @@ describe("arithmetic stages", () => {
     for (const stage of generatedStages) {
       const candidates = stage.buildCandidates?.() ?? [];
       const keys = candidates.map(
-        (candidate) =>
-          `${candidate.leftOperand}-${candidate.rightOperand}`,
+        (candidate) => `${candidate.leftOperand}-${candidate.rightOperand}`,
       );
 
       expect(candidates.length).toBeGreaterThanOrEqual(stage.questionCount);

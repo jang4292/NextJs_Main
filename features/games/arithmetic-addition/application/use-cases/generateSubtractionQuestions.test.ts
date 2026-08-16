@@ -17,8 +17,7 @@ describe("generateSubtractionQuestions", () => {
             question.operator === "subtraction" &&
             question.stageId === stage.id &&
             question.leftOperand >= question.rightOperand &&
-            question.answer ===
-              question.leftOperand - question.rightOperand,
+            question.answer === question.leftOperand - question.rightOperand,
         ),
       ).toBe(true);
     }
@@ -35,8 +34,6 @@ describe("generateSubtractionQuestions", () => {
     );
 
     expect(toZero.every((question) => question.answer === 0)).toBe(true);
-    expect(
-      fromTen.every((question) => question.leftOperand === 10),
-    ).toBe(true);
+    expect(fromTen.every((question) => question.leftOperand === 10)).toBe(true);
   });
 });

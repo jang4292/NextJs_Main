@@ -18,14 +18,8 @@ export function generateSequenceQuestions(
   stage: SequenceStage = SEQUENCE_STAGE,
   rng: Rng = Math.random,
 ): SequenceQuestion[] {
-  const increaseQuestions = shuffle(
-    createCandidates(stage, "increase"),
-    rng,
-  );
-  const decreaseQuestions = shuffle(
-    createCandidates(stage, "decrease"),
-    rng,
-  );
+  const increaseQuestions = shuffle(createCandidates(stage, "increase"), rng);
+  const decreaseQuestions = shuffle(createCandidates(stage, "decrease"), rng);
   const increaseCount = Math.ceil(stage.questionCount / 2);
   const decreaseCount = stage.questionCount - increaseCount;
 

@@ -43,7 +43,8 @@ export function buildRecommendation(
     return {
       kind: "complete",
       title: "이 연산을 잘 마쳤어요",
-      message: "마지막 단계까지 안정적으로 풀었어요. 다른 연산도 둘러볼 수 있어요.",
+      message:
+        "마지막 단계까지 안정적으로 풀었어요. 다른 연산도 둘러볼 수 있어요.",
       actionLabel: "처음으로",
     };
   }

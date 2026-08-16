@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { TypingContent } from "../../domain/typing.types";
-import {
-  getEligibleContents,
-  selectTypingContent,
-} from "./selectContent";
+import { getEligibleContents, selectTypingContent } from "./selectContent";
 
 describe("selectContent", () => {
   it("filters by language, difficulty, type, enabled flag, active words, and previous id", () => {
