@@ -162,7 +162,14 @@ export function useBullsAndCowsGame() {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.ctrlKey || event.metaKey || event.altKey) return;
+if (
+  event.ctrlKey ||
+  event.metaKey ||
+  event.altKey ||
+  event.target instanceof HTMLButtonElement
+) {
+  return;
+}
 
       if (/^\d$/.test(event.key)) {
         event.preventDefault();
