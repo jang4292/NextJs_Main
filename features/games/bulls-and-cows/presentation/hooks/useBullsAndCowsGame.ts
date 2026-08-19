@@ -80,7 +80,7 @@ function reducer(state: GameState, action: Action): GameState {
       return {
         ...state,
         currentInput: value,
-        status: value ? "playing" : "ready",
+status: value || state.attempts.length > 0 ? "playing" : "ready",
         message: value ? "입력값을 확인하고 제출해 주세요." : INITIAL_MESSAGE,
       };
     }
