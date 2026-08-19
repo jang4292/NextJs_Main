@@ -52,8 +52,9 @@ describe("generateStatisticsQuestions", () => {
   it("only generates integer answers and unique mode questions", () => {
     const questions = generateStatisticsQuestions(STATISTICS_STAGE, fixedRng);
 
-    expect(questions.every((question) => Number.isInteger(question.answer)))
-      .toBe(true);
+    expect(
+      questions.every((question) => Number.isInteger(question.answer)),
+    ).toBe(true);
     expect(
       questions
         .filter((question) => question.kind === "mode")

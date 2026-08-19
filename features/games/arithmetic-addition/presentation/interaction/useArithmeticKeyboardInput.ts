@@ -59,4 +59,3 @@ function isEditableTarget(target: EventTarget | null): boolean {
     target.isContentEditable
   );
 }
-

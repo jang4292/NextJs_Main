@@ -1,7 +1,4 @@
-import type {
-  AdditionStageId,
-  LearningStage,
-} from "../arithmetic.types";
+import type { AdditionStageId, LearningStage } from "../arithmetic.types";
 
 export interface OperandPair {
   leftOperand: number;

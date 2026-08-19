@@ -31,7 +31,9 @@ describe("typingTiming", () => {
   });
 
   it("tracks missed exposure without input duration", () => {
-    expect(missTypingTiming(createTypingTimingRecord(500), 2_500)).toMatchObject({
+    expect(
+      missTypingTiming(createTypingTimingRecord(500), 2_500),
+    ).toMatchObject({
       missedAt: 2_500,
       inputDurationMs: null,
       exposureDurationMs: 2_000,

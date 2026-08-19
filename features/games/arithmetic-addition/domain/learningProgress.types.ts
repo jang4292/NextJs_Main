@@ -1,18 +1,11 @@
-import type {
-  Difficulty,
-  Operator,
-  StageId,
-} from "./arithmetic.types";
+import type { Difficulty, Operator, StageId } from "./arithmetic.types";
 
 export const ARITHMETIC_PROGRESS_VERSION = 1;
 export const MAX_RECENT_SESSIONS = 20;
 export const MAX_MISTAKES = 100;
 
 export type StageProgressStatus =
-  | "not-started"
-  | "practicing"
-  | "confident"
-  | "completed";
+  "not-started" | "practicing" | "confident" | "completed";
 
 export interface StageProgressRecord {
   operation: Operator;

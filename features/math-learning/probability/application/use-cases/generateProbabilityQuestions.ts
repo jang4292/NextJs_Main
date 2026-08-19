@@ -25,11 +25,7 @@ const QUESTION_KINDS: ProbabilityQuestionKind[] = [
   "favorable-outcomes",
 ];
 
-const SCENARIO_KINDS: ProbabilityScenarioKind[] = [
-  "coin",
-  "die",
-  "color-pick",
-];
+const SCENARIO_KINDS: ProbabilityScenarioKind[] = ["coin", "die", "color-pick"];
 
 const QUESTION_SPECS: ProbabilityQuestionSpec[] = [
   {
@@ -177,9 +173,7 @@ export function generateProbabilityQuestions(
       ),
     ]),
   );
-  const requiredIds = new Set(
-    requiredQuestions.map((question) => question.id),
-  );
+  const requiredIds = new Set(requiredQuestions.map((question) => question.id));
   const fillerQuestions = shuffle(
     candidates.filter((question) => !requiredIds.has(question.id)),
     rng,

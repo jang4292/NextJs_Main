@@ -18,8 +18,7 @@ describe("generateDivisionQuestions", () => {
             question.stageId === stage.id &&
             question.rightOperand > 0 &&
             question.leftOperand % question.rightOperand === 0 &&
-            question.answer ===
-              question.leftOperand / question.rightOperand,
+            question.answer === question.leftOperand / question.rightOperand,
         ),
       ).toBe(true);
     }

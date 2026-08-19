@@ -122,8 +122,9 @@ describe("TypingRainGame", () => {
     expect(await screen.findByText("sky")).toBeInTheDocument();
     await runNextFrame(600);
 
-    expect(await screen.findByRole("heading", { name: "도전을 마쳤어요" }))
-      .toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "도전을 마쳤어요" }),
+    ).toBeInTheDocument();
     expect(screen.getByText("실패")).toBeInTheDocument();
     expect(screen.getByText("1개")).toBeInTheDocument();
   });
@@ -136,7 +137,9 @@ describe("TypingRainGame", () => {
     await user.click(screen.getByRole("button", { name: "일시정지" }));
 
     const input = screen.getByRole("textbox", { name: "현재 입력" });
-    expect(screen.getByRole("dialog", { name: "일시정지" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("dialog", { name: "일시정지" }),
+    ).toBeInTheDocument();
     expect(input).toBeDisabled();
 
     await user.click(screen.getByRole("button", { name: "재개" }));

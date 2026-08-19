@@ -15,7 +15,10 @@ const TEST_CONFIG: MatchThreeConfig = {
   maxCascadeSteps: 5,
 };
 
-function session(rows: string[], overrides: Partial<GameSession> = {}): GameSession {
+function session(
+  rows: string[],
+  overrides: Partial<GameSession> = {},
+): GameSession {
   return {
     board: rowsToBoard(rows),
     score: 0,

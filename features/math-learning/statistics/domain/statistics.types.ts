@@ -1,12 +1,7 @@
 export type StatisticsStageId = "statistics-basic";
 
 export type StatisticsQuestionKind =
-  | "sum"
-  | "maximum"
-  | "minimum"
-  | "mean"
-  | "median"
-  | "mode";
+  "sum" | "maximum" | "minimum" | "mean" | "median" | "mode";
 
 export type StatisticsDifficulty = "easy" | "medium";
 

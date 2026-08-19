@@ -16,8 +16,7 @@ describe("generateAdditionStageQuestions", () => {
           (question) =>
             question.operator === "addition" &&
             question.stageId === stage.id &&
-            question.answer ===
-              question.leftOperand + question.rightOperand,
+            question.answer === question.leftOperand + question.rightOperand,
         ),
       ).toBe(true);
     }
@@ -33,12 +32,8 @@ describe("generateAdditionStageQuestions", () => {
       fixedRng,
     );
 
-    expect(
-      withinFive.every((question) => question.answer <= 5),
-    ).toBe(true);
-    expect(
-      withinTen.every((question) => question.answer <= 10),
-    ).toBe(true);
+    expect(withinFive.every((question) => question.answer <= 5)).toBe(true);
+    expect(withinTen.every((question) => question.answer <= 10)).toBe(true);
   });
 
   it("generates doubles and make-ten questions from their stage rules", () => {

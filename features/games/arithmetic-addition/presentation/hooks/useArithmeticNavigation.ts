@@ -4,12 +4,7 @@ import { useReducer } from "react";
 import type { Operator, StageId } from "../../domain/arithmetic.types";
 
 export type ArithmeticView =
-  | "home"
-  | "stage-selection"
-  | "playing"
-  | "result"
-  | "review"
-  | "history";
+  "home" | "stage-selection" | "playing" | "result" | "review" | "history";
 
 interface ArithmeticNavigationState {
   view: ArithmeticView;

@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { MistakeRecord } from "../../domain/learningProgress.types";
-import {
-  getFrequentMistakes,
-  getRecentMistakes,
-} from "./reviewSelectors";
+import { getFrequentMistakes, getRecentMistakes } from "./reviewSelectors";
 
 describe("reviewSelectors", () => {
   it("selects recent mistakes by last seen time", () => {
@@ -26,9 +23,7 @@ describe("reviewSelectors", () => {
     ];
 
     expect(
-      getFrequentMistakes({ mistakes }, 2).map(
-        (record) => record.questionKey,
-      ),
+      getFrequentMistakes({ mistakes }, 2).map((record) => record.questionKey),
     ).toEqual(["frequent-new", "frequent-old"]);
   });
 });

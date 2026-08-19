@@ -22,7 +22,7 @@ export function StageCard({
     <button
       type="button"
       onClick={() => onStart(stage)}
-      className="rounded-lg border border-neutral-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
+      className="rounded-lg border border-neutral-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 focus:outline-none"
     >
       <span className="flex items-start justify-between gap-3">
         <span>

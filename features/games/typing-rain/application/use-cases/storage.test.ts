@@ -119,9 +119,7 @@ describe("typing rain storage", () => {
     });
 
     expect(
-      nextStorage.highScores[
-        buildHighScoreKey("ko", "easy", "short-sentence")
-      ],
+      nextStorage.highScores[buildHighScoreKey("ko", "easy", "short-sentence")],
     ).toBe(900);
     expect(nextStorage.maxCombo).toBe(4);
     expect(nextStorage.recentGames).toHaveLength(1);

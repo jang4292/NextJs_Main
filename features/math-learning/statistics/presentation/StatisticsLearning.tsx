@@ -108,8 +108,8 @@ export function StatisticsLearning({
                 자료를 끝까지 읽어냈어요
               </h1>
               <p className="mt-2 text-sm text-neutral-600">
-                전체 {quiz.totalQuestions}문제 중 {correctCount}문제를
-                맞혔고, 처음에 맞힌 문제는 {firstTryCorrectCount}문제예요.
+                전체 {quiz.totalQuestions}문제 중 {correctCount}문제를 맞혔고,
+                처음에 맞힌 문제는 {firstTryCorrectCount}문제예요.
               </p>
             </div>
           </div>
@@ -223,11 +223,7 @@ function StatisticsFeedback({
 }) {
   if (!feedback) {
     return (
-      <div
-        className="min-h-[72px]"
-        aria-live="polite"
-        aria-atomic="true"
-      />
+      <div className="min-h-[72px]" aria-live="polite" aria-atomic="true" />
     );
   }
 

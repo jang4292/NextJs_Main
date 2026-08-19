@@ -110,7 +110,9 @@
       "Bash(ln -sf /Users/yunhwanjang/.npm/_npx/e41f203b7505f1fb/node_modules/playwright-core node_modules/playwright-core)",
       "Bash(node verify_sudoku.mjs)",
       "Bash(node verify_sudoku_mobile2.mjs)",
-      "Bash(git status *)"
+      "Bash(git status *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ],
     "additionalDirectories": [
       "/Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky",

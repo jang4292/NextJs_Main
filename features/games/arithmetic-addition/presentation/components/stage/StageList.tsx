@@ -40,12 +40,10 @@ export function StageList({
   onStartStage,
 }: StageListProps) {
   const operation = stages[0]?.operator ?? "addition";
-  const stageGroups = CATEGORY_ORDER
-    .map((category) => ({
-      category,
-      stages: stages.filter((stage) => stage.category === category),
-    }))
-    .filter((group) => group.stages.length > 0);
+  const stageGroups = CATEGORY_ORDER.map((category) => ({
+    category,
+    stages: stages.filter((stage) => stage.category === category),
+  })).filter((group) => group.stages.length > 0);
 
   return (
     <section

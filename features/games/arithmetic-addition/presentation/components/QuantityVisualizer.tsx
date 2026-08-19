@@ -26,10 +26,7 @@ export function QuantityVisualizer({
 
   if (operator === "division") {
     return (
-      <DivisionVisualizer
-        totalCount={leftOperand}
-        groupCount={rightOperand}
-      />
+      <DivisionVisualizer totalCount={leftOperand} groupCount={rightOperand} />
     );
   }
 

@@ -1,6 +1,4 @@
-import {
-  DIFFICULTY_MULTIPLIERS,
-} from "./difficulty.config";
+import { DIFFICULTY_MULTIPLIERS } from "./difficulty.config";
 import type { DifficultyLevel } from "./typing.types";
 
 export const BASE_SCORE = 100;

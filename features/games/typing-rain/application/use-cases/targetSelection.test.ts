@@ -8,11 +8,9 @@ import {
 
 describe("targetSelection", () => {
   it("finds active prefix matches only", () => {
-    expect(findMatchingTargets("학", targets).map((target) => target.id)).toEqual([
-      "school",
-      "student",
-      "study",
-    ]);
+    expect(
+      findMatchingTargets("학", targets).map((target) => target.id),
+    ).toEqual(["school", "student", "study"]);
     expect(findMatchingTargets("바", targets)).toEqual([]);
   });
 

@@ -21,8 +21,7 @@ export function createFallingWord({
     id: `typing-rain-${now}-${sequence}`,
     contentId: content.id,
     text: content.text,
-    contentType:
-      content.type === "short-sentence" ? "short-sentence" : "word",
+    contentType: content.type === "short-sentence" ? "short-sentence" : "word",
     x: Math.round(8 + rng() * 78),
     speed: 1,
     spawnedAt: now,

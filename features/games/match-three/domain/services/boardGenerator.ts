@@ -1,10 +1,6 @@
 import type { MatchThreeConfig } from "../../config/gameConfig";
 import { DEFAULT_MATCH_THREE_CONFIG } from "../../config/gameConfig";
-import {
-  createEmptyBoard,
-  getBoardSize,
-  type Board,
-} from "../entities/Board";
+import { createEmptyBoard, getBoardSize, type Board } from "../entities/Board";
 import type { Position } from "../entities/Position";
 import type { TileType } from "../entities/Tile";
 import { isWithinBoard } from "../rules/positionRules";
@@ -24,7 +20,11 @@ export function generateBoard(
 ): Board {
   validateConfig(config);
 
-  for (let attempt = 0; attempt < config.maxBoardGenerationAttempts; attempt++) {
+  for (
+    let attempt = 0;
+    attempt < config.maxBoardGenerationAttempts;
+    attempt++
+  ) {
     const board = createCandidateBoard(config, rng, nextId);
 
     if (findMatches(board).length === 0 && hasAvailableMove(board)) {
@@ -77,11 +77,9 @@ function wouldCreateInitialMatch(
   const upTwo = { row: position.row - 2, column: position.column };
 
   return (
-    hasSameType(board, leftOne, tileType) &&
-    hasSameType(board, leftTwo, tileType)
-  ) || (
-    hasSameType(board, upOne, tileType) &&
-    hasSameType(board, upTwo, tileType)
+    (hasSameType(board, leftOne, tileType) &&
+      hasSameType(board, leftTwo, tileType)) ||
+    (hasSameType(board, upOne, tileType) && hasSameType(board, upTwo, tileType))
   );
 }
 

@@ -5,9 +5,7 @@ import { useMemo, useReducer } from "react";
 export type NumericQuizStatus = "idle" | "playing" | "feedback" | "completed";
 
 export type NumericQuizFeedbackKind =
-  | "correct"
-  | "try-again"
-  | "answer-revealed";
+  "correct" | "try-again" | "answer-revealed";
 
 export interface NumericQuizFeedbackState {
   kind: NumericQuizFeedbackKind;
@@ -105,12 +103,19 @@ export function useNumericQuiz<TQuestion>(
     sessionIdPrefix: options.sessionIdPrefix,
   };
   const [state, dispatch] = useReducer(
-    (currentState: NumericQuizState<TQuestion>, action: NumericQuizAction<TQuestion>) =>
-      reducer(currentState, action, reducerConfig),
+    (
+      currentState: NumericQuizState<TQuestion>,
+      action: NumericQuizAction<TQuestion>,
+    ) => reducer(currentState, action, reducerConfig),
     undefined,
     () =>
       options.autoStart
-        ? createStartedState(createQuestions(), now(), false, options.sessionIdPrefix)
+        ? createStartedState(
+            createQuestions(),
+            now(),
+            false,
+            options.sessionIdPrefix,
+          )
         : createIdleState<TQuestion>(),
   );
   const currentQuestion = state.questions[state.currentIndex];
@@ -150,8 +155,7 @@ export function useNumericQuiz<TQuestion>(
     session,
     canInput: canEditAnswer(state),
     canSubmit: canSubmitAnswer(state),
-    canGoNext:
-      state.status === "feedback" && Boolean(currentResult?.completed),
+    canGoNext: state.status === "feedback" && Boolean(currentResult?.completed),
     isLastQuestion: state.currentIndex === state.questions.length - 1,
     start,
     restart,
@@ -190,8 +194,7 @@ function reducer<TQuestion>(
         ...state,
         status: "playing",
         inputValue: nextInput.slice(0, config.maxInputLength),
-        feedback:
-          state.feedback?.kind === "try-again" ? state.feedback : null,
+        feedback: state.feedback?.kind === "try-again" ? state.feedback : null,
       };
     }
 
@@ -357,9 +360,7 @@ function createEmptyResult<TQuestion>(
   };
 }
 
-function canEditAnswer<TQuestion>(
-  state: NumericQuizState<TQuestion>,
-): boolean {
+function canEditAnswer<TQuestion>(state: NumericQuizState<TQuestion>): boolean {
   if (!["playing", "feedback"].includes(state.status)) return false;
   const currentResult = state.results[state.currentIndex];
   return !currentResult?.completed;

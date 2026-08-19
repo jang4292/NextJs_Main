@@ -6,10 +6,7 @@ export function calculateAccuracy({
   correctCharacterCount: number;
 }): number {
   if (typedCharacterCount <= 0) return 1;
-  return Math.max(
-    0,
-    Math.min(1, correctCharacterCount / typedCharacterCount),
-  );
+  return Math.max(0, Math.min(1, correctCharacterCount / typedCharacterCount));
 }
 
 export function calculateCompletedCharactersPerMinute({

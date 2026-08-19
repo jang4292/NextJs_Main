@@ -5,10 +5,7 @@ export function positionKey(position: Position): string {
   return `${position.row}:${position.column}`;
 }
 
-export function arePositionsEqual(
-  first: Position,
-  second: Position,
-): boolean {
+export function arePositionsEqual(first: Position, second: Position): boolean {
   return first.row === second.row && first.column === second.column;
 }
 

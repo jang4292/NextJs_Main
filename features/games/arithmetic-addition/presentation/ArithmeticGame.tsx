@@ -34,7 +34,10 @@ import { ReviewMenu } from "./components/review/ReviewMenu";
 import { ResultSummary } from "./components/ResultSummary";
 import { StageList } from "./components/stage/StageList";
 import { useArithmeticNavigation } from "./hooks/useArithmeticNavigation";
-import { useArithmeticGame, type UseArithmeticGameOptions } from "./hooks/useArithmeticGame";
+import {
+  useArithmeticGame,
+  type UseArithmeticGameOptions,
+} from "./hooks/useArithmeticGame";
 import { useLearningProgress } from "./hooks/useLearningProgress";
 import { useArithmeticKeyboardInput } from "./interaction/useArithmeticKeyboardInput";
 
@@ -49,7 +52,9 @@ export function ArithmeticGame(options: UseArithmeticGameOptions = {}) {
   const selectedStages = navigation.selectedOperator
     ? getStagesForOperator(navigation.selectedOperator)
     : [];
-  const continueStage = getContinueStage(learningProgress.data.lastPlayedStageId);
+  const continueStage = getContinueStage(
+    learningProgress.data.lastPlayedStageId,
+  );
   const continueProgress = continueStage
     ? learningProgress.data.stageProgress.find(
         (record) => record.stageId === continueStage.id,

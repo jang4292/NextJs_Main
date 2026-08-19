@@ -21,7 +21,10 @@ import {
   countCorrectInsertedCharacters,
   normalizeTypingForRules,
 } from "../../application/use-cases/typingComparison";
-import { findMatchingTargets, selectTypingTarget } from "../../application/use-cases/targetSelection";
+import {
+  findMatchingTargets,
+  selectTypingTarget,
+} from "../../application/use-cases/targetSelection";
 import { DEFAULT_TYPING_RULES } from "../../domain/difficulty.config";
 import type {
   FallingWord,
@@ -67,10 +70,11 @@ export function useTypingInput({
   const [compositionValue, setCompositionValue] = useState("");
   const [isComposing, setIsComposing] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [lockedTargetId, setLockedTargetIdState] = useState<string | null>(null);
+  const [lockedTargetId, setLockedTargetIdState] = useState<string | null>(
+    null,
+  );
   const prefixMatchedWordIds = useMemo(
-    () =>
-      findMatchingTargets(value, words, typingRules).map((word) => word.id),
+    () => findMatchingTargets(value, words, typingRules).map((word) => word.id),
     [typingRules, value, words],
   );
   const rawFeedback = useMemo(
@@ -93,16 +97,19 @@ export function useTypingInput({
     inputRef.current?.focus({ preventScroll: true });
   }, []);
 
-  const resetInput = useCallback((options?: { keepIgnoredValue?: boolean }) => {
-    committedValueRef.current = "";
-    if (!options?.keepIgnoredValue) {
-      ignoredCommittedValueRef.current = null;
-    }
-    setValue("");
-    setCommittedValue("");
-    setCompositionValue("");
-    setLockedTargetId(null);
-  }, [setLockedTargetId]);
+  const resetInput = useCallback(
+    (options?: { keepIgnoredValue?: boolean }) => {
+      committedValueRef.current = "";
+      if (!options?.keepIgnoredValue) {
+        ignoredCommittedValueRef.current = null;
+      }
+      setValue("");
+      setCommittedValue("");
+      setCompositionValue("");
+      setLockedTargetId(null);
+    },
+    [setLockedTargetId],
+  );
 
   useEffect(() => {
     if (!lockedTargetId) return;
@@ -304,6 +311,8 @@ function countTypedCharacters(
   const previousLength = Array.from(
     normalizeTypingForRules(previousValue, rules),
   ).length;
-  const nextLength = Array.from(normalizeTypingForRules(nextValue, rules)).length;
+  const nextLength = Array.from(
+    normalizeTypingForRules(nextValue, rules),
+  ).length;
   return Math.max(0, nextLength - previousLength);
 }
