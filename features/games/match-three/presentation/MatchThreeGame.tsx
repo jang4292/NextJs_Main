@@ -172,7 +172,7 @@ export function MatchThreeGame() {
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-md border border-neutral-200 bg-white px-3 py-2 text-center shadow-sm">
-      <div className="text-[11px] font-semibold uppercase tracking-wide text-neutral-500">
+      <div className="text-[11px] font-semibold tracking-wide text-neutral-500 uppercase">
         {label}
       </div>
       <div className="mt-1 text-lg font-bold text-neutral-950">{value}</div>
@@ -268,7 +268,10 @@ function ScorePopView({
   columns: number;
 }) {
   return (
-    <div className={styles.scorePop} style={createScorePopStyle(scorePop, rows, columns)}>
+    <div
+      className={styles.scorePop}
+      style={createScorePopStyle(scorePop, rows, columns)}
+    >
       +{scorePop.value}
     </div>
   );

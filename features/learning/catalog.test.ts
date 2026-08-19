@@ -15,4 +15,14 @@ describe("learningCatalog", () => {
       learningCatalog.every((item) => item.href.startsWith("/learn")),
     ).toBe(true);
   });
+
+  it("includes the math learning hub as the canonical math entry", () => {
+    expect(learningCatalog).toContainEqual(
+      expect.objectContaining({
+        id: "math",
+        href: "/learn/math",
+        title: "Math Learning",
+      }),
+    );
+  });
 });

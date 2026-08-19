@@ -64,12 +64,12 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/music-list", destination: "/tools/music", permanent: false },
   {
     source: "/DJ_Play_List",
-    destination: "/tools/music?mode=dj",
+    destination: "/tools/music?mode=custom",
     permanent: false,
   },
   {
     source: "/dj-play-list",
-    destination: "/tools/music?mode=dj",
+    destination: "/tools/music?mode=custom",
     permanent: false,
   },
   {
@@ -102,6 +102,11 @@ export const legacyRedirects: LegacyRedirect[] = [
   {
     source: "/projects/english-vocabulary",
     destination: "/learn/vocabulary",
+    permanent: false,
+  },
+  {
+    source: "/projects/japanese-vocabulary",
+    destination: "/learn/japanese-vocabulary",
     permanent: false,
   },
   { source: "/projects", destination: "/tools", permanent: false },

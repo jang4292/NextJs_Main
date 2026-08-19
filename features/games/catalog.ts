@@ -4,7 +4,11 @@ export type GameSlug =
   | "minesweeper"
   | "freecell"
   | "sudoku"
-  | "match-three";
+  | "match-three"
+  | "arithmetic-addition"
+  | "typing-rain"
+  | "slot-machine"
+  | "bulls-and-cows";
 
 export interface GameCatalogItem {
   slug: GameSlug;
@@ -70,6 +74,47 @@ export const gameCatalog: GameCatalogItem[] = [
     ariaLabel: "Open 3-Match game page",
     instructions: "인접한 보석을 교환해 목표 점수에 도달하세요.",
     updatedAt: "2026-07-27",
+  },
+  {
+    slug: "arithmetic-addition",
+    title: "사칙연산 학습",
+    description:
+      "덧셈, 뺄셈, 곱셈, 나눗셈을 단계별로 풀며 기초 연산 감각을 키우는 학습 게임",
+    href: "/tools/games/arithmetic-addition",
+    ariaLabel: "Open arithmetic learning game page",
+    instructions:
+      "연산과 단계를 고른 뒤 숫자 패드로 답을 입력하고 10문제 학습을 완료합니다.",
+    updatedAt: "2026-07-28",
+  },
+  {
+    slug: "typing-rain",
+    title: "Typing Rain",
+    description:
+      "떨어지는 한글과 영문 단어를 입력해 점수를 올리는 타자 연습 게임",
+    href: "/tools/games/typing-rain",
+    ariaLabel: "Open Typing Rain game page",
+    instructions:
+      "하단 입력창에 떨어지는 단어를 정확히 입력해 체력이 다하기 전까지 도전합니다.",
+    updatedAt: "2026-07-29",
+  },
+  {
+    slug: "slot-machine",
+    title: "Slot Machine",
+    description: "가상 크레딧으로 즐기는 3릴 단일 페이라인 슬롯 머신",
+    href: "/tools/games/slot-machine",
+    ariaLabel: "Open Slot Machine game page",
+    instructions: "베팅을 선택하고 가운데 페이라인에 같은 심볼 3개를 맞춥니다.",
+    updatedAt: "2026-07-30",
+  },
+  {
+    slug: "bulls-and-cows",
+    title: "숫자 야구",
+    description: "중복 없는 세 자리 숫자를 추리하는 Bulls and Cows 게임",
+    href: "/tools/games/bulls-and-cows",
+    ariaLabel: "Open Bulls and Cows game page",
+    instructions:
+      "0은 첫 자리를 제외하고 사용할 수 있으며, 10번 안에 3 Strike를 맞히면 승리합니다.",
+    updatedAt: "2026-08-19",
   },
 ];
 

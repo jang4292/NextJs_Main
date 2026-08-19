@@ -32,12 +32,22 @@ describe("siteNavigation", () => {
         }),
         expect.objectContaining({
           source: "/DJ_Play_List",
-          destination: "/tools/music?mode=dj",
+          destination: "/tools/music?mode=custom",
+          permanent: false,
+        }),
+        expect.objectContaining({
+          source: "/dj-play-list",
+          destination: "/tools/music?mode=custom",
           permanent: false,
         }),
         expect.objectContaining({
           source: "/games/:slug*",
           destination: "/tools/games/:slug*",
+          permanent: false,
+        }),
+        expect.objectContaining({
+          source: "/projects/japanese-vocabulary",
+          destination: "/learn/japanese-vocabulary",
           permanent: false,
         }),
       ]),

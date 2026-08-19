@@ -54,11 +54,7 @@ describe("match-three animation helpers", () => {
     const board = rowsToBoard(["rse", "eta", "aor"]);
 
     expect(
-      collectSwapTileIds(
-        board,
-        { row: 0, column: 0 },
-        { row: 0, column: 1 },
-      ),
+      collectSwapTileIds(board, { row: 0, column: 0 }, { row: 0, column: 1 }),
     ).toEqual(["r-0", "s-1"]);
   });
 

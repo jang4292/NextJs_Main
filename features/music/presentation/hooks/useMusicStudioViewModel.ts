@@ -4,25 +4,35 @@ import type { ChangeEvent, FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import type { Track } from "@/types/track";
 import {
-  createDefaultDjTracks,
-  createQueueFromPlaylist,
+  createCustomQueueFromHistory,
+  createCustomQueueTrackFromHistory,
+  createEmptyCustomQueue,
   createTrackId,
   createUrlTrack,
+  findCustomQueueDuplicates,
   formatAudioTime,
+  formatCustomQueueDuplicateMessage,
+  formatTrackPlaybackUnavailableMessage,
+  getTrackPlaybackUnavailableReason,
+  hasCustomQueueDuplicates,
+  isPlayableTrack,
   PLAYLISTS,
   resolveSelectedPlaylist,
   validateHttpsAudioUrl,
 } from "@/features/music";
+import type { MusicStudioMode } from "@/features/music/application/use-cases/musicStudioMode";
 
-export type MusicStudioMode = "playlist" | "dj";
+export type { MusicStudioMode };
+
+const EMPTY_TRACKS: Track[] = [];
 
 export function useMusicStudioViewModel(
-  initialMode: MusicStudioMode = "playlist",
+  initialMode: MusicStudioMode = "history",
 ) {
   const [mode, setModeState] = useState<MusicStudioMode>(initialMode);
   const [selectedDate, setSelectedDate] = useState<string>(PLAYLISTS[0].date);
   const [queueTracks, setQueueTracks] = useState<Track[]>(() =>
-    createDefaultDjTracks(),
+    createEmptyCustomQueue(),
   );
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [playing, setPlaying] = useState(false);
@@ -35,13 +45,21 @@ export function useMusicStudioViewModel(
   const [urlTitle, setUrlTitle] = useState("");
   const [urlArtist, setUrlArtist] = useState("");
   const [urlError, setUrlError] = useState("");
+  const [queueNotice, setQueueNotice] = useState("");
+  const [playbackError, setPlaybackError] = useState("");
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const queueRef = useRef(queueTracks);
   const playlist = resolveSelectedPlaylist(PLAYLISTS, selectedDate);
-  const activeTracks = mode === "playlist" ? playlist.tracks : queueTracks;
+  const activeTracks =
+    mode === "history"
+      ? playlist.tracks
+      : mode === "custom"
+        ? queueTracks
+        : EMPTY_TRACKS;
+  const playableTracks = activeTracks.filter((track) => isPlayableTrack(track));
   const current = activeTracks.find((track) => track.id === currentId) ?? null;
-  const currentIndex = activeTracks.findIndex(
+  const currentIndex = playableTracks.findIndex(
     (track) => track.id === currentId,
   );
 
@@ -68,12 +86,22 @@ export function useMusicStudioViewModel(
     const onTime = () => setCurrentTime(audio.currentTime || 0);
     const onLoaded = () =>
       setDuration(Number.isFinite(audio.duration) ? audio.duration : 0);
-    const onError = () => setPlaying(false);
+    const onError = () => {
+      setPlaying(false);
+      setPlaybackError(
+        "음원을 재생할 수 없습니다. S3/CDN URL, Content-Type, 네트워크 상태를 확인해 주세요.",
+      );
+    };
 
     const onEnded = () => {
       if (repeat) {
         audio.currentTime = 0;
-        audio.play().catch(() => setPlaying(false));
+        audio.play().catch(() => {
+          setPlaying(false);
+          setPlaybackError(
+            "브라우저가 재생을 차단했거나 음원을 불러올 수 없습니다.",
+          );
+        });
         return;
       }
 
@@ -116,7 +144,12 @@ export function useMusicStudioViewModel(
     }
 
     if (playing) {
-      audio.play().catch(() => setPlaying(false));
+      audio.play().catch(() => {
+        setPlaying(false);
+        setPlaybackError(
+          "브라우저가 재생을 차단했거나 음원을 불러올 수 없습니다.",
+        );
+      });
     } else {
       audio.pause();
     }
@@ -135,6 +168,7 @@ export function useMusicStudioViewModel(
 
   function stop() {
     setPlaying(false);
+    setPlaybackError("");
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
@@ -144,17 +178,34 @@ export function useMusicStudioViewModel(
 
   function setMode(nextMode: MusicStudioMode) {
     stop();
+    setQueueNotice("");
+    setPlaybackError("");
     setCurrentId(null);
     setModeState(nextMode);
   }
 
   function selectDate(date: string) {
     stop();
+    setQueueNotice("");
+    setPlaybackError("");
     setCurrentId(null);
     setSelectedDate(date);
   }
 
   function selectTrack(track: Track) {
+    setPlaybackError("");
+
+    const unavailableReason = getTrackPlaybackUnavailableReason(track);
+
+    if (unavailableReason) {
+      stop();
+      setPlaybackError(
+        formatTrackPlaybackUnavailableMessage(unavailableReason),
+      );
+      setCurrentId(null);
+      return;
+    }
+
     if (currentId === track.id) {
       setPlaying((value) => !value);
       return;
@@ -166,27 +217,40 @@ export function useMusicStudioViewModel(
   }
 
   function togglePlayFromCurrentOrFirst() {
-    if (!current && activeTracks.length > 0) {
+    setPlaybackError("");
+
+    if (!current && playableTracks.length > 0) {
       resetProgress();
-      setCurrentId(activeTracks[0].id);
+      setCurrentId(playableTracks[0].id);
       setPlaying(true);
       return;
     }
 
-    setPlaying((value) => !value);
-  }
-
-  function nextTrack(auto = false) {
-    if (activeTracks.length === 0) {
+    if (!current && activeTracks.length > 0) {
+      setPlaybackError(
+        "현재 브라우저에서 재생할 수 있는 곡이 없습니다. MP3 등 지원되는 음원을 사용해 주세요.",
+      );
       return;
     }
 
+    if (current) {
+      setPlaying((value) => !value);
+    }
+  }
+
+  function nextTrack(auto = false) {
+    if (playableTracks.length === 0) {
+      return;
+    }
+
+    setPlaybackError("");
+
     let nextIndex: number;
     if (shuffle) {
-      nextIndex = Math.floor(Math.random() * activeTracks.length);
+      nextIndex = Math.floor(Math.random() * playableTracks.length);
     } else {
       nextIndex = currentIndex + 1;
-      if (nextIndex >= activeTracks.length) {
+      if (nextIndex >= playableTracks.length) {
         if (auto && !repeat) {
           setPlaying(false);
           return;
@@ -196,14 +260,16 @@ export function useMusicStudioViewModel(
     }
 
     resetProgress();
-    setCurrentId(activeTracks[nextIndex].id);
+    setCurrentId(playableTracks[nextIndex].id);
     setPlaying(true);
   }
 
   function previousTrack() {
-    if (activeTracks.length === 0) {
+    if (playableTracks.length === 0) {
       return;
     }
+
+    setPlaybackError("");
 
     const audio = audioRef.current;
     if (audio && audio.currentTime > 3) {
@@ -213,11 +279,11 @@ export function useMusicStudioViewModel(
 
     let previousIndex = currentIndex - 1;
     if (previousIndex < 0) {
-      previousIndex = activeTracks.length - 1;
+      previousIndex = playableTracks.length - 1;
     }
 
     resetProgress();
-    setCurrentId(activeTracks[previousIndex].id);
+    setCurrentId(playableTracks[previousIndex].id);
     setPlaying(true);
   }
 
@@ -234,11 +300,44 @@ export function useMusicStudioViewModel(
     }
   }
 
-  function loadPlaylistIntoQueue() {
+  function loadHistoryIntoCustomQueue() {
     stop();
+    setQueueNotice(
+      `${playlist.label} 전체 ${playlist.tracks.length}곡을 Custom Queue로 보냈습니다.`,
+    );
+    setPlaybackError("");
     setCurrentId(null);
-    setQueueTracks(createQueueFromPlaylist(playlist));
-    setModeState("dj");
+    setQueueTracks(createCustomQueueFromHistory(playlist));
+    setModeState("custom");
+  }
+
+  function addHistoryTrackToCustomQueue(track: Track) {
+    setPlaybackError("");
+    setQueueNotice("");
+
+    const duplicateSummary = findCustomQueueDuplicates(queueRef.current, track);
+
+    if (hasCustomQueueDuplicates(duplicateSummary)) {
+      const shouldAdd =
+        typeof window === "undefined" ||
+        window.confirm(
+          formatCustomQueueDuplicateMessage(track, duplicateSummary),
+        );
+
+      if (!shouldAdd) {
+        return;
+      }
+    }
+
+    setQueueTracks((previousTracks) => {
+      const nextTracks = [
+        ...previousTracks,
+        createCustomQueueTrackFromHistory(track),
+      ];
+      queueRef.current = nextTracks;
+      return nextTracks;
+    });
+    setQueueNotice(`"${track.title}"을(를) Custom Queue에 추가했습니다.`);
   }
 
   function removeTrack(id: string) {
@@ -252,6 +351,7 @@ export function useMusicStudioViewModel(
 
     if (currentId === id) {
       stop();
+      setPlaybackError("");
       setCurrentId(null);
     }
   }
@@ -269,6 +369,9 @@ export function useMusicStudioViewModel(
     }));
 
     setQueueTracks((previousTracks) => [...previousTracks, ...newTracks]);
+    setQueueNotice(
+      `${newTracks.length}개 로컬 파일을 Custom Queue에 추가했습니다.`,
+    );
     event.target.value = "";
   }
 
@@ -287,6 +390,7 @@ export function useMusicStudioViewModel(
           artist: urlArtist,
         }),
       ]);
+      setQueueNotice("URL 트랙을 Custom Queue에 추가했습니다.");
     } catch (error) {
       setUrlError(
         error instanceof Error
@@ -302,6 +406,7 @@ export function useMusicStudioViewModel(
   }
 
   return {
+    addHistoryTrackToCustomQueue,
     activeTracks,
     audioRef,
     current,
@@ -311,14 +416,17 @@ export function useMusicStudioViewModel(
     formatTime: formatAudioTime,
     handleAddUrl,
     handleFileUpload,
-    loadPlaylistIntoQueue,
+    loadHistoryIntoCustomQueue,
     mode,
     nextTrack,
     pause: () => setPlaying(false),
+    playbackError,
+    playableTracks,
     playlist,
     playing,
     playlists: PLAYLISTS,
     previousTrack,
+    queueNotice,
     queueTracks,
     removeTrack,
     repeat,

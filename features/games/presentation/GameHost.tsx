@@ -65,6 +65,46 @@ const gameComponents = {
       loading: () => <GameLoading />,
     },
   ),
+  "arithmetic-addition": dynamic(
+    () =>
+      import("@/features/games/arithmetic-addition/presentation/ArithmeticGame").then(
+        (mod) => mod.ArithmeticGame,
+      ),
+    {
+      ssr: false,
+      loading: () => <GameLoading />,
+    },
+  ),
+  "typing-rain": dynamic(
+    () =>
+      import("@/features/games/typing-rain/presentation/TypingRainGame").then(
+        (mod) => mod.TypingRainGame,
+      ),
+    {
+      ssr: false,
+      loading: () => <GameLoading />,
+    },
+  ),
+  "slot-machine": dynamic(
+    () =>
+      import("@/features/games/slot-machine/presentation/SlotMachineGame").then(
+        (mod) => mod.SlotMachineGame,
+      ),
+    {
+      ssr: false,
+      loading: () => <GameLoading />,
+    },
+  ),
+  "bulls-and-cows": dynamic(
+    () =>
+      import("@/features/games/bulls-and-cows/presentation/BullsAndCowsGame").then(
+        (mod) => mod.BullsAndCowsGame,
+      ),
+    {
+      ssr: false,
+      loading: () => <GameLoading />,
+    },
+  ),
 } satisfies Record<GameSlug, ComponentType>;
 
 export function GameHost({ slug }: { slug: GameSlug }) {
