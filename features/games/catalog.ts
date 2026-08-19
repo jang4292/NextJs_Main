@@ -7,7 +7,8 @@ export type GameSlug =
   | "match-three"
   | "arithmetic-addition"
   | "typing-rain"
-  | "slot-machine";
+  | "slot-machine"
+  | "bulls-and-cows";
 
 export interface GameCatalogItem {
   slug: GameSlug;
@@ -104,6 +105,16 @@ export const gameCatalog: GameCatalogItem[] = [
     ariaLabel: "Open Slot Machine game page",
     instructions: "베팅을 선택하고 가운데 페이라인에 같은 심볼 3개를 맞춥니다.",
     updatedAt: "2026-07-30",
+  },
+  {
+    slug: "bulls-and-cows",
+    title: "숫자 야구",
+    description: "중복 없는 세 자리 숫자를 추리하는 Bulls and Cows 게임",
+    href: "/tools/games/bulls-and-cows",
+    ariaLabel: "Open Bulls and Cows game page",
+    instructions:
+      "0은 첫 자리를 제외하고 사용할 수 있으며, 10번 안에 3 Strike를 맞히면 승리합니다.",
+    updatedAt: "2026-08-19",
   },
 ];
 
