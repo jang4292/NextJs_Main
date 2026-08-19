@@ -80,7 +80,7 @@ function reducer(state: GameState, action: Action): GameState {
       return {
         ...state,
         currentInput: value,
-status: value || state.attempts.length > 0 ? "playing" : "ready",
+        status: value || state.attempts.length > 0 ? "playing" : "ready",
         message: value ? "입력값을 확인하고 제출해 주세요." : INITIAL_MESSAGE,
       };
     }
@@ -162,14 +162,14 @@ export function useBullsAndCowsGame() {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-if (
-  event.ctrlKey ||
-  event.metaKey ||
-  event.altKey ||
-  event.target instanceof HTMLButtonElement
-) {
-  return;
-}
+      if (
+        event.ctrlKey ||
+        event.metaKey ||
+        event.altKey ||
+        event.target instanceof HTMLButtonElement
+      ) {
+        return;
+      }
 
       if (/^\d$/.test(event.key)) {
         event.preventDefault();
