@@ -95,6 +95,16 @@ const gameComponents = {
       loading: () => <GameLoading />,
     },
   ),
+  "bulls-and-cows": dynamic(
+    () =>
+      import("@/features/games/bulls-and-cows/presentation/BullsAndCowsGame").then(
+        (mod) => mod.BullsAndCowsGame,
+      ),
+    {
+      ssr: false,
+      loading: () => <GameLoading />,
+    },
+  ),
 } satisfies Record<GameSlug, ComponentType>;
 
 export function GameHost({ slug }: { slug: GameSlug }) {

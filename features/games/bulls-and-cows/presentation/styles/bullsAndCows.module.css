@@ -1,0 +1,363 @@
+.shell {
+  width: min(100%, 980px);
+  margin-inline: auto;
+  padding: 0.25rem 0 1rem;
+}
+
+.hero {
+  margin-bottom: 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgb(16 185 129 / 0.14), transparent 42%),
+    linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted) / 0.58));
+  padding: 1rem;
+}
+
+.hero h2 {
+  margin-top: 0.18rem;
+  color: hsl(var(--foreground));
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.hero p:last-child {
+  margin-top: 0.5rem;
+  max-width: 42rem;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.eyebrow,
+.metaLabel {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.06fr) minmax(20rem, 0.94fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.playColumn,
+.infoColumn {
+  display: grid;
+  gap: 1rem;
+}
+
+.panel {
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  background: hsl(var(--background));
+  padding: 1rem;
+  box-shadow: 0 12px 32px rgb(15 23 42 / 0.06);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.panelHeader h2 {
+  color: hsl(var(--foreground));
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.panelHeader span {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.statusGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.counter {
+  margin-top: 0.2rem;
+  color: hsl(var(--foreground));
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.counter span {
+  margin-left: 0.25rem;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.statusBadge {
+  display: inline-flex;
+  min-height: 2rem;
+  margin-top: 0.35rem;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 0.82rem;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.statusBadge[data-status="playing"] {
+  border-color: rgb(14 165 233 / 0.35);
+  background: rgb(224 242 254);
+  color: rgb(3 105 161);
+}
+
+.statusBadge[data-status="win"] {
+  border-color: rgb(16 185 129 / 0.38);
+  background: rgb(209 250 229);
+  color: rgb(4 120 87);
+}
+
+.statusBadge[data-status="lose"] {
+  border-color: rgb(244 63 94 / 0.35);
+  background: rgb(255 228 230);
+  color: rgb(190 18 60);
+}
+
+.message {
+  min-height: 2.8rem;
+  margin-top: 0.85rem;
+  border-radius: 8px;
+  background: hsl(var(--muted) / 0.68);
+  padding: 0.75rem;
+  color: hsl(var(--foreground));
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.hiddenInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.digitDisplay {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(4rem, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.55rem;
+}
+
+.digitSlot {
+  display: flex;
+  min-height: 5.3rem;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid hsl(var(--border));
+  border-radius: 8px;
+  background: hsl(var(--muted) / 0.45);
+  color: hsl(var(--foreground));
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease,
+    transform 140ms ease;
+}
+
+.digitSlot:not(:empty) {
+  border-color: rgb(16 185 129 / 0.56);
+  background: rgb(236 253 245);
+  animation: popIn 140ms ease;
+}
+
+.inputActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+}
+
+.keypadButton {
+  min-height: 48px;
+  min-width: 44px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  touch-action: manipulation;
+}
+
+.keypadButton:active {
+  transform: scale(0.96);
+}
+
+.historyList {
+  display: grid;
+  gap: 0.5rem;
+  max-height: 28rem;
+  overflow: auto;
+  padding-right: 0.15rem;
+}
+
+.historyList li {
+  display: grid;
+  grid-template-columns: auto minmax(3.4rem, auto) 1fr;
+  gap: 0.55rem;
+  align-items: center;
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  background: hsl(var(--muted) / 0.36);
+  padding: 0.65rem;
+  animation: slideIn 150ms ease;
+}
+
+.historyIndex {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.historyGuess {
+  color: hsl(var(--foreground));
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.badgeGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: flex-end;
+}
+
+.strikeBadge,
+.ballBadge,
+.outBadge {
+  display: inline-flex;
+  min-height: 1.7rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 0.62rem;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.strikeBadge {
+  background: rgb(220 252 231);
+  color: rgb(22 101 52);
+}
+
+.ballBadge {
+  background: rgb(254 249 195);
+  color: rgb(133 77 14);
+}
+
+.outBadge {
+  justify-self: end;
+  background: rgb(255 228 230);
+  color: rgb(190 18 60);
+}
+
+.emptyState {
+  border-radius: 8px;
+  background: hsl(var(--muted) / 0.48);
+  padding: 1rem;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.ruleList {
+  display: grid;
+  gap: 0.55rem;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.ruleList li {
+  padding-left: 0.2rem;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.92);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-0.3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 780px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h2 {
+    font-size: 1.22rem;
+  }
+
+  .digitDisplay {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .digitSlot {
+    min-height: 4.6rem;
+    font-size: 2.15rem;
+  }
+
+  .inputActions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .panel,
+  .hero {
+    padding: 0.85rem;
+  }
+
+  .statusGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .digitSlot,
+  .digitSlot:not(:empty),
+  .historyList li,
+  .keypadButton {
+    animation: none !important;
+    transition: none !important;
+  }
+}
