@@ -48,7 +48,7 @@ describe("public navigation", () => {
     expect(
       screen
         .getAllByRole("link", { name: "Profile" })
-        .every((link) => link.getAttribute("aria-current") === "page"),
+        .every((link) => link.getAttribute("aria-current") === "location"),
     ).toBe(true);
   });
 });
