@@ -12,7 +12,7 @@
 애플리케이션으로 묶은 개인 Interactive Lab입니다. 홈 화면은 도구와 학습 콘텐츠
 진입을 우선 배치하고, 소개/문의/관리자 영역은 보조 흐름으로 구성합니다.
 
-현재 주요 기능은 Music Studio, Media Downloader, 9개 미니게임, 2025 한국 세금
+현재 주요 기능은 Music Studio, Media Downloader, 10개 미니게임, 2025 한국 세금
 계산기, 개발 블로그, 사자성어/영어/일본어/중국어 단어 학습, 수학 학습, 이메일
 문의, JWT 세션 기반 관리자 대시보드입니다.
 
@@ -23,7 +23,7 @@
 | 언어              | TypeScript 6 tooling                          |
 | Public page route | 24개 `page.tsx`                               |
 | API route         | 5개 route handler                             |
-| 테스트            | Vitest 테스트 141개 파일 / 599개 케이스       |
+| 테스트            | Vitest 테스트 148개 파일 / 651개 케이스       |
 | 기준 브랜치       | `feature/play-musics-videos` (`develop` 대비) |
 
 ---
@@ -37,7 +37,7 @@
 | `/tools/music`                          | Music Studio          | playlist + DJ queue       |
 | `/tools/media-downloader`               | Media Downloader      | client UI + media API     |
 | `/tools/tax-calculator`                 | 2025 한국 세금 계산기 | tax view model + UI       |
-| `/tools/games`                          | 게임 허브             | 9-game catalog            |
+| `/tools/games`                          | 게임 허브             | 10-game catalog           |
 | `/tools/games/[slug]`                   | 개별 게임 실행        | `GameHost` dynamic import |
 | `/learn`                                | 학습 허브             | learning catalog          |
 | `/learn/blog`, `/learn/blog/[slug]`     | 개발 블로그 목록/상세 | SSG detail route          |
@@ -49,8 +49,8 @@
 | `/learn/math/sequences`                 | 수열 학습             | quiz flow                 |
 | `/learn/math/statistics`                | 통계 학습             | quiz flow                 |
 | `/learn/math/probability`               | 확률 학습             | quiz flow                 |
-| `/about`                                | 소개/외부 링크        | server route              |
-| `/contact`                              | 이메일 문의 폼        | contact feature           |
+| `/about`                                | Profile 허브          | profile route             |
+| `/contact`                              | Profile 내부 문의 폼  | contact feature           |
 | `/login`                                | 관리자 로그인         | auth-only layout          |
 | `/admin`, `/admin/users`                | 보호된 관리자 화면    | session required          |
 
@@ -101,8 +101,9 @@ status label, error mapping은 feature 내부 순수 유틸리티로 분리되�
 
 ### 4.3 Games
 
-게임 catalog는 9개 slug를 관리합니다: Solitaire, 2048, 지뢰찾기, FreeCell,
-스도쿠, 3-Match, 사칙연산 학습, Typing Rain, Slot Machine.
+게임 catalog는 10개 slug를 관리합니다: Solitaire, 2048, 지뢰찾기, FreeCell,
+스도쿠, 3-Match, 사칙연산 학습, Typing Rain, Slot Machine, 숫자 야구.
+게임 허브는 Card, Puzzle, Learning, Casual 분류로 묶어 보여줍니다.
 `GameHost.tsx`가 각 게임을 `ssr: false`로 동적 로드해 초기 난수와 브라우저
 전용 상태로 인한 hydration 불일치를 피합니다.
 
@@ -179,7 +180,7 @@ docs/           architecture, reports, feature notes
 ## 8. 테스트
 
 Vitest는 `**/*.test.ts`, `**/*.test.tsx`를 실행합니다. 현재 저장소 기준 테스트
-파일은 141개, 테스트 케이스는 599개이며, 게임 기능 테스트가 100개 파일로 가장 큰
+파일은 148개, 테스트 케이스는 651개이며, 게임 기능 테스트가 101개 파일로 가장 큰
 비중을 차지합니다.
 
 주요 테스트 범위:
@@ -188,7 +189,7 @@ Vitest는 `**/*.test.ts`, `**/*.test.tsx`를 실행합니다. 현재 저장소 �
 - 문의 폼 view model, API client, email HTML/sanitize
 - Music playlist/track formatting
 - 도구/학습/navigation catalog
-- 9개 게임의 domain rule, use case, 일부 presentation interaction
+- 10개 게임의 domain rule, use case, 일부 presentation interaction
 - 수학 학습 문제 생성과 UI
 - Media Downloader URL validation, format mapping, runtime env, extractor,
   downloader, API route, presentation

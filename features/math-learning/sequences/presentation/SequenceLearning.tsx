@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowLeft, RotateCcw, Sparkles } from "lucide-react";
+import { BackLink } from "@/components/navigation/BackLink";
 import { Button } from "@/components/ui/button";
 import { NumberPad } from "@/features/math-learning/shared/components/NumberPad";
 import {
@@ -57,13 +58,7 @@ export function SequenceLearning({
         className="mx-auto flex w-full max-w-[640px] flex-col gap-4 px-3 py-6 sm:px-4"
         aria-label="수열 학습 결과"
       >
-        <Link
-          href="/learn/math"
-          className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-emerald-700 hover:underline"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          수학 학습
-        </Link>
+        <BackLink href="/learn/math">Back to math</BackLink>
 
         <div className="rounded-lg border border-emerald-200 bg-white p-5 shadow-sm">
           <div className="flex items-start gap-3">

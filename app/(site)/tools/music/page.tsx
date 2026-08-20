@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BackLink } from "@/components/navigation/BackLink";
 import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 import { MusicStudio } from "@/features/music/presentation/MusicStudio";
@@ -19,6 +20,7 @@ export default async function MusicStudioPage({
 
   return (
     <PageShell size="content">
+      <BackLink href="/tools">Back to tools</BackLink>
       <SectionHeader
         eyebrow="Music Studio"
         title="음악 스튜디오"

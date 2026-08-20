@@ -1,4 +1,5 @@
 export type ToolStatus = "ready" | "expanded" | "legacy-compatible";
+export type ToolCategory = "utility" | "creative" | "play";
 
 export type ToolCatalogItem = {
   id: "music" | "games" | "tax-calculator" | "media-downloader";
@@ -6,10 +7,22 @@ export type ToolCatalogItem = {
   eyebrow: string;
   description: string;
   href: string;
-  category: "creative" | "play" | "utility";
+  category: ToolCategory;
   status: ToolStatus;
   featured: boolean;
   updatedAt: string;
+};
+
+export const toolCategoryOrder: ToolCategory[] = [
+  "utility",
+  "creative",
+  "play",
+];
+
+export const toolCategoryLabels: Record<ToolCategory, string> = {
+  utility: "Utility",
+  creative: "Creative",
+  play: "Play",
 };
 
 export const toolCatalog: ToolCatalogItem[] = [
@@ -62,4 +75,8 @@ export const toolCatalog: ToolCatalogItem[] = [
 
 export function getFeaturedTools(): ToolCatalogItem[] {
   return toolCatalog.filter((tool) => tool.featured);
+}
+
+export function getToolsByCategory(category: ToolCategory): ToolCatalogItem[] {
+  return toolCatalog.filter((tool) => tool.category === category);
 }

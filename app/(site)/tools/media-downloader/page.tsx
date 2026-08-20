@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BackLink } from "@/components/navigation/BackLink";
 import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 import { MediaDownloader } from "@/features/media-downloader/presentation/MediaDownloader";
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export default function MediaDownloaderPage() {
   return (
     <PageShell size="content">
+      <BackLink href="/tools">Back to tools</BackLink>
       <SectionHeader
         eyebrow="Utility"
         title="Media Downloader"

@@ -3,13 +3,10 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { siteNavigation } from "@/features/navigation/siteNavigation";
-
-function isActivePath(pathname: string, href: string) {
-  return href === "/"
-    ? pathname === href
-    : pathname === href || pathname.startsWith(`${href}/`);
-}
+import {
+  isNavigationItemActive,
+  siteNavigation,
+} from "@/features/navigation/siteNavigation";
 
 export function SiteNav() {
   const pathname = usePathname();
@@ -25,22 +22,24 @@ export function SiteNav() {
         </Link>
 
         <nav className="hidden items-center gap-5 text-sm text-neutral-700 md:flex">
-          {siteNavigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={
-                isActivePath(pathname, item.href) ? "page" : undefined
-              }
-              className={clsx(
-                "rounded px-2 py-1 transition-colors hover:bg-neutral-100 hover:text-neutral-950",
-                isActivePath(pathname, item.href) &&
-                  "bg-neutral-900 font-semibold text-white hover:bg-neutral-900 hover:text-white",
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {siteNavigation.map((item) => {
+            const isActive = isNavigationItemActive(pathname, item);
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={isActive ? "page" : undefined}
+                className={clsx(
+                  "rounded px-2 py-1 transition-colors hover:bg-neutral-100 hover:text-neutral-950",
+                  isActive &&
+                    "bg-neutral-900 font-semibold text-white hover:bg-neutral-900 hover:text-white",
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </header>

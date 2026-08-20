@@ -1,3 +1,5 @@
+export type LearningCategory = "math" | "language" | "writing";
+
 export type LearningCatalogItem = {
   id:
     | "math"
@@ -10,8 +12,21 @@ export type LearningCatalogItem = {
   eyebrow: string;
   description: string;
   href: string;
+  category: LearningCategory;
   featured: boolean;
   updatedAt: string;
+};
+
+export const learningCategoryOrder: LearningCategory[] = [
+  "math",
+  "language",
+  "writing",
+];
+
+export const learningCategoryLabels: Record<LearningCategory, string> = {
+  math: "Math",
+  language: "Language",
+  writing: "Writing",
 };
 
 export const learningCatalog: LearningCatalogItem[] = [
@@ -22,6 +37,7 @@ export const learningCatalog: LearningCatalogItem[] = [
     description:
       "사칙연산, 수열, 통계, 확률 기초를 시작점으로 수와 연산, 대수, 함수, 기하로 확장하는 수학 학습 허브입니다.",
     href: "/learn/math",
+    category: "math",
     featured: true,
     updatedAt: "2026-08-10",
   },
@@ -31,6 +47,7 @@ export const learningCatalog: LearningCatalogItem[] = [
     eyebrow: "Writing",
     description: "프로젝트 구조와 구현 과정을 정리한 개발 기록입니다.",
     href: "/learn/blog",
+    category: "writing",
     featured: true,
     updatedAt: "2026-07-27",
   },
@@ -40,6 +57,7 @@ export const learningCatalog: LearningCatalogItem[] = [
     eyebrow: "Korean",
     description: "뜻, 한자, 예문으로 기본 사자성어를 탐색합니다.",
     href: "/learn/idioms",
+    category: "language",
     featured: true,
     updatedAt: "2026-07-27",
   },
@@ -49,6 +67,7 @@ export const learningCatalog: LearningCatalogItem[] = [
     eyebrow: "English",
     description: "기초 영어 단어 50개의 뜻과 예문, 발음을 확인합니다.",
     href: "/learn/vocabulary",
+    category: "language",
     featured: true,
     updatedAt: "2026-07-27",
   },
@@ -58,6 +77,7 @@ export const learningCatalog: LearningCatalogItem[] = [
     eyebrow: "Japanese",
     description: "N5 수준 기초 일본어 50개의 뜻과 예문, 발음을 확인합니다.",
     href: "/learn/japanese-vocabulary",
+    category: "language",
     featured: true,
     updatedAt: "2026-08-01",
   },
@@ -68,6 +88,7 @@ export const learningCatalog: LearningCatalogItem[] = [
     description:
       "기초 중국어 50개의 간체자, 병음, 뜻, 예문, 발음을 확인합니다.",
     href: "/learn/chinese-vocabulary",
+    category: "language",
     featured: true,
     updatedAt: "2026-08-01",
   },
@@ -75,4 +96,10 @@ export const learningCatalog: LearningCatalogItem[] = [
 
 export function getFeaturedLearningItems(): LearningCatalogItem[] {
   return learningCatalog.filter((item) => item.featured);
+}
+
+export function getLearningItemsByCategory(
+  category: LearningCategory,
+): LearningCatalogItem[] {
+  return learningCatalog.filter((item) => item.category === category);
 }

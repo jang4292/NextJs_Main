@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { BackLink } from "@/components/navigation/BackLink";
 import {
   getNextSelectedVocabularyWordId,
   resolveVocabularySelection,
@@ -178,12 +178,7 @@ export function VocabularyPage() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8 pb-24 md:pb-8">
-      <Link
-        href="/learn"
-        className="mb-6 inline-block rounded-md text-sm text-blue-600 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
-      >
-        Learn으로 돌아가기
-      </Link>
+      <BackLink href="/learn">Back to learn</BackLink>
 
       <header className="mb-8">
         <p className="text-sm font-medium text-blue-600">English Vocabulary</p>

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { BackLink } from "@/components/navigation/BackLink";
 import type { BlogPost } from "@/features/blog";
 
 export function BlogPostArticle({ post }: { post: BlogPost }) {
@@ -71,12 +71,7 @@ export function BlogPostArticle({ post }: { post: BlogPost }) {
 
   return (
     <article>
-      <Link
-        href="/learn/blog"
-        className="mb-6 inline-block rounded text-sm font-medium text-emerald-700 hover:underline"
-      >
-        Back to blog
-      </Link>
+      <BackLink href="/learn">Back to learn</BackLink>
 
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-neutral-950">{post.titleKo}</h1>

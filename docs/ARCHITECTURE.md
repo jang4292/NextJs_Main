@@ -46,9 +46,12 @@ app/
   api/send-email/route.ts
 ```
 
-Canonical public URLs are `/tools/*`, `/learn/*`, `/about`, and `/contact`.
-Legacy public URLs are redirected from `features/navigation/siteNavigation.ts`
-through `next.config.ts`.
+Canonical public URLs are grouped under four primary navigation axes:
+`Home`, `Tools`, `Learn`, and `Profile`. `Profile` uses `/about` as its
+representative route, while `/contact` remains a related Profile route and
+keeps Profile active in both desktop and mobile navigation. Legacy public URLs
+are redirected from `features/navigation/siteNavigation.ts` through
+`next.config.ts`.
 
 ## Feature Ownership
 
@@ -59,7 +62,7 @@ features/
   learning/            learning catalog
   music/               playlists, audio formatting, player state, DJ queue
   media-downloader/    URL validation, format mapping, yt-dlp/FFmpeg adapters, downloader UI
-  games/               9-game catalog + game feature folders
+  games/               10-game catalog + game feature folders
   math-learning/       sequences, statistics, probability learning
   blog/                post data + list/detail presentation
   idioms/              idiom data + list/detail presentation
@@ -94,6 +97,8 @@ components/
 
 List-style pages use `PageShell`, `SectionHeader`, `ContentGrid`, and
 `FeatureCard` to keep spacing, heading scale, and card density consistent.
+Tools, Learn, and Games hubs render grouped catalog sections from feature-owned
+category order and label helpers.
 
 ## Core Flows
 
@@ -133,8 +138,9 @@ adapters:
 ### Games
 
 `/tools/games/[slug]` uses `features/games/catalog.ts` for slugs, metadata,
-and display order. `features/games/presentation/GameHost.tsx` is the single
-client registry that dynamically imports all 9 games with `ssr: false`.
+category, and display order. `features/games/presentation/GameHost.tsx` is the
+single client registry that dynamically imports all 10 games with
+`ssr: false`.
 
 ### Learning
 

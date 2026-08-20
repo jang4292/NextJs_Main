@@ -1,7 +1,7 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageShell } from "@/components/layout/PageShell";
+import { BackLink } from "@/components/navigation/BackLink";
 import { idioms } from "@/features/idioms/data/idioms";
 import { IdiomDetail } from "@/features/idioms/presentation/IdiomDetail";
 import { getIdiomBySlug } from "@/features/idioms/utils/getIdiomBySlug";
@@ -42,12 +42,7 @@ export default async function IdiomDetailPage({
 
   return (
     <PageShell size="narrow">
-      <Link
-        href="/learn/idioms"
-        className="mb-6 inline-block rounded text-sm font-medium text-emerald-700 hover:underline"
-      >
-        Back to idioms
-      </Link>
+      <BackLink href="/learn">Back to learn</BackLink>
       <IdiomDetail idiom={idiom} />
     </PageShell>
   );

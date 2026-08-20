@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { gameCatalog, gameSlugs, getGameBySlug } from "./catalog";
+import {
+  gameCatalog,
+  gameCategoryLabels,
+  gameCategoryOrder,
+  gameSlugs,
+  getGameBySlug,
+  getGamesByCategory,
+} from "./catalog";
 
 describe("gameCatalog", () => {
   it("keeps game slugs and hrefs unique", () => {
@@ -17,5 +24,33 @@ describe("gameCatalog", () => {
       "/tools/games/bulls-and-cows",
     );
     expect(getGameBySlug("unknown")).toBeUndefined();
+  });
+
+  it("groups games by the Tools > Games hub categories", () => {
+    expect(gameCategoryOrder).toEqual(["card", "puzzle", "learning", "casual"]);
+    expect(gameCategoryLabels).toMatchObject({
+      card: "Card",
+      puzzle: "Puzzle",
+      learning: "Learning",
+      casual: "Casual",
+    });
+    expect(getGamesByCategory("card").map((game) => game.slug)).toEqual([
+      "solitaire",
+      "freecell",
+    ]);
+    expect(getGamesByCategory("puzzle").map((game) => game.slug)).toEqual([
+      "2048",
+      "minesweeper",
+      "sudoku",
+      "match-three",
+      "bulls-and-cows",
+    ]);
+    expect(getGamesByCategory("learning").map((game) => game.slug)).toEqual([
+      "arithmetic-addition",
+      "typing-rain",
+    ]);
+    expect(getGamesByCategory("casual").map((game) => game.slug)).toEqual([
+      "slot-machine",
+    ]);
   });
 });

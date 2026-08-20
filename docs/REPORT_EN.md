@@ -25,7 +25,7 @@ JWT-session-protected admin dashboard.
 | Language          | TypeScript 6 tooling                                 |
 | Public page route | 24 `page.tsx` files                                  |
 | API route         | 5 route handlers                                     |
-| Tests             | 141 Vitest test files / 599 test cases               |
+| Tests             | 148 Vitest test files / 651 test cases               |
 | Baseline branch   | `feature/play-musics-videos` compared with `develop` |
 
 ---
@@ -39,7 +39,7 @@ JWT-session-protected admin dashboard.
 | `/tools/music`                          | Music Studio                 | playlist + DJ queue       |
 | `/tools/media-downloader`               | Media Downloader             | client UI + media API     |
 | `/tools/tax-calculator`                 | 2025 Korean tax calculator   | tax view model + UI       |
-| `/tools/games`                          | Games hub                    | 9-game catalog            |
+| `/tools/games`                          | Games hub                    | 10-game catalog           |
 | `/tools/games/[slug]`                   | Individual game host         | `GameHost` dynamic import |
 | `/learn`                                | Learning hub                 | learning catalog          |
 | `/learn/blog`, `/learn/blog/[slug]`     | Development blog list/detail | SSG detail route          |
@@ -51,8 +51,8 @@ JWT-session-protected admin dashboard.
 | `/learn/math/sequences`                 | Sequence learning            | quiz flow                 |
 | `/learn/math/statistics`                | Statistics learning          | quiz flow                 |
 | `/learn/math/probability`               | Probability learning         | quiz flow                 |
-| `/about`                                | Profile and external links   | server route              |
-| `/contact`                              | Email contact form           | contact feature           |
+| `/about`                                | Profile hub                  | profile route             |
+| `/contact`                              | Profile contact form         | contact feature           |
 | `/login`                                | Admin login                  | auth-only layout          |
 | `/admin`, `/admin/users`                | Protected admin screens      | session required          |
 
@@ -106,7 +106,8 @@ can replace the local process boundary.
 ### 4.3 Games
 
 The games catalog manages 9 slugs: Solitaire, 2048, Minesweeper, FreeCell,
-Sudoku, 3-Match, Arithmetic Learning, Typing Rain, and Slot Machine.
+Sudoku, 3-Match, Arithmetic Learning, Typing Rain, Slot Machine, and Bulls and
+Cows. The Games hub groups entries as Card, Puzzle, Learning, and Casual.
 `GameHost.tsx` loads each game with `ssr: false` to avoid hydration mismatches
 from initial random state and browser-only storage.
 
@@ -185,7 +186,7 @@ Literal `$` characters in the bcrypt `ADMIN_PASSWORD_HASH` must be escaped as
 ## 8. Testing
 
 Vitest runs `**/*.test.ts` and `**/*.test.tsx`. The repository currently has
-141 test files and 599 test cases, with game tests accounting for 100 files.
+148 test files and 651 test cases, with game tests accounting for 101 files.
 
 Primary coverage areas:
 
@@ -193,7 +194,7 @@ Primary coverage areas:
 - Contact form view model, API client, email HTML, and sanitization
 - Music playlist and track formatting
 - Tool, learning, and navigation catalogs
-- Domain rules, use cases, and selected presentation interactions for 9 games
+- Domain rules, use cases, and selected presentation interactions for 10 games
 - Math learning question generation and UI
 - Media Downloader URL validation, format mapping, runtime env, extractor,
   downloader, API routes, and presentation

@@ -9,8 +9,8 @@ Current inventory:
 
 | Metric     | Count |
 | ---------- | ----- |
-| Test files | 141   |
-| Test cases | 599   |
+| Test files | 148   |
+| Test cases | 651   |
 
 Primary coverage areas:
 

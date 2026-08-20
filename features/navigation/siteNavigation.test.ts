@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   bottomNavigation,
+  isNavigationItemActive,
   legacyRedirects,
   siteNavigation,
 } from "./siteNavigation";
@@ -12,14 +13,21 @@ describe("siteNavigation", () => {
     expect(new Set(hrefs).size).toBe(hrefs.length);
   });
 
-  it("keeps bottom navigation focused on the interactive routes", () => {
+  it("uses the same four primary routes for top and bottom navigation", () => {
+    const expectedHrefs = ["/", "/tools", "/learn", "/about"];
+
+    expect(siteNavigation.map((item) => item.href)).toEqual(expectedHrefs);
     expect(bottomNavigation.map((item) => item.href)).toEqual([
-      "/",
-      "/tools",
-      "/learn",
-      "/tools/games",
-      "/about",
+      ...expectedHrefs,
     ]);
+  });
+
+  it("keeps contact active under the Profile primary navigation item", () => {
+    const profileItem = siteNavigation.find((item) => item.key === "profile");
+
+    expect(profileItem).toBeDefined();
+    expect(isNavigationItemActive("/contact", profileItem!)).toBe(true);
+    expect(isNavigationItemActive("/contact", siteNavigation[0])).toBe(false);
   });
 
   it("documents temporary legacy redirects for the old public URLs", () => {

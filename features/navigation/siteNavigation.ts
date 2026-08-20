@@ -1,11 +1,11 @@
-export type NavigationKey =
-  "home" | "tools" | "learn" | "games" | "about" | "contact";
+export type NavigationKey = "home" | "tools" | "learn" | "profile";
 
 export type SiteNavigationItem = {
   key: NavigationKey;
   label: string;
   href: string;
   description: string;
+  relatedHrefs?: string[];
 };
 
 export type LegacyRedirect = {
@@ -34,31 +34,30 @@ export const siteNavigation: SiteNavigationItem[] = [
     description: "Blog posts and learning content",
   },
   {
-    key: "about",
-    label: "About",
+    key: "profile",
+    label: "Profile",
     href: "/about",
-    description: "Profile and external links",
-  },
-  {
-    key: "contact",
-    label: "Contact",
-    href: "/contact",
-    description: "Email contact form",
+    description: "Profile, external links, and contact",
+    relatedHrefs: ["/contact"],
   },
 ];
 
-export const bottomNavigation: SiteNavigationItem[] = [
-  siteNavigation[0],
-  siteNavigation[1],
-  siteNavigation[2],
-  {
-    key: "games",
-    label: "Games",
-    href: "/tools/games",
-    description: "Mini-game collection",
-  },
-  siteNavigation[3],
-];
+export const bottomNavigation: SiteNavigationItem[] = siteNavigation;
+
+export function isNavigationItemActive(
+  pathname: string,
+  item: SiteNavigationItem,
+) {
+  return [item.href, ...(item.relatedHrefs ?? [])].some((href) =>
+    isActivePath(pathname, href),
+  );
+}
+
+function isActivePath(pathname: string, href: string) {
+  return href === "/"
+    ? pathname === href
+    : pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export const legacyRedirects: LegacyRedirect[] = [
   { source: "/music-list", destination: "/tools/music", permanent: false },
