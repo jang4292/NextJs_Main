@@ -41,8 +41,11 @@ export function MediaDownloader() {
           <div className="flex flex-col gap-2 sm:flex-row">
             <input
               id="media-url"
-              type="url"
+              type="text"
               inputMode="url"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
               value={vm.url}
               onChange={(event) => vm.updateUrl(event.target.value)}
               placeholder="https://www.youtube.com/watch?v=..."
@@ -50,7 +53,13 @@ export function MediaDownloader() {
               disabled={vm.isBusy}
               aria-describedby="media-url-policy media-downloader-error"
             />
-            <Button type="submit" disabled={!vm.canAnalyze}>
+            <Button
+              type="submit"
+              disabled={!vm.canAnalyze}
+              data-can-analyze={String(vm.canAnalyze)}
+              data-status={vm.status}
+              data-url-candidate={vm.urlCandidate}
+            >
               {vm.isAnalyzing ? (
                 <Loader2 className="animate-spin" aria-hidden="true" />
               ) : (
