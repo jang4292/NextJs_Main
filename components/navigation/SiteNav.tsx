@@ -29,7 +29,7 @@ export function SiteNav() {
               <Link
                 key={item.href}
                 href={item.href}
-                aria-current={isActive ? "page" : undefined}
+                aria-current={isActive ? "location" : undefined}
                 className={clsx(
                   "rounded px-2 py-1 transition-colors hover:bg-neutral-100 hover:text-neutral-950",
                   isActive &&
