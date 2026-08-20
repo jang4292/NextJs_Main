@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
+import { BackLink } from "@/components/navigation/BackLink";
 import { ChineseVocabularyDetail } from "@/features/vocabulary-chinese/components/ChineseVocabularyDetail";
 import { ChineseVocabularyFilter } from "@/features/vocabulary-chinese/components/ChineseVocabularyFilter";
 import { ChineseVocabularyList } from "@/features/vocabulary-chinese/components/ChineseVocabularyList";
@@ -108,12 +108,7 @@ export function ChineseVocabularyPage() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8 pb-24 md:pb-10">
-      <Link
-        href="/learn"
-        className="mb-6 inline-block rounded-md text-sm font-medium text-emerald-700 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-600"
-      >
-        Learn으로 돌아가기
-      </Link>
+      <BackLink href="/learn">Back to learn</BackLink>
 
       <header className="mb-8 border-b border-neutral-200 pb-6">
         <p className="text-sm font-semibold text-emerald-700">

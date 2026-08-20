@@ -117,7 +117,7 @@ export default function HomePage() {
               href="/about"
               className="rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-semibold text-neutral-900 transition-colors hover:border-neutral-900"
             >
-              About
+              Profile
             </Link>
           }
         />

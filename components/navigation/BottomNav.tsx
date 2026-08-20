@@ -1,11 +1,12 @@
 "use client";
 
 import clsx from "clsx";
-import { BookOpen, Gamepad2, Home, User, Wrench } from "lucide-react";
+import { BookOpen, Home, User, Wrench } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   bottomNavigation,
+  isNavigationItemActive,
   type NavigationKey,
 } from "@/features/navigation/siteNavigation";
 
@@ -13,16 +14,8 @@ const iconByKey: Record<NavigationKey, typeof Home> = {
   home: Home,
   tools: Wrench,
   learn: BookOpen,
-  games: Gamepad2,
-  about: User,
-  contact: Wrench,
+  profile: User,
 };
-
-function isActivePath(pathname: string, href: string) {
-  return href === "/"
-    ? pathname === href
-    : pathname === href || pathname.startsWith(`${href}/`);
-}
 
 export function BottomNav() {
   const pathname = usePathname();
@@ -32,13 +25,13 @@ export function BottomNav() {
       <ul className="flex justify-around px-1 py-2">
         {bottomNavigation.map((item) => {
           const Icon = iconByKey[item.key];
-          const isActive = isActivePath(pathname, item.href);
+          const isActive = isNavigationItemActive(pathname, item);
 
           return (
             <li key={item.href} className="min-w-0 flex-1 text-center">
               <Link
                 href={item.href}
-                aria-current={isActive ? "page" : undefined}
+                aria-current={isActive ? "location" : undefined}
                 className={clsx(
                   "flex flex-col items-center gap-0.5 text-xs font-medium",
                   isActive ? "text-emerald-700" : "text-neutral-500",

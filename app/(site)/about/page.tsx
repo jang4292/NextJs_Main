@@ -1,9 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
+import { Mail } from "lucide-react";
+import { LinkCard } from "@/components/cards/LinkCard";
+import { ContentGrid } from "@/components/layout/ContentGrid";
+import { PageShell } from "@/components/layout/PageShell";
+import { SectionHeader } from "@/components/layout/SectionHeader";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "Profile",
   description:
     "12년 이상의 경력을 가진 TypeScript 엔지니어, 제이(YH Jang)의 소개 페이지",
 };
@@ -58,27 +63,41 @@ const SOCIAL_LINKS = [
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="mb-2 text-2xl font-bold md:text-3xl">About</h1>
-      <p className="mb-8 text-gray-500">제이(YH Jang) · TypeScript 엔지니어</p>
+    <PageShell size="content">
+      <SectionHeader
+        eyebrow="Profile"
+        title="YH Jang"
+        description="프론트와 백을 자유롭게 오가며, 복잡한 요구사항을 명확한 구조와 유지보수 가능한 코드로 정리하는 TypeScript 엔지니어입니다."
+        action={
+          <Link
+            href="/contact"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-neutral-950 px-4 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 focus:outline-none"
+          >
+            <Mail className="h-4 w-4" aria-hidden="true" />
+            Contact
+          </Link>
+        }
+      />
 
-      <section className="mb-10">
-        <p className="text-base leading-relaxed text-gray-700">
-          프론트와 백을 자유롭게 오가는 TypeScript 엔지니어입니다.
-          <br />
-          복잡한 요구사항도 명확하게 구조화하고, 유지보수가 쉬운 코드를
-          지향합니다.
-          <br />
-          <br />
-          12년 이상의 다양한 개발 경력을 바탕으로, 웹 · 데스크탑 · 모바일까지
-          <br />
-          다양한 플랫폼에서 서비스를 개발하고 운영해왔습니다.
+      <section className="mb-10 rounded-md border border-neutral-200 bg-white p-5">
+        <p className="text-sm font-semibold text-emerald-700 uppercase">
+          TypeScript Engineer
+        </p>
+        <p className="mt-3 text-base leading-relaxed text-neutral-700">
+          12년 이상의 다양한 개발 경력을 바탕으로 웹, 데스크탑, 모바일
+          플랫폼에서 서비스를 개발하고 운영해왔습니다. 이 사이트의 도구와 학습
+          콘텐츠는 구현 방식과 제품 감각을 함께 보여주는 작업물입니다.
         </p>
       </section>
 
-      <section className="mb-10">
-        <h2 className="mb-4 text-lg font-semibold">기술 스택</h2>
-        <div className="flex flex-wrap gap-2">
+      <section className="mb-10" aria-labelledby="profile-stack-heading">
+        <h2
+          id="profile-stack-heading"
+          className="mb-4 text-xl font-bold text-neutral-950"
+        >
+          Tech Stack
+        </h2>
+        <div className="flex flex-wrap gap-2 rounded-md border border-neutral-200 bg-white p-5">
           {TECH_STACK.map((tech) => (
             <Image
               key={tech.alt}
@@ -91,28 +110,30 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">연락 및 링크</h2>
-        <ul className="flex flex-col gap-2 text-sm">
+      <section aria-labelledby="profile-links-heading">
+        <h2
+          id="profile-links-heading"
+          className="mb-4 text-xl font-bold text-neutral-950"
+        >
+          Links
+        </h2>
+        <ContentGrid columns="two">
           {SOCIAL_LINKS.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
-              >
-                {link.label}
-              </Link>
-            </li>
+            <LinkCard
+              key={link.href}
+              href={link.href}
+              title={link.label}
+              description="External profile"
+              external
+            />
           ))}
-          <li>
-            <Link href="/contact" className="text-blue-600 hover:underline">
-              이메일로 문의하기
-            </Link>
-          </li>
-        </ul>
+          <LinkCard
+            href="/contact"
+            title="Contact"
+            description="Email contact form"
+          />
+        </ContentGrid>
       </section>
-    </div>
+    </PageShell>
   );
 }

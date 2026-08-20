@@ -3,7 +3,11 @@ import { FeatureCard } from "@/components/cards/FeatureCard";
 import { ContentGrid } from "@/components/layout/ContentGrid";
 import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeader } from "@/components/layout/SectionHeader";
-import { toolCatalog } from "@/features/tools/catalog";
+import {
+  getToolsByCategory,
+  toolCategoryLabels,
+  toolCategoryOrder,
+} from "@/features/tools/catalog";
 
 export const metadata: Metadata = {
   title: "Tools",
@@ -18,18 +22,34 @@ export default function ToolsPage() {
         title="도구 허브"
         description="바로 실행할 수 있는 음악 스튜디오, 미니게임, 계산 도구를 한 곳에 모았습니다."
       />
-      <ContentGrid>
-        {toolCatalog.map((tool) => (
-          <FeatureCard
-            key={tool.id}
-            eyebrow={tool.eyebrow}
-            title={tool.title}
-            description={tool.description}
-            href={tool.href}
-            cta="Open"
-          />
-        ))}
-      </ContentGrid>
+      <div className="space-y-8">
+        {toolCategoryOrder.map((category) => {
+          const tools = getToolsByCategory(category);
+
+          return (
+            <section key={category} aria-labelledby={`${category}-tools`}>
+              <h2
+                id={`${category}-tools`}
+                className="mb-3 text-xl font-bold text-neutral-950"
+              >
+                {toolCategoryLabels[category]}
+              </h2>
+              <ContentGrid>
+                {tools.map((tool) => (
+                  <FeatureCard
+                    key={tool.id}
+                    eyebrow={tool.eyebrow}
+                    title={tool.title}
+                    description={tool.description}
+                    href={tool.href}
+                    cta="Open"
+                  />
+                ))}
+              </ContentGrid>
+            </section>
+          );
+        })}
+      </div>
     </PageShell>
   );
 }

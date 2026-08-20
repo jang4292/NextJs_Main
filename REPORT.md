@@ -21,9 +21,9 @@ NextJs_Main은 포트폴리오, 도구, 학습 콘텐츠를 결합한 Next.js 16
 | Styling           | Tailwind CSS 4.3.3                           |
 | Public page route | 24개 `page.tsx`                              |
 | API route         | 5개 route handler                            |
-| Test files        | 141개 (`**/*.test.ts`, `**/*.test.tsx`)      |
-| Test cases        | 599개 Vitest cases                           |
-| Game catalog      | 9개 게임                                     |
+| Test files        | 148개 (`**/*.test.ts`, `**/*.test.tsx`)      |
+| Test cases        | 651개 Vitest cases                           |
+| Game catalog      | 10개 게임                                    |
 | Database          | 없음, 정적 TypeScript 데이터와 env 기반 설정 |
 
 ---
@@ -106,7 +106,7 @@ features/
   auth/                login form
   blog/                blog data and rendering
   contact/             contact form application/presentation
-  games/               9-game catalog and game implementations
+  games/               10-game catalog and game implementations
   idioms/              Korean idiom learning
   learning/            learning catalog
   math-learning/       sequences/statistics/probability learning
@@ -140,7 +140,7 @@ feature 폴더가 소유합니다.
 | Music Studio     | `/tools/music`            | 날짜별 playlist + DJ queue         |
 | Media Downloader | `/tools/media-downloader` | YouTube analyze/download local MVP |
 | Tax Calculator   | `/tools/tax-calculator`   | 2025 한국 세율 기반 실수령액 계산  |
-| Games Hub        | `/tools/games`            | 9개 게임 catalog                   |
+| Games Hub        | `/tools/games`            | 10개 게임 catalog                  |
 
 ### 5.2 Media Downloader
 
@@ -167,7 +167,7 @@ feature 폴더가 소유합니다.
 
 ### 5.3 Games
 
-게임 catalog는 9개 게임을 관리합니다.
+게임 catalog는 10개 게임을 관리합니다.
 
 | Slug                  | 설명                        |
 | --------------------- | --------------------------- |
@@ -180,9 +180,11 @@ feature 폴더가 소유합니다.
 | `arithmetic-addition` | 사칙연산 학습 게임          |
 | `typing-rain`         | 한글/영문 타자 연습 게임    |
 | `slot-machine`        | 3릴 단일 페이라인 슬롯 머신 |
+| `bulls-and-cows`      | 숫자 야구 추리 게임         |
 
+게임 허브는 Card, Puzzle, Learning, Casual 분류로 catalog 항목을 묶습니다.
 `GameHost.tsx`는 모든 게임을 `ssr: false`로 동적 로드합니다. 게임 관련 테스트
-파일은 100개입니다.
+파일은 101개입니다.
 
 ### 5.4 Learning
 
@@ -243,7 +245,7 @@ MEDIA_MAX_OUTPUT_BYTES=367001600
 
 ## 8. 테스트 현황
 
-현재 테스트 파일 수는 141개, 테스트 케이스 수는 599개입니다.
+현재 테스트 파일 수는 148개, 테스트 케이스 수는 651개입니다.
 
 | 범위               | 대표 테스트                                                       |
 | ------------------ | ----------------------------------------------------------------- |
@@ -252,7 +254,7 @@ MEDIA_MAX_OUTPUT_BYTES=367001600
 | Contact            | contact view model, API client, form, email route                 |
 | Navigation/Catalog | navigation, tools, learning, games catalog tests                  |
 | Music              | playlist and track use cases                                      |
-| Games              | 9개 게임 domain/use-case/presentation tests                       |
+| Games              | 10개 게임 domain/use-case/presentation tests                      |
 | Math Learning      | sequences/statistics/probability generation + UI                  |
 | Media Downloader   | validation, format mapping, env, extractor, downloader, API, UI   |
 | Tax Calculator     | tax calculator view model                                         |

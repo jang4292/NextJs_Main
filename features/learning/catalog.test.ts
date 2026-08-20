@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { learningCatalog } from "./catalog";
+import {
+  getLearningItemsByCategory,
+  learningCatalog,
+  learningCategoryLabels,
+  learningCategoryOrder,
+} from "./catalog";
 
 describe("learningCatalog", () => {
   it("keeps learning ids and hrefs unique", () => {
@@ -24,5 +29,28 @@ describe("learningCatalog", () => {
         title: "Math Learning",
       }),
     );
+  });
+
+  it("groups learning content by the primary learning categories", () => {
+    expect(learningCategoryOrder).toEqual(["math", "language", "writing"]);
+    expect(learningCategoryLabels).toMatchObject({
+      math: "Math",
+      language: "Language",
+      writing: "Writing",
+    });
+    expect(getLearningItemsByCategory("math").map((item) => item.id)).toEqual([
+      "math",
+    ]);
+    expect(
+      getLearningItemsByCategory("language").map((item) => item.id),
+    ).toEqual([
+      "idioms",
+      "vocabulary",
+      "japanese-vocabulary",
+      "chinese-vocabulary",
+    ]);
+    expect(
+      getLearningItemsByCategory("writing").map((item) => item.id),
+    ).toEqual(["blog"]);
   });
 });

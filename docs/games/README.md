@@ -1,6 +1,6 @@
 # 게임 문서 인덱스
 
-`/tools/games`는 `features/games/catalog.ts`를 기준으로 9개 게임을 노출하고,
+`/tools/games`는 `features/games/catalog.ts`를 기준으로 10개 게임을 노출하고,
 `features/games/presentation/GameHost.tsx`에서 각 게임을 클라이언트 전용으로
 동적 로드한다.
 
@@ -27,11 +27,11 @@ catalog와 feature 폴더 구현을 기준 문서로 본다.
 - 모든 게임은 `/tools/games/[slug]` 하나의 route 패턴을 공유한다.
 - slug, 제목, 설명, 안내 문구, 업데이트 날짜는 `features/games/catalog.ts`가
   소유한다.
-- `GameHost.tsx`가 9개 게임 컴포넌트를 `dynamic(..., { ssr: false })`로
+- `GameHost.tsx`가 10개 게임 컴포넌트를 `dynamic(..., { ssr: false })`로
   로드해 초기 난수/브라우저 상태로 인한 hydration 불일치를 피한다.
 - 게임 구현은 대체로 `domain`, `application`, `presentation` 계층을 따르며,
   복잡한 규칙은 순수 함수와 유스케이스 테스트로 검증한다.
-- 현재 게임 관련 테스트 파일은 100개이며, 전체 저장소 테스트 141개 중 가장 큰
+- 현재 게임 관련 테스트 파일은 101개이며, 전체 저장소 테스트 148개 중 가장 큰
   비중을 차지한다.
 
 ## 참고

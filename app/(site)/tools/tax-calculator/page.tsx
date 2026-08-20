@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BackLink } from "@/components/navigation/BackLink";
 import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 import { TaxCalculator } from "@/features/tax-calculator/presentation/TaxCalculator";
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export default function TaxCalculatorPage() {
   return (
     <PageShell size="narrow">
+      <BackLink href="/tools">Back to tools</BackLink>
       <SectionHeader
         eyebrow="Utility"
         title="2025 세금 계산기"

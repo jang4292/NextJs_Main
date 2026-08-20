@@ -16,7 +16,7 @@
 | 도구 허브 | `/tools`                               | 음악, 미디어, 게임, 계산기 진입점        |
 | 음악      | `/tools/music`                         | 날짜별 플레이리스트 + DJ 큐 통합         |
 | 미디어    | `/tools/media-downloader`              | 공개 YouTube 단일 영상 분석/다운로드     |
-| 게임      | `/tools/games`, `/tools/games/[slug]`  | 9개 미니게임 catalog + 동적 실행 route   |
+| 게임      | `/tools/games`, `/tools/games/[slug]`  | 10개 미니게임 catalog + 동적 실행 route  |
 | 세금      | `/tools/tax-calculator`                | 2025 한국 소득세 계산기                  |
 | 학습 허브 | `/learn`                               | 블로그, 언어 학습, 수학 학습 진입점      |
 | 블로그    | `/learn/blog`, `/learn/blog/[slug]`    | 개발 기록 목록 및 상세 (SSG)             |
@@ -25,8 +25,12 @@
 | 일본어    | `/learn/japanese-vocabulary`           | N5 수준 기초 일본어 단어                 |
 | 중국어    | `/learn/chinese-vocabulary`            | 기초 중국어 단어                         |
 | 수학      | `/learn/math`, `/learn/math/*`         | 수열, 통계, 확률 학습                    |
-| 소개/문의 | `/about`, `/contact`                   | 프로필, 외부 링크, 이메일 문의           |
+| Profile   | `/about`, `/contact`                   | 프로필 허브, 외부 링크, 이메일 문의      |
 | 관리자    | `/login`, `/admin`, `/admin/users`     | JWT 세션 기반 보호된 관리자 대시보드     |
+
+상단 메뉴와 모바일 하단 메뉴는 `Home`, `Tools`, `Learn`, `Profile` 4개 축을
+동일하게 사용합니다. `/contact`는 Profile 내부 연결로 유지되며 Profile 메뉴가
+활성화됩니다.
 
 기존 공개 URL은 `next.config.ts`의 redirect 설정으로 canonical route에 임시
 연결합니다.
@@ -114,7 +118,7 @@ SESSION_SECRET=<32바이트 랜덤 base64>  # openssl rand -base64 32
 │   ├── learning/            # learning catalog
 │   ├── music/               # playlists + audio player + DJ queue
 │   ├── media-downloader/    # YouTube analyze/download feature
-│   ├── games/               # 9-game catalog + game feature folders
+│   ├── games/               # 10-game catalog + game feature folders
 │   ├── math-learning/       # sequences/statistics/probability learning
 │   ├── blog/                # blog data + presentation
 │   ├── idioms/              # idiom data + presentation
@@ -202,8 +206,8 @@ npm run ci              # format/lint/typecheck/test/build 통합 CI
 npm run ci:local        # git diff --check + 통합 CI
 ```
 
-현재 저장소 테스트는 `**/*.test.ts`, `**/*.test.tsx` 패턴의 141개 파일을
-대상으로 하며, 현재 전체 suite는 599개 테스트 케이스로 구성됩니다.
+현재 저장소 테스트는 `**/*.test.ts`, `**/*.test.tsx` 패턴의 148개 파일을
+대상으로 하며, 현재 전체 suite는 651개 테스트 케이스로 구성됩니다.
 `.husky/pre-push`는 `npm run prepush`를 통해 `npm run ci:local`과 같은 로컬
 품질 게이트를 실행합니다. 자세한 테스트 운영 기준은
 [테스트와 로컬 CI](./docs/TESTING.md)를 참고하세요.
