@@ -18,7 +18,9 @@ export function resolveMediaPlatform(url: URL | string): MediaPlatform {
   return "unknown";
 }
 
-function normalizeYoutubeVideoId(value: string | null | undefined): string | null {
+function normalizeYoutubeVideoId(
+  value: string | null | undefined,
+): string | null {
   const videoId = value?.trim() ?? "";
   return YOUTUBE_VIDEO_ID_PATTERN.test(videoId) ? videoId : null;
 }
