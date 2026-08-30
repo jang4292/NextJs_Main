@@ -3,6 +3,14 @@ import { runProcess, type RunProcess } from "./processRunner";
 
 type MediaToolName = "yt-dlp" | "ffmpeg" | "ffprobe";
 
+function mediaToolUnavailableMessage(toolName: MediaToolName): string {
+  if (toolName === "yt-dlp") {
+    return "미디어 분석 도구 yt-dlp를 실행할 수 없습니다. yt-dlp 설치 상태와 YTDLP_PATH 환경 변수 경로를 확인해주세요.";
+  }
+
+  return "미디어 다운로드 도구를 실행할 수 없습니다. FFmpeg와 FFprobe 설치 상태 및 FFMPEG_PATH, FFPROBE_PATH 환경 변수 경로를 확인해주세요.";
+}
+
 export type MediaRuntimeConfig = {
   ytdlpPath: string;
   ffmpegPath: string;
@@ -59,6 +67,7 @@ async function verifyMediaTool(options: {
     });
   } catch (error) {
     throw new MediaDownloaderError("MEDIA_TOOL_UNAVAILABLE", {
+      message: mediaToolUnavailableMessage(options.toolName),
       internalMessage: `${options.toolName} readiness check failed: ${
         error instanceof Error ? error.message : String(error)
       }`,

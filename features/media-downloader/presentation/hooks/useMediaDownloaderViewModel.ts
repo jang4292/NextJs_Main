@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { mediaErrorMessages } from "../../application/errors";
 import { transitionDownloadStatus } from "../../application/status";
+import { extractMediaUrlCandidate } from "../../application/urlInput";
 import type {
   DownloadStatus,
   DownloadType,
@@ -124,6 +126,7 @@ export function useMediaDownloaderViewModel() {
     status === "analyzing" ||
     status === "downloading" ||
     status === "processing";
+  const analyzeUrl = useMemo(() => extractMediaUrlCandidate(url), [url]);
 
   function updateUrl(nextUrl: string) {
     setUrl(nextUrl);
@@ -144,14 +147,21 @@ export function useMediaDownloaderViewModel() {
   }
 
   async function submitAnalyze() {
+    if (!analyzeUrl) {
+      setError({ message: mediaErrorMessages.INVALID_URL });
+      setStatus("failed");
+      return;
+    }
+
     setError(null);
     setStatus((currentStatus) =>
       transitionDownloadStatus(currentStatus, "analyzing"),
     );
 
     try {
-      const analyzedMedia = await analyzeMedia(url);
+      const analyzedMedia = await analyzeMedia(analyzeUrl);
       setMediaInfo(analyzedMedia);
+      setUrl(analyzedMedia.originalUrl);
       setSelectedType("video");
       setSelectedFormatId(pickFirstFormatId(analyzedMedia, "video"));
       setStatus("ready");
@@ -211,7 +221,8 @@ export function useMediaDownloaderViewModel() {
     isBusy,
     isAnalyzing: status === "analyzing",
     isDownloading: status === "downloading" || status === "processing",
-    canAnalyze: url.trim().length > 0 && !isBusy,
+    urlCandidate: analyzeUrl,
+    canAnalyze: Boolean(analyzeUrl) && !isBusy,
     canDownload: Boolean(mediaInfo && selectedFormat) && !isBusy,
     submitAnalyze,
     submitDownload,

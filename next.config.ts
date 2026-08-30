@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 import { legacyRedirects } from "./features/navigation/siteNavigation";
 
 const isDevelopment = process.env.NODE_ENV === "development";
-const defaultAllowedDevOrigins = ["172.30.1.23", "172.30.1.60"];
+const defaultAllowedDevOrigins = ["172.30.1.23", "172.30.1.60", "172.30.1.97"];
 const allowedDevOrigins = parseAllowedDevOrigins(
   process.env.NEXT_ALLOWED_DEV_ORIGINS,
 );
@@ -16,9 +16,9 @@ const contentSecurityPolicy = [
   "object-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self'",
-  `script-src 'self' 'unsafe-inline'${isDevelopment ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' https://openapi.map.naver.com https://oapi.map.naver.com https://t1.daumcdn.net https://dapi.kakao.com ${isDevelopment ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https://img.shields.io https://visitor-badge.laobi.icu https://i.ytimg.com https://i9.ytimg.com",
+  "img-src 'self' data: https://img.shields.io https://visitor-badge.laobi.icu https://i.ytimg.com https://i9.ytimg.com https://*.naver.com https://*.kakao.com https://*.daumcdn.net",
   "font-src 'self'",
   connectSrc,
   "media-src 'self' blob: https:",
@@ -94,7 +94,7 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-function parseAllowedDevOrigins(value: string | undefined): string[] {
+export function parseAllowedDevOrigins(value: string | undefined): string[] {
   const configuredOrigins =
     value
       ?.split(",")
@@ -106,7 +106,7 @@ function parseAllowedDevOrigins(value: string | undefined): string[] {
   );
 }
 
-function normalizeDevOrigin(value: string): string | null {
+export function normalizeDevOrigin(value: string): string | null {
   const trimmed = value.trim().replace(/\/$/, "");
 
   if (!trimmed) {

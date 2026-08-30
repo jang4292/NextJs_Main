@@ -45,15 +45,17 @@ describe("POST /api/media/analyze", () => {
   });
 
   it("returns analyzed media info for supported YouTube URLs", async () => {
+    const canonicalUrl = "https://www.youtube.com/watch?v=demo";
+
     analyzeMock.mockResolvedValue({
       platform: "youtube",
-      originalUrl: "https://youtu.be/demo",
+      originalUrl: canonicalUrl,
       title: "Demo",
       formats: [],
     });
 
     const response = await POST(
-      analyzeRequest({ url: "https://youtu.be/demo" }),
+      analyzeRequest({ url: "https://youtu.be/demo?si=share-context" }),
     );
 
     expect(response.status).toBe(200);
@@ -61,7 +63,47 @@ describe("POST /api/media/analyze", () => {
       platform: "youtube",
       title: "Demo",
     });
-    expect(analyzeMock).toHaveBeenCalledWith("https://youtu.be/demo");
+    expect(analyzeMock).toHaveBeenCalledWith(canonicalUrl);
+  });
+
+  it("passes YouTube radio context watch URLs to the analyzer as single video URLs", async () => {
+    const canonicalUrl = "https://www.youtube.com/watch?v=sCk-huN2ULg";
+
+    analyzeMock.mockResolvedValue({
+      platform: "youtube",
+      originalUrl: canonicalUrl,
+      title: "Demo",
+      formats: [],
+    });
+
+    const response = await POST(
+      analyzeRequest({
+        url: "https://www.youtube.com/watch?v=sCk-huN2ULg&list=RDsCk-huN2ULg&start_radio=1",
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(analyzeMock).toHaveBeenCalledWith(canonicalUrl);
+  });
+
+  it("extracts quote-wrapped Markdown URLs before analysis", async () => {
+    const canonicalUrl = "https://www.youtube.com/watch?v=sCk-huN2ULg";
+
+    analyzeMock.mockResolvedValue({
+      platform: "youtube",
+      originalUrl: canonicalUrl,
+      title: "Demo",
+      formats: [],
+    });
+
+    const response = await POST(
+      analyzeRequest({
+        url: "'[https://youtu.be/sCk-huN2ULg?si=OgSE-P3WLHGgepBA'](https://youtu.be/sCk-huN2ULg?si=OgSE-P3WLHGgepBA')",
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(analyzeMock).toHaveBeenCalledWith(canonicalUrl);
   });
 
   it("returns stable readiness errors from the analyzer boundary", async () => {

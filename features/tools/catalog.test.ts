@@ -30,6 +30,7 @@ describe("toolCatalog", () => {
     });
     expect(getToolsByCategory("utility").map((tool) => tool.id)).toEqual([
       "media-downloader",
+      "map",
       "tax-calculator",
     ]);
     expect(getToolsByCategory("creative").map((tool) => tool.id)).toEqual([

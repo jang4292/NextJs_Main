@@ -18,6 +18,36 @@ describe("validateMediaUrl", () => {
     }
   });
 
+  it("canonicalizes YouTube share and radio context URLs to one video URL", () => {
+    const canonicalUrl = "https://www.youtube.com/watch?v=sCk-huN2ULg";
+    const urls = [
+      "https://youtu.be/sCk-huN2ULg?si=EbUySaKQQsWBoHx-",
+      "https://www.youtube.com/watch?v=sCk-huN2ULg&list=RDsCk-huN2ULg&start_radio=1",
+    ];
+
+    for (const url of urls) {
+      const result = validateMediaUrl(url);
+
+      expect(result).toMatchObject({
+        ok: true,
+        platform: "youtube",
+        url: canonicalUrl,
+      });
+    }
+  });
+
+  it("accepts quote-wrapped Markdown copied YouTube URLs", () => {
+    expect(
+      validateMediaUrl(
+        "'[https://youtu.be/sCk-huN2ULg?si=OgSE-P3WLHGgepBA'](https://youtu.be/sCk-huN2ULg?si=OgSE-P3WLHGgepBA')",
+      ),
+    ).toMatchObject({
+      ok: true,
+      platform: "youtube",
+      url: "https://www.youtube.com/watch?v=sCk-huN2ULg",
+    });
+  });
+
   it("rejects non-HTTPS protocols", () => {
     expect(
       validateMediaUrl("http://www.youtube.com/watch?v=abc"),

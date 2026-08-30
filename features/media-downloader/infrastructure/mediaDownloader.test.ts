@@ -102,6 +102,37 @@ describe("downloadYoutubeMedia", () => {
     await expectPathRemoved(workDir);
   });
 
+  it("passes canonical single-video URLs to yt-dlp downloads", async () => {
+    const canonicalUrl = "https://www.youtube.com/watch?v=sCk-huN2ULg";
+    let workDir = "";
+    const run = vi.fn<RunProcess>(async (options) => {
+      const nextWorkDir = workDirFromArgs(options);
+      if (nextWorkDir) {
+        workDir = nextWorkDir;
+        await writeFile(join(workDir, "download.mp4"), "demo");
+      }
+
+      return successfulProcessResult;
+    });
+
+    await downloadYoutubeMedia(
+      {
+        url: "https://youtu.be/sCk-huN2ULg?si=EbUySaKQQsWBoHx-",
+        type: "video",
+        formatId: "video-mp4-360",
+      },
+      { run, config: testRuntimeConfig },
+    );
+    const downloadCall = run.mock.calls.find(([options]) =>
+      options.args.includes("--merge-output-format"),
+    );
+    const downloadArgs = downloadCall?.[0].args ?? [];
+
+    expect(downloadArgs.at(-1)).toBe(canonicalUrl);
+    expect(downloadArgs.join(" ")).not.toContain("si=");
+    await expectPathRemoved(workDir);
+  });
+
   it("removes partial output when yt-dlp fails", async () => {
     let workDir = "";
     const run = vi.fn<RunProcess>(async (options) => {

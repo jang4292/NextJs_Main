@@ -145,6 +145,7 @@ SESSION_SECRET=<32바이트 랜덤 base64>  # openssl rand -base64 32
 - [아키텍처](./docs/ARCHITECTURE.md)
 - [테스트와 로컬 CI](./docs/TESTING.md)
 - [Media Downloader](./docs/media-downloader.md)
+- [Media Downloader 배포 아키텍처](./docs/media-downloader-deployment.md)
 - [게임 문서 인덱스](./docs/games/README.md)
 - [개발 보고서 (한국어)](./docs/REPORT_KO.md)
 - [Development Report (English)](./docs/REPORT_EN.md)

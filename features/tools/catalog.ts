@@ -2,7 +2,7 @@ export type ToolStatus = "ready" | "expanded" | "legacy-compatible";
 export type ToolCategory = "utility" | "creative" | "play";
 
 export type ToolCatalogItem = {
-  id: "music" | "games" | "tax-calculator" | "media-downloader";
+  id: "music" | "games" | "tax-calculator" | "media-downloader" | "map";
   title: string;
   eyebrow: string;
   description: string;
@@ -59,6 +59,18 @@ export const toolCatalog: ToolCatalogItem[] = [
     status: "ready",
     featured: true,
     updatedAt: "2026-07-27",
+  },
+  {
+    id: "map",
+    title: "Map Explorer",
+    eyebrow: "Utility",
+    description:
+      "네이버와 카카오 지도로 장소를 검색하고 상세 정보를 확인합니다.",
+    href: "/tools/map",
+    category: "utility",
+    status: "ready",
+    featured: true,
+    updatedAt: "2026-08-30",
   },
   {
     id: "tax-calculator",

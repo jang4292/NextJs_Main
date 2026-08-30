@@ -112,7 +112,8 @@
       "Bash(node verify_sudoku_mobile2.mjs)",
       "Bash(git status *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(node -e \"console.log\\(JSON.stringify\\(require\\('./package.json'\\).scripts, null, 2\\)\\)\")"
     ],
     "additionalDirectories": [
       "/Users/yunhwanjang/Developer/GitHub/NextJs_Main/.husky",

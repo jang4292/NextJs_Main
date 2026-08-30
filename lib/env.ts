@@ -45,6 +45,16 @@ export function getAudioBaseUrl(): string {
   );
 }
 
+export function getMapProviderConfig() {
+  return {
+    naverClientId: process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID ?? "",
+    kakaoAppKey: process.env.NEXT_PUBLIC_KAKAO_MAP_APP_KEY ?? "",
+    naverSearchClientId: process.env.NAVER_SEARCH_CLIENT_ID ?? "",
+    naverSearchClientSecret: process.env.NAVER_SEARCH_CLIENT_SECRET ?? "",
+    kakaoRestApiKey: process.env.KAKAO_REST_API_KEY ?? "",
+  };
+}
+
 export function getSessionSecret(): string {
   return getRequiredEnv("SESSION_SECRET");
 }
