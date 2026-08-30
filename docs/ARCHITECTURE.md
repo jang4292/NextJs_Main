@@ -53,6 +53,18 @@ keeps Profile active in both desktop and mobile navigation. Legacy public URLs
 are redirected from `features/navigation/siteNavigation.ts` through
 `next.config.ts`.
 
+## Local Network Development
+
+`npm run dev:network` starts Next.js on `0.0.0.0:3000` for testing from other
+devices on the local network. Next.js blocks cross-origin access to development
+resources such as HMR WebSockets unless the accessing hostname is explicitly
+allowed by `allowedDevOrigins`.
+
+`next.config.ts` applies `allowedDevOrigins` only when
+`NODE_ENV === "development"`. Local overrides can be supplied with
+`NEXT_ALLOWED_DEV_ORIGINS` as a comma-separated list of hostnames or IPs without
+protocols or ports, for example `172.30.1.97`.
+
 ## Feature Ownership
 
 ```text

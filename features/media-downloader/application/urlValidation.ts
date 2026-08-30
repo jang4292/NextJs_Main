@@ -1,10 +1,12 @@
 import type { MediaErrorCode, MediaPlatform } from "../domain/mediaTypes";
 import { mediaErrorMessages } from "./errors";
 import {
+  canonicalizeYoutubeVideoUrl,
   isYoutubeSingleVideoUrl,
   normalizeHostname,
   resolveMediaPlatform,
 } from "./platformResolver";
+import { extractMediaUrlCandidate } from "./urlInput";
 
 export type ValidatedMediaUrl = {
   ok: true;
@@ -96,7 +98,7 @@ export function validateMediaUrl(input: unknown): MediaUrlValidationResult {
     return invalid("INVALID_URL");
   }
 
-  const trimmed = input.trim();
+  const trimmed = extractMediaUrlCandidate(input);
   if (!trimmed || trimmed.length > MAX_URL_LENGTH) {
     return invalid("INVALID_URL");
   }
@@ -129,10 +131,15 @@ export function validateMediaUrl(input: unknown): MediaUrlValidationResult {
     return invalid("UNSUPPORTED_PLATFORM");
   }
 
+  const canonicalUrl = canonicalizeYoutubeVideoUrl(parsedUrl);
+  if (!canonicalUrl) {
+    return invalid("UNSUPPORTED_PLATFORM");
+  }
+
   return {
     ok: true,
-    url: parsedUrl.toString(),
-    parsedUrl,
+    url: canonicalUrl.toString(),
+    parsedUrl: canonicalUrl,
     platform,
   };
 }

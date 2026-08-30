@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 import { legacyRedirects } from "./features/navigation/siteNavigation";
 
 const isDevelopment = process.env.NODE_ENV === "development";
-const defaultAllowedDevOrigins = ["172.30.1.23", "172.30.1.60"];
+const defaultAllowedDevOrigins = ["172.30.1.23", "172.30.1.60", "172.30.1.97"];
 const allowedDevOrigins = parseAllowedDevOrigins(
   process.env.NEXT_ALLOWED_DEV_ORIGINS,
 );
@@ -94,7 +94,7 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-function parseAllowedDevOrigins(value: string | undefined): string[] {
+export function parseAllowedDevOrigins(value: string | undefined): string[] {
   const configuredOrigins =
     value
       ?.split(",")
@@ -106,7 +106,7 @@ function parseAllowedDevOrigins(value: string | undefined): string[] {
   );
 }
 
-function normalizeDevOrigin(value: string): string | null {
+export function normalizeDevOrigin(value: string): string | null {
   const trimmed = value.trim().replace(/\/$/, "");
 
   if (!trimmed) {
