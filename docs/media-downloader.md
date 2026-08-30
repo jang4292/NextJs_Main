@@ -95,15 +95,19 @@ Default fallback values are the same command names and numeric limits shown
 above. `MEDIA_MAX_OUTPUT_BYTES` defaults to 350 MiB.
 
 Before analyze and download work starts, the API performs lightweight runtime
-readiness checks:
+readiness checks. Analyze requires only `yt-dlp`:
 
 - `yt-dlp --version`
+
+Download additionally requires both FFmpeg tools:
+
 - `ffmpeg -version`
 - `ffprobe -version`
 
 Missing or misconfigured local tools return the stable
 `MEDIA_TOOL_UNAVAILABLE` error instead of exposing raw process errors to the
-browser.
+browser. The Analyze response identifies `yt-dlp` and the download response
+identifies the FFmpeg tools when those checks fail.
 
 ## File Lifecycle
 
