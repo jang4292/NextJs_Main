@@ -84,13 +84,13 @@
 
 ## 값별 역할 요약
 
-| 키 | 공개 여부 | 사용 위치 | 역할 | 주의 사항 |
-| --- | --- | --- | --- | --- |
-| `NEXT_PUBLIC_NAVER_MAP_CLIENT_ID` | 공개 | 브라우저 | 네이버 지도 JavaScript SDK 초기화 | 절대 secret 값으로 취급하지 않는다. |
-| `NEXT_PUBLIC_KAKAO_MAP_APP_KEY` | 공개 | 브라우저 | 카카오 지도 JavaScript SDK 초기화 | 웹 사이트 허용 목록 등록 필요 |
-| `NAVER_SEARCH_CLIENT_ID` | 비공개 | 서버 | 네이버 Local Search API 인증 | 로그/응답에 노출 금지 |
-| `NAVER_SEARCH_CLIENT_SECRET` | 비공개 | 서버 | 네이버 Local Search API 인증 | 값 유출 시 즉시 재발급 필요 |
-| `KAKAO_REST_API_KEY` | 비공개 | 서버 | 카카오 검색 API 인증 | 서버만 사용, 브라우저 포함 금지 |
+| 키                                | 공개 여부 | 사용 위치 | 역할                              | 주의 사항                           |
+| --------------------------------- | --------- | --------- | --------------------------------- | ----------------------------------- |
+| `NEXT_PUBLIC_NAVER_MAP_CLIENT_ID` | 공개      | 브라우저  | 네이버 지도 JavaScript SDK 초기화 | 절대 secret 값으로 취급하지 않는다. |
+| `NEXT_PUBLIC_KAKAO_MAP_APP_KEY`   | 공개      | 브라우저  | 카카오 지도 JavaScript SDK 초기화 | 웹 사이트 허용 목록 등록 필요       |
+| `NAVER_SEARCH_CLIENT_ID`          | 비공개    | 서버      | 네이버 Local Search API 인증      | 로그/응답에 노출 금지               |
+| `NAVER_SEARCH_CLIENT_SECRET`      | 비공개    | 서버      | 네이버 Local Search API 인증      | 값 유출 시 즉시 재발급 필요         |
+| `KAKAO_REST_API_KEY`              | 비공개    | 서버      | 카카오 검색 API 인증              | 서버만 사용, 브라우저 포함 금지     |
 
 ## 보안 및 운영 기준
 
